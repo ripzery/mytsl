@@ -36,5 +36,7 @@
     <string name="profile.email.content">pop@socket9.com</string>
     <string name="profile.password.title">PASSWORD</string>
     <string name="profile.password.content">123214das</string>
+    
+    <string name="google.maps.key">AIzaSyBWzfHaOayY9QUlzwzVV4VWYqGhxclOIXE</string>
 
 </resources>
