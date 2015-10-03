@@ -4,11 +4,9 @@
     android:id="@+id/my_toolbar"
     style="@style/Toolbar"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    android:minHeight="8dp"
     android:gravity="center"
-    android:paddingTop="@dimen/status_bar_height"
     android:theme="@style/ToolbarThemeOverlay" >
 
     <TextView
