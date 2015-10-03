@@ -2,21 +2,20 @@ package com.socket9.tsl.Fragments;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.socket9.tsl.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsEventListFragment extends Fragment {
+public class NewsEventFragment extends Fragment {
 
 
-    public NewsEventListFragment() {
+    public NewsEventFragment() {
         // Required empty public constructor
     }
 
@@ -24,9 +23,9 @@ public class NewsEventListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_news_event, container, false);
+        return rootView;
     }
 
 

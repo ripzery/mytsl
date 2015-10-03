@@ -10,4 +10,23 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="create.account.et.name">Your Name</string>
+    <string name="create.account.et.email">Your Email Address</string>
+    <string name="create.account.et.password">Your Password</string>
+    <string name="create.account.et.confirmpw">Re-Enter Your Password</string>
+    <string name="create.account.et.mobile">Your Mobile Phone</string>
+    <string name="create.account.et.address">Your Address</string>
+    <string name="create.account.btn.create">Create Account</string>
+
+    <string name="nav.home">Home</string>
+    <string name="nav.news">News &amp; Event</string>
+    <string name="nav.contact">Contact Us</string>
+    <string name="nav.emergency">Emergency Call</string>
+    <string name="nav.signout">Sign Out</string>
+    <string name="title_activity_my_profile">MyProfileActivity</string>
+
+    <string name="profile.address.content">31 Phayathai Building, Phayathai, BKK 10400, Thailand</string>
+    <string name="profile.address.title">Address</string>
+
 </resources>

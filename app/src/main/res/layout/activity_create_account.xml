@@ -1,12 +1,98 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context="com.socket9.tsl.CreateAccountActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/layout_app_bar" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_height="40dp">
+
+        <EditText
+            android:layout_width="@dimen/btn_width_large"
+            android:hint="@string/create.account.et.name"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_height="40dp">
+
+        <EditText
+            android:hint="@string/create.account.et.email"
+            android:layout_width="@dimen/btn_width_large"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_height="40dp">
+
+        <EditText
+            android:hint="@string/create.account.et.password"
+            android:layout_width="@dimen/btn_width_large"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_height="40dp">
+
+        <EditText
+            android:hint="@string/create.account.et.confirmpw"
+            android:layout_width="@dimen/btn_width_large"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_height="40dp">
+
+        <EditText
+            android:hint="@string/create.account.et.mobile"
+            android:layout_width="@dimen/btn_width_large"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_height="40dp">
+
+        <EditText
+            android:hint="@string/create.account.et.address"
+            android:layout_width="@dimen/btn_width_large"
+            android:lines="3"
+            android:maxLines="3"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="@dimen/btn_width_large"
+        android:layout_marginTop="16dp"
+        android:layout_height="60dp"
+        android:text="@string/create.account.btn.create"/>
+
+
+</LinearLayout>
