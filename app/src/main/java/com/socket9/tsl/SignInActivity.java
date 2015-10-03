@@ -2,17 +2,21 @@ package com.socket9.tsl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.socket9.tsl.API.APIService;
+import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Models.User;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.client.Response;
+import timber.log.Timber;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
@@ -40,11 +44,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         setListener();
     }
 
-    public void setInfo(){
+    public void setInfo() {
 
     }
 
-    public void setListener(){
+    public void setListener() {
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
     }
@@ -59,12 +63,24 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnLogin :
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+        switch (view.getId()) {
+            case R.id.btnLogin:
+                APIService.getTSLApi().login(etUsername.getText().toString(), etPassword.getText().toString(), new MyCallback<User>() {
+                    @Override
+                    public void good(User m, Response response) {
+                        Timber.d(m.getToken());
+                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void bad(String error) {
+                        Timber.i(error);
+                    }
+                });
+
                 break;
-            case R.id.btnRegister :
+            case R.id.btnRegister:
                 startActivity(new Intent(this, CreateAccountActivity.class));
                 break;
         }

@@ -19,8 +19,6 @@ public class BaseApplication extends Application implements Application.Activity
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
-
-        APIService.setContext(getApplicationContext());
     }
 
     @Override

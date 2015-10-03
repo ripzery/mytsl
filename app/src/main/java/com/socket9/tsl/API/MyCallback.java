@@ -19,9 +19,9 @@ public abstract class MyCallback <T extends BaseModel> implements Callback<T>{
         }
     }
 
-    abstract void good(T m, Response response);
+    public abstract void good(T m, Response response);
 
-    abstract void bad(String error);
+    public abstract void bad(String error);
 
     @Override
     public void failure(RetrofitError error) {

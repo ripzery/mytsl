@@ -13,12 +13,6 @@ import retrofit.RetrofitError;
  */
 public class ApiErrorHandler implements ErrorHandler {
 
-    public Context context;
-
-    public ApiErrorHandler(Context context) {
-        this.context = context;
-    }
-
     @Override
     public Throwable handleError(RetrofitError cause) {
         String description;
@@ -28,7 +22,6 @@ public class ApiErrorHandler implements ErrorHandler {
         }else{
             description = cause.getMessage();
         }
-        Singleton.toast(context, cause.getMessage(), Toast.LENGTH_LONG);
         return new Exception(description);
     }
 }
