@@ -26,7 +26,15 @@
     <string name="nav.signout">Sign Out</string>
     <string name="title_activity_my_profile">MyProfileActivity</string>
 
+    <string name="profile.address.title">ADDRESS</string>
     <string name="profile.address.content">31 Phayathai Building, Phayathai, BKK 10400, Thailand</string>
-    <string name="profile.address.title">Address</string>
+    <string name="profile.name.title">NAME</string>
+    <string name="profile.name.content">Annop Vor</string>
+    <string name="profile.phone.title">PHONE</string>
+    <string name="profile.phone.content">0817137036</string>
+    <string name="profile.email.title">EMAIL</string>
+    <string name="profile.email.content">pop@socket9.com</string>
+    <string name="profile.password.title">PASSWORD</string>
+    <string name="profile.password.content">123214das</string>
 
 </resources>

@@ -3,7 +3,7 @@ package com.socket9.tsl;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,10 +18,16 @@ public class MyProfileActivity extends BaseActivity {
     Toolbar myToolbar;
     @Bind(R.id.ivUser)
     ImageView ivUser;
-    @Bind(R.id.tvName)
-    TextView tvName;
-    @Bind(R.id.tvPhone)
-    TextView tvPhone;
+    @Bind(R.id.etName)
+    EditText etName;
+    @Bind(R.id.etPhone)
+    EditText etPhone;
+    @Bind(R.id.etEmail)
+    EditText etEmail;
+    @Bind(R.id.etPassword)
+    EditText etPassword;
+    @Bind(R.id.etAddress)
+    EditText etAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
