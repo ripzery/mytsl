@@ -11,8 +11,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivUser"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:src="@drawable/hugh" />
@@ -30,8 +30,7 @@
 
             <EditText
                 android:id="@+id/etName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/editTextContent"
                 android:text="@string/profile.name.content" />
 
             <TextView
@@ -41,8 +40,8 @@
 
             <EditText
                 android:id="@+id/etPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/editTextContent"
+                android:inputType="phone"
                 android:text="@string/profile.phone.content" />
 
             <TextView
@@ -52,8 +51,8 @@
 
             <EditText
                 android:id="@+id/etEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/editTextContent"
+                android:inputType="textEmailAddress"
                 android:text="@string/profile.email.content" />
 
             <TextView
@@ -63,8 +62,7 @@
 
             <EditText
                 android:id="@+id/etPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/editTextContent"
                 android:hint="@string/create.account.et.password"
                 android:inputType="textPassword"
                 android:text="@string/profile.password.content" />

@@ -20,6 +20,12 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:title="@string/nav.home" />
+
+        <item
+            android:id="@+id/nav_emergency_call"
+            android:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:title="@string/nav.emergency" />
+
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
@@ -28,10 +34,7 @@
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:title="@string/nav.contact" />
-        <item
-            android:id="@+id/nav_emergency_call"
-            android:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
-            android:title="@string/nav.emergency" />
+
         <item
             android:id="@+id/nav_sign_out"
             android:title="@string/nav.signout" />
