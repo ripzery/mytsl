@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.socket9.tsl.API.APIService;
+
 import timber.log.Timber;
 
 /**
@@ -11,10 +13,14 @@ import timber.log.Timber;
  */
 public class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks{
 
+    public static String token = "";
+
     @Override
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
+
+        APIService.setContext(getApplicationContext());
     }
 
     @Override
