@@ -1,16 +1,18 @@
 package com.socket9.tsl.Models;
 
+import com.socket9.tsl.ModelEntities.TokenEntity;
+
 /**
  * Created by visit on 10/4/15 AD.
  */
 public class User extends BaseModel {
-    String token;
+    TokenEntity data;
 
-    public String getToken() {
-        return token;
+    public TokenEntity getData() {
+        return data;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setData(TokenEntity data) {
+        this.data = data;
     }
 }

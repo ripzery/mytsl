@@ -5,6 +5,7 @@ import android.app.Application;
 import android.os.Bundle;
 
 import com.socket9.tsl.API.APIService;
+import com.socket9.tsl.Utils.Singleton;
 
 import timber.log.Timber;
 
@@ -19,6 +20,7 @@ public class BaseApplication extends Application implements Application.Activity
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
+        Singleton.initSharePref(getApplicationContext());
     }
 
     @Override

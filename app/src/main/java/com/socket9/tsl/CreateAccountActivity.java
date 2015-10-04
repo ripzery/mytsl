@@ -4,31 +4,53 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.socket9.tsl.API.APIService;
+import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Models.User;
+import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.client.Response;
+import timber.log.Timber;
 
 public class CreateAccountActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.my_toolbar)
     Toolbar myToolbar;
-    @Bind(R.id.btnCreateAccount)
-    Button btnCreateAccount;
+    @Bind(R.id.toolbarTitle)
+    TextView toolbarTitle;
+    @Bind(R.id.btnRegister)
+    Button btnRegister;
+    @Bind(R.id.etUsername)
+    EditText etUsername;
+    @Bind(R.id.etEmail)
+    EditText etEmail;
+    @Bind(R.id.etPassword)
+    EditText etPassword;
+    @Bind(R.id.etConfirmPassword)
+    EditText etConfirmPassword;
+    @Bind(R.id.etPhone)
+    EditText etPhone;
+    @Bind(R.id.etAddress)
+    EditText etAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
         ButterKnife.bind(this);
-        initToolbar(myToolbar, "Create New Account", true);
+        initToolbar(myToolbar, "REGISTER", true);
         setListener();
     }
 
-    public void setListener(){
-        btnCreateAccount.setOnClickListener(this);
+    public void setListener() {
+        btnRegister.setOnClickListener(this);
     }
 
     @Override
@@ -41,10 +63,30 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnCreateAccount :
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+        switch (view.getId()) {
+            case R.id.btnRegister:
+                APIService.getTSLApi().registerUser(etEmail.getText().toString(),
+                        etPassword.getText().toString(),
+                        etUsername.getText().toString(),
+                        etUsername.getText().toString(),
+                        etEmail.getText().toString(),
+                        etAddress.getText().toString(),
+                        etPhone.getText().toString(),
+                        "", new MyCallback<User>() {
+                            @Override
+                            public void good(User m, Response response) {
+                                Timber.d("Token : " + m.getData().getToken());
+                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
+                                startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
+                                finish();
+                            }
+
+                            @Override
+                            public void bad(String error) {
+                                Timber.i(error);
+                            }
+                        }
+                );
                 break;
         }
     }

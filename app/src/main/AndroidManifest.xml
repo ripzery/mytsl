@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.socket9.tsl" >
+    package="com.socket9.tsl">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
 
     <application
@@ -13,14 +12,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".SignInActivity"
-            android:label="@string/title_activity_sign_in" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".EntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,26 +21,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateAccountActivity"
-            android:label="@string/title_activity_create_account" >
+            android:name=".MainActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".SignInActivity"
+            android:label="@string/title_activity_sign_in">
+
         </activity>
+        <activity
+            android:name=".CreateAccountActivity"
+            android:label="@string/title_activity_create_account"></activity>
         <activity
             android:name=".NewsEventActivity"
-            android:label="@string/title_activity_news_event" >
-        </activity>
+            android:label="@string/title_activity_news_event"></activity>
         <activity
             android:name=".PlaceDetailActivity"
-            android:label="@string/title_activity_place_detail" >
-        </activity>
+            android:label="@string/title_activity_place_detail"></activity>
         <activity
             android:name=".MyProfileActivity"
-            android:label="@string/title_activity_my_profile" >
-        </activity>
+            android:label="@string/title_activity_my_profile"></activity>
 
 
-        <meta-data
+        <meta-datas
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google.maps.key"/>
+            android:value="@string/google.maps.key" />
 
     </application>
 

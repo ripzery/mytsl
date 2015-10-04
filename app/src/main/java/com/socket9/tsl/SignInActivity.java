@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.socket9.tsl.API.APIService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Models.User;
+import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,7 +69,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 APIService.getTSLApi().login(etUsername.getText().toString(), etPassword.getText().toString(), new MyCallback<User>() {
                     @Override
                     public void good(User m, Response response) {
-                        Timber.d(m.getToken());
+                        Timber.d(m.getData().getToken());
+                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
                         startActivity(new Intent(SignInActivity.this, MainActivity.class));
                         finish();
                     }

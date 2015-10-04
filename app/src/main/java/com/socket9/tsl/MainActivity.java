@@ -18,6 +18,7 @@ import com.socket9.tsl.Fragments.EmergencyFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.MyProfileFragment;
 import com.socket9.tsl.Fragments.NewsEventFragment;
+import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,6 +96,9 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
                         break;
                     case R.id.nav_sign_out:
                         // Show dialog
+                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                        finish();
                         break;
                 }
                 drawerLayout.closeDrawers();
