@@ -5,56 +5,72 @@ package com.socket9.tsl.Models;
  */
 public class Profile extends BaseModel {
 
+
     /**
-     * phone : phone
-     * nameTh : name
-     * address : address
-     * nameEn : name
-     * pic : picpath or null
+     * data : {"phone":"phone","nameTh":"name","address":"address","nameEn":"name","pic":"picpath or null"}
      */
-    private String phone;
-    private String nameTh;
-    private String address;
-    private String nameEn;
-    private String pic;
+    private DataEntity data;
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setData(DataEntity data) {
+        this.data = data;
     }
 
-    public void setNameTh(String nameTh) {
-        this.nameTh = nameTh;
+    public DataEntity getData() {
+        return data;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public static class DataEntity {
+        /**
+         * phone : phone
+         * nameTh : name
+         * address : address
+         * nameEn : name
+         * pic : picpath or null
+         */
+        private String phone;
+        private String nameTh;
+        private String address;
+        private String nameEn;
+        private String pic;
 
-    public void setNameEn(String nameEn) {
-        this.nameEn = nameEn;
-    }
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
 
-    public void setPic(String pic) {
-        this.pic = pic;
-    }
+        public void setNameTh(String nameTh) {
+            this.nameTh = nameTh;
+        }
 
-    public String getPhone() {
-        return phone;
-    }
+        public void setAddress(String address) {
+            this.address = address;
+        }
 
-    public String getNameTh() {
-        return nameTh;
-    }
+        public void setNameEn(String nameEn) {
+            this.nameEn = nameEn;
+        }
 
-    public String getAddress() {
-        return address;
-    }
+        public void setPic(String pic) {
+            this.pic = pic;
+        }
 
-    public String getNameEn() {
-        return nameEn;
-    }
+        public String getPhone() {
+            return phone;
+        }
 
-    public String getPic() {
-        return pic;
+        public String getNameTh() {
+            return nameTh;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getNameEn() {
+            return nameEn;
+        }
+
+        public String getPic() {
+            return pic;
+        }
     }
 }
