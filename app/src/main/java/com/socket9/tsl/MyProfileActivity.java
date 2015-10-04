@@ -5,14 +5,25 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.socket9.tsl.API.ApiService;
+import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Models.Photo;
+import com.socket9.tsl.Utils.Singleton;
+
+import java.io.ByteArrayOutputStream;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.client.Response;
+import timber.log.Timber;
 
 public class MyProfileActivity extends BaseActivity {
 
@@ -71,8 +82,35 @@ public class MyProfileActivity extends BaseActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ivUser.setImageBitmap(imageBitmap);
+//            ivUser.setImageBitmap(imageBitmap);
+            String encodedBitmap = "data:image/png;base64," + encode(compress(imageBitmap, 70));
+            uploadPhoto(encodedBitmap);
         }
+    }
+
+    public void uploadPhoto(String encodedBitmap){
+        ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
+            @Override
+            public void good(Photo m, Response response) {
+                Timber.i(m.getData().getPathUse());
+                Glide.with(MyProfileActivity.this).load(m.getData().getPathUse()).into(ivUser);
+            }
+
+            @Override
+            public void bad(String error) {
+                Timber.d(error);
+            }
+        });
+    }
+
+    public byte[] compress(Bitmap bitmap, int percent){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, percent, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    public String encode(byte[] byteArray){
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
 }

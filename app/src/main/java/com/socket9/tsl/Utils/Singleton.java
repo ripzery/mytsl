@@ -35,6 +35,10 @@ public class Singleton {
         return sharedPreferences;
     }
 
+    public String getToken(){
+       return sharedPreferences.getString(SHARE_PREF_KEY_TOKEN, "");
+    }
+
     public static void toast(Context context, String message, int length) {
         if (toast != null) {
             toast.cancel();
