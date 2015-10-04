@@ -32,6 +32,7 @@ public class Profile extends BaseModel {
         private String address;
         private String nameEn;
         private String pic;
+        private String email;
 
         public void setPhone(String phone) {
             this.phone = phone;
@@ -71,6 +72,14 @@ public class Profile extends BaseModel {
 
         public String getPic() {
             return pic;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
     }
 }

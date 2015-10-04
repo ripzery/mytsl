@@ -2,83 +2,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/layout_app_bar" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivUser"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/hugh" />
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                style="@style/textTitle"
-                android:text="@string/profile.name.title" />
+            <include layout="@layout/layout_app_bar" />
 
-            <EditText
-                android:id="@+id/etName"
-                style="@style/editTextContent"
-                android:text="@string/profile.name.content" />
-
-            <TextView
-                style="@style/textTitle"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivUser"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:text="@string/profile.phone.title" />
+                android:src="@drawable/hugh" />
 
-            <EditText
-                android:id="@+id/etPhone"
-                style="@style/editTextContent"
-                android:inputType="phone"
-                android:text="@string/profile.phone.content" />
 
-            <TextView
-                style="@style/textTitle"
-                android:layout_marginTop="16dp"
-                android:text="@string/profile.email.title" />
-
-            <EditText
-                android:id="@+id/etEmail"
-                style="@style/editTextContent"
-                android:inputType="textEmailAddress"
-                android:text="@string/profile.email.content" />
-
-            <TextView
-                style="@style/textTitle"
-                android:layout_marginTop="16dp"
-                android:text="@string/profile.password.title" />
-
-            <EditText
-                android:id="@+id/etPassword"
-                style="@style/editTextContent"
-                android:hint="@string/create.account.et.password"
-                android:inputType="textPassword"
-                android:text="@string/profile.password.content" />
-
-            <TextView
-                style="@style/textTitle"
-                android:layout_marginTop="16dp"
-                android:text="@string/profile.address.title" />
-
-            <EditText
-                android:id="@+id/etAddress"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/profile.address.content" />
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:text="@string/profile.name.title" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    style="@style/editTextContent"
+                    android:text="@string/profile.name.content" />
+
+                <TextView
+                    style="@style/textTitle"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/profile.phone.title" />
+
+                <EditText
+                    android:id="@+id/etPhone"
+                    style="@style/editTextContent"
+                    android:inputType="phone"
+                    android:text="@string/profile.phone.content" />
+
+                <TextView
+                    style="@style/textTitle"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/profile.email.title" />
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    style="@style/editTextContent"
+                    android:inputType="textEmailAddress"
+                    android:text="@string/profile.email.content" />
+
+                <TextView
+                    style="@style/textTitle"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/profile.password.title" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    style="@style/editTextContent"
+                    android:hint="@string/create.account.et.password"
+                    android:inputType="textPassword"
+                    android:text="@string/profile.password.content" />
+
+                <TextView
+                    style="@style/textTitle"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/profile.address.title" />
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile.address.content" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_marginTop="64dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
 </ScrollView>

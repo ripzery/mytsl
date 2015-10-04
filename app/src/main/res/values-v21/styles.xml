@@ -6,7 +6,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorButtonNormal">@color/colorTextPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:fitsSystemWindows">true</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
 
