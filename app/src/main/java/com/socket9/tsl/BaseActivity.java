@@ -46,6 +46,6 @@ public class BaseActivity extends AppCompatActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         if(!isBackVisible)
-            mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_18dp);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_grey_500_24dp);
     }
 }

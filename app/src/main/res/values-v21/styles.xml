@@ -10,8 +10,8 @@
     </style>
 
     <style name="ToolbarThemeOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
-        <item name="colorControlNormal">@color/colorTextPrimary</item>
+        <item name="android:textColorPrimary">@color/colorTextSecondary</item>
+        <item name="colorControlNormal">@color/colorTextSecondary</item>
         <item name="colorControlHighlight">@color/colorPrimaryDark</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
         <item name="android:itemTextAppearance">@style/menuItemColor</item>

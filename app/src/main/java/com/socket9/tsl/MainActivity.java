@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.socket9.tsl.Fragments.ContactFragment;
 import com.socket9.tsl.Fragments.EmergencyFragment;
@@ -23,13 +27,13 @@ import com.socket9.tsl.Utils.Singleton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements HomeFragment.OnHomeListener{
+public class MainActivity extends BaseActivity implements HomeFragment.OnHomeListener, View.OnClickListener {
 
-    private static final int FRAGMENT_DISPLAY_HOME = 1;
-    private static final int FRAGMENT_DISPLAY_NEWS = 2;
-    private static final int FRAGMENT_DISPLAY_CONTACT = 3;
-    private static final int FRAGMENT_DISPLAY_EMERGENCY = 4;
-    private static final int FRAGMENT_DISPLAY_PROFILE = 5;
+    public static final int FRAGMENT_DISPLAY_HOME = 1;
+    public static final int FRAGMENT_DISPLAY_NEWS = 2;
+    public static final int FRAGMENT_DISPLAY_CONTACT = 3;
+    public static final int FRAGMENT_DISPLAY_EMERGENCY = 4;
+    public static final int FRAGMENT_DISPLAY_PROFILE = 5;
     @Bind(R.id.my_toolbar)
     Toolbar myToolbar;
     @Bind(R.id.fragment_container)
@@ -40,6 +44,14 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    @Bind(R.id.toolbarTitle)
+    TextView toolbarTitle;
+    @Bind(R.id.layoutNewsEvent)
+    LinearLayout layoutNewsEvent;
+    @Bind(R.id.btnLeft)
+    Button btnLeft;
+    @Bind(R.id.btnRight)
+    Button btnRight;
     private Fragment homeFragment;
     private Fragment newsFragment;
     private Fragment contactFragment;
@@ -53,9 +65,15 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
         ButterKnife.bind(this);
         initToolbar(myToolbar, "Main", false);
         initFragment();
+        setListener();
         setupDrawerContent();
         replaceFragment(FRAGMENT_DISPLAY_HOME);
         navView.setCheckedItem(R.id.nav_home);
+    }
+
+    public void setListener(){
+        btnLeft.setOnClickListener(this);
+        btnRight.setOnClickListener(this);
     }
 
     private void initFragment() {
@@ -127,6 +145,31 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
         }
     }
 
+    // call from fragment only
+    public void onFragmentAttached(int number) {
+        String mTitle = "";
+        toolbarTitle.setVisibility(number == FRAGMENT_DISPLAY_NEWS ? View.GONE : View.VISIBLE);
+        layoutNewsEvent.setVisibility(number == FRAGMENT_DISPLAY_NEWS ? View.VISIBLE : View.GONE);
+        switch (number) {
+            case FRAGMENT_DISPLAY_HOME:
+                mTitle = "Home";
+                break;
+            case FRAGMENT_DISPLAY_EMERGENCY:
+                mTitle = "Emergency";
+                break;
+            case FRAGMENT_DISPLAY_CONTACT:
+                mTitle = "Contact";
+                break;
+            case FRAGMENT_DISPLAY_NEWS:
+
+                break;
+            case FRAGMENT_DISPLAY_PROFILE:
+                mTitle = "Profile";
+                break;
+        }
+        toolbarTitle.setText(mTitle);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -141,5 +184,23 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     public void onImageClick() {
 //        replaceFragment(FRAGMENT_DISPLAY_PROFILE);
         startActivity(new Intent(this, MyProfileActivity.class));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnLeft :
+                btnLeft.setTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary));
+                btnLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_left));
+                btnRight.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
+                btnRight.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_right_white));
+                break;
+            case R.id.btnRight :
+                btnLeft.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
+                btnLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_left_white));
+                btnRight.setTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary));
+                btnRight.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_right));
+                break;
+        }
     }
 }

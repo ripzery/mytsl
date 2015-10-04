@@ -5,19 +5,46 @@
     style="@style/Toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorTextPrimary"
     android:gravity="center"
-    android:theme="@style/ToolbarThemeOverlay" >
+    android:theme="@style/ToolbarThemeOverlay">
 
     <TextView
         android:id="@+id/toolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="18sp"
         android:layout_marginBottom="8dp"
-        android:text="Hello" />
+        android:text="Hello"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/layoutNewsEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="36dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnLeft"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_corner_left"
+            android:textColor="@color/colorTextPrimary"
+            android:layout_marginRight="-4dip"
+            android:text="News" />
+
+        <Button
+            android:id="@+id/btnRight"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_corner_right_white"
+            android:textColor="@color/colorTextSecondary"
+            android:text="Event" />
+
+    </LinearLayout>
 
 </android.support.v7.widget.Toolbar>
 

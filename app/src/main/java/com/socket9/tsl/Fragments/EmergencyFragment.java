@@ -1,6 +1,7 @@
 package com.socket9.tsl.Fragments;
 
 
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.gms.maps.MapView;
+import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.MapHelper;
 
@@ -79,6 +81,11 @@ public class EmergencyFragment extends Fragment {
         mapHelper.getmMapView().onLowMemory();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_EMERGENCY);
+    }
 
 
     @Override

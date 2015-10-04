@@ -1,12 +1,14 @@
 package com.socket9.tsl.Fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.R;
 
 /**
@@ -28,5 +30,10 @@ public class MyProfileFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_PROFILE);
+    }
 
 }
