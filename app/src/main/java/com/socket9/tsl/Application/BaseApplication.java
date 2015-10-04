@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import com.socket9.tsl.API.APIService;
 import com.socket9.tsl.Utils.Singleton;
 
 import timber.log.Timber;

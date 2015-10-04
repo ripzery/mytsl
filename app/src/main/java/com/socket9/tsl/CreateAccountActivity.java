@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.socket9.tsl.API.APIService;
+import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Models.User;
 import com.socket9.tsl.Utils.Singleton;
@@ -65,7 +65,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnRegister:
-                APIService.getTSLApi().registerUser(etEmail.getText().toString(),
+                ApiService.getTSLApi().registerUser(etEmail.getText().toString(),
                         etPassword.getText().toString(),
                         etUsername.getText().toString(),
                         etUsername.getText().toString(),
