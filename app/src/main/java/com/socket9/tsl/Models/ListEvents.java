@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by visit on 10/4/15 AD.
  */
-public class Events extends BaseModel{
+public class ListEvents extends BaseModel{
 
     /**
      * data : [{"id":77,"titleTh":"เทส อีเว้นท์","titleEn":"Test Event","pic":"pic path","type":"Event","date":"11-03-2015"}]

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by visit on 10/4/15 AD.
  */
-public class Contacts extends BaseModel {
+public class ListContacts extends BaseModel {
     private List<ContactEntity> data;
 
     public List<ContactEntity> getData() {
