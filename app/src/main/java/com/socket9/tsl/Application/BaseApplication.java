@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.Singleton;
 
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by visit on 10/2/15 AD.
@@ -20,6 +22,11 @@ public class BaseApplication extends Application implements Application.Activity
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
         Singleton.initSharePref(getApplicationContext());
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/samakarn/Samakarn-Bold.tth")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
     }
 
     @Override
