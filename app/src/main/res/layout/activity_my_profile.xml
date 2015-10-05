@@ -30,51 +30,69 @@
 
                 <TextView
                     style="@style/textTitle"
-                    android:text="@string/profile.name.title" />
+                    android:text="@string/profile.name.title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/etName"
                     style="@style/editTextContent"
-                    android:text="@string/profile.name.content" />
+                    android:text="@string/profile.name.content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     style="@style/textTitle"
                     android:layout_marginTop="16dp"
-                    android:text="@string/profile.phone.title" />
+                    android:text="@string/profile.phone.title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/etPhone"
                     style="@style/editTextContent"
                     android:inputType="phone"
-                    android:text="@string/profile.phone.content" />
+                    android:text="@string/profile.phone.content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     style="@style/textTitle"
                     android:layout_marginTop="16dp"
-                    android:text="@string/profile.email.title" />
+                    android:text="@string/profile.email.title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/etEmail"
                     style="@style/editTextContent"
                     android:inputType="textEmailAddress"
-                    android:text="@string/profile.email.content" />
+                    android:text="@string/profile.email.content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     style="@style/textTitle"
                     android:layout_marginTop="16dp"
-                    android:text="@string/profile.password.title" />
+                    android:text="@string/profile.password.title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/etPassword"
                     style="@style/editTextContent"
                     android:hint="@string/create.account.et.password"
                     android:inputType="textPassword"
-                    android:text="@string/profile.password.content" />
+                    android:text="@string/profile.password.content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     style="@style/textTitle"
                     android:layout_marginTop="16dp"
-                    android:text="@string/profile.address.title" />
+                    android:text="@string/profile.address.title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/etAddress"

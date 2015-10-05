@@ -21,7 +21,7 @@ import com.socket9.tsl.Fragments.ContactFragment;
 import com.socket9.tsl.Fragments.EmergencyFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.MyProfileFragment;
-import com.socket9.tsl.Fragments.NewsEventFragment;
+import com.socket9.tsl.Fragments.NewsFragment;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
 
     private void initFragment() {
         homeFragment = new HomeFragment();
-        newsFragment = new NewsEventFragment();
+        newsFragment = new NewsFragment();
         contactFragment = new ContactFragment();
         emergencyFragment = new EmergencyFragment();
         profileFragment = new MyProfileFragment();

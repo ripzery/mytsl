@@ -23,7 +23,7 @@ public class BaseApplication extends Application implements Application.Activity
         Timber.plant(new Timber.DebugTree());
         Singleton.initSharePref(getApplicationContext());
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/samakarn/Samakarn-Bold.tth")
+                        .setDefaultFontPath("fonts/samakarn/Samakarn-Bold.ttf")
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
