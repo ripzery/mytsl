@@ -8,6 +8,8 @@ import com.socket9.tsl.ModelEntities.ContactEntity;
 public class Contact extends BaseModel {
     private ContactEntity data;
 
+
+
     public ContactEntity getData() {
         return data;
     }

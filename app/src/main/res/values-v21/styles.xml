@@ -5,6 +5,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="android:colorButtonNormal">@color/colorTextPrimary</item>
+        <item name="android:colorControlHighlight">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
