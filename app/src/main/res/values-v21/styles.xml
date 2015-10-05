@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="android:colorButtonNormal">@color/colorTextPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
@@ -15,6 +15,10 @@
         <item name="colorControlHighlight">@color/colorPrimaryDark</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
         <item name="android:itemTextAppearance">@style/menuItemColor</item>
+    </style>
+
+    <style name="fontContent">
+
     </style>
 
     <style name="menuItemColor">
