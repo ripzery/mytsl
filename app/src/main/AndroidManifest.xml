@@ -41,7 +41,7 @@
             android:label="@string/title_activity_news_event" />
 
         <activity
-            android:name=".PlaceDetailActivity"
+            android:name=".BranchDetailActivity"
             android:label="@string/title_activity_place_detail" />
 
         <activity
