@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.DownloadListener;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.socket9.tsl.API.ApiService;
@@ -31,6 +33,8 @@ public class NewsEventActivity extends BaseActivity {
     WebView webView;
     boolean isNews;
     int id;
+    @Bind(R.id.progress)
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class NewsEventActivity extends BaseActivity {
         isNews = getIntent().getBooleanExtra("isNews", true);
         initToolbar(myToolbar, "", true);
         id = getIntent().getIntExtra("id", 0);
+        progress.setVisibility(View.VISIBLE);
         if (isNews)
             getNews(id);
         else
@@ -77,6 +82,13 @@ public class NewsEventActivity extends BaseActivity {
     public void setInfo(NewsEventEntity entity) {
 //        boolean isBlue = entity.getType().equalsIgnoreCase("service");
         webView.loadUrl(entity.getContentEn());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                progress.setVisibility(View.GONE);
+            }
+
+        });
 
 //        Glide.with(this).load(entity.getPic()).centerCrop().into(ivPhoto);
 //        tvTag.setText("Auto " + entity.getType());
