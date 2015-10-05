@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.socket9.tsl.ModelEntities.EventEntity;
+import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import com.socket9.tsl.R;
 
 import java.util.List;
@@ -18,10 +18,10 @@ import java.util.List;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder>{
 
-    private List<EventEntity> eventList;
+    private List<NewsEventEntity> eventList;
 
-    public EventAdapter(List<EventEntity> eventEntityList) {
-        eventList = eventEntityList;
+    public EventAdapter(List<NewsEventEntity> NewsEventEntityList) {
+        eventList = NewsEventEntityList;
     }
 
     @Override

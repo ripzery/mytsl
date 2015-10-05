@@ -2,6 +2,7 @@ package com.socket9.tsl.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,9 @@ import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Adapters.NewsAdapter;
 import com.socket9.tsl.MainActivity;
-import com.socket9.tsl.Models.ListNews;
+import com.socket9.tsl.ModelEntities.NewsEventEntity;
+import com.socket9.tsl.Models.ListNewsEvent;
+import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.Singleton;
 
@@ -31,6 +34,7 @@ public class NewsFragment extends Fragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    private NewsAdapter.OnCardClickListener listener;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -47,14 +51,29 @@ public class NewsFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         getNews();
+        initOnCardClickListener();
         return rootView;
     }
 
-    public void getNews(){
-        ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNews>() {
+    public void initOnCardClickListener(){
+        listener = new NewsAdapter.OnCardClickListener() {
             @Override
-            public void good(ListNews m, Response response) {
+            public void onCardClick(NewsEventEntity viewHolder) {
+//                Timber.d(viewHolder.getId()+"");
+                Intent intent = new Intent(getActivity(), NewsEventActivity.class);
+                intent.putExtra("id", viewHolder.getId());
+                intent.putExtra("isNews", true);
+                startActivity(intent);
+            }
+        };
+    }
+
+    public void getNews(){
+        ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
+            @Override
+            public void good(ListNewsEvent m, Response response) {
                 NewsAdapter newsAdapter = new NewsAdapter(m.getData());
+                newsAdapter.setOnCardClickListener(listener);
                 recyclerView.setAdapter(newsAdapter);
             }
 

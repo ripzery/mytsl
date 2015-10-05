@@ -3,14 +3,13 @@ package com.socket9.tsl.ModelEntities;
 /**
  * Created by visit on 10/4/15 AD.
  */
-public class EventEntity {
-
+public class NewsEventEntity {
     /**
-     * id : 77
-     * titleTh : เทส อีเว้นท์
-     * titleEn : Test Event
+     * id : 5
+     * titleTh : เตรียมเปิดตัวบิ๊กไบค์ใหม่
+     * titleEn : launches new Big Bike
      * pic : pic path
-     * type : Event
+     * type : Corporation
      * date : 11-03-2015
      */
     private int id;
@@ -19,6 +18,8 @@ public class EventEntity {
     private String pic;
     private String type;
     private String date;
+    private String contentEn;
+    private String contentTh;
 
     public void setId(int id) {
         this.id = id;
@@ -66,5 +67,21 @@ public class EventEntity {
 
     public String getDate() {
         return date;
+    }
+
+    public String getContentEn() {
+        return contentEn;
+    }
+
+    public void setContentEn(String contentEn) {
+        this.contentEn = contentEn;
+    }
+
+    public String getContentTh() {
+        return contentTh;
+    }
+
+    public void setContentTh(String contentTh) {
+        this.contentTh = contentTh;
     }
 }

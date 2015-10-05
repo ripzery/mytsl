@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.socket9.tsl.Models.BaseModel;
 import com.socket9.tsl.Models.Contact;
+import com.socket9.tsl.Models.NewsEvent;
 import com.socket9.tsl.Models.ListContacts;
-import com.socket9.tsl.Models.ListEvents;
-import com.socket9.tsl.Models.News;
-import com.socket9.tsl.Models.ListNews;
+import com.socket9.tsl.Models.ListNewsEvent;
+import com.socket9.tsl.Models.ListNewsEvent;
 import com.socket9.tsl.Models.Photo;
 import com.socket9.tsl.Models.Profile;
 import com.socket9.tsl.Models.User;
@@ -58,19 +58,19 @@ public class ApiService {
 
         @FormUrlEncoded
         @POST("/getListNews")
-        void getListNews(@Field("token") String token, MyCallback<ListNews> cb);
+        void getListNews(@Field("token") String token, MyCallback<ListNewsEvent> cb);
 
         @FormUrlEncoded
         @POST("/getNew")
-        void getNew(@Field("token") String token, int newId, MyCallback<News> cb);
+        void getNew(@Field("token") String token,@Field("newid") int newId, MyCallback<NewsEvent> cb);
 
         @FormUrlEncoded
         @POST("/getListEvents")
-        void getListEvents(@Field("token") String token, MyCallback<ListEvents> cb);
+        void getListEvents(@Field("token") String token, MyCallback<ListNewsEvent> cb);
 
         @FormUrlEncoded
         @POST("/getEvent")
-        void getEvent(@Field("token") String token, @Field("eventid") int id, MyCallback<ListEvents> cb);
+        void getEvent(@Field("token") String token, @Field("eventid") int id, MyCallback<NewsEvent> cb);
 
         @FormUrlEncoded
         @POST("/getListContacts")
