@@ -62,14 +62,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         TextView tvTag;
         TextView tvTitle;
         ImageView ivPhoto;
-        CardView cardView;
 
         public NewsViewHolder(View itemView) {
             super(itemView);
             this.tvTag = (TextView) itemView.findViewById(R.id.tvTag);
             this.tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             this.ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
-            this.cardView = (CardView) itemView.findViewById(R.id.cardNews);
         }
     }
 

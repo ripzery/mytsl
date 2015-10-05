@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.socket9.tsl.Fragments.ContactFragment;
 import com.socket9.tsl.Fragments.EmergencyFragment;
+import com.socket9.tsl.Fragments.EventFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.MyProfileFragment;
 import com.socket9.tsl.Fragments.NewsFragment;
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     public static final int FRAGMENT_DISPLAY_CONTACT = 3;
     public static final int FRAGMENT_DISPLAY_EMERGENCY = 4;
     public static final int FRAGMENT_DISPLAY_PROFILE = 5;
+    public static final int FRAGMENT_DISPLAY_EVENT = 6;
     @Bind(R.id.my_toolbar)
     Toolbar myToolbar;
     @Bind(R.id.fragment_container)
@@ -57,6 +59,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     private Fragment contactFragment;
     private Fragment emergencyFragment;
     private Fragment profileFragment;
+    private Fragment eventFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     private void initFragment() {
         homeFragment = new HomeFragment();
         newsFragment = new NewsFragment();
+        eventFragment = new EventFragment();
         contactFragment = new ContactFragment();
         emergencyFragment = new EmergencyFragment();
         profileFragment = new MyProfileFragment();
@@ -142,6 +146,9 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
             case FRAGMENT_DISPLAY_PROFILE:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
                 break;
+            case FRAGMENT_DISPLAY_EVENT:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, eventFragment).commit();
+                break;
         }
     }
 
@@ -190,12 +197,20 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnLeft :
+                if(!newsFragment.isVisible()){
+                    replaceFragment(FRAGMENT_DISPLAY_NEWS);
+                }
+
                 btnLeft.setTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary));
                 btnLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_left));
                 btnRight.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
                 btnRight.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_right_white));
                 break;
             case R.id.btnRight :
+                if(!eventFragment.isVisible()){
+                    replaceFragment(FRAGMENT_DISPLAY_EVENT);
+                }
+
                 btnLeft.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
                 btnLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_left_white));
                 btnRight.setTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary));
