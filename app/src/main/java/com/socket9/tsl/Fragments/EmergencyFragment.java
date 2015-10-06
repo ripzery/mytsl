@@ -63,7 +63,6 @@ public class EmergencyFragment extends Fragment {
     }
 
     private void setListener() {
-
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,26 +70,26 @@ public class EmergencyFragment extends Fragment {
                     LatLng myPosition = myLocationMarker.getPosition();
                     mListener.onProgressStart();
                     ApiService.getTSLApi().emergencyCall(Singleton.getInstance().getToken(),
-                            myPosition.latitude + "",
-                            myPosition.longitude + "",
-                            MECHANIC,
-                            new MyCallback<BaseModel>() {
-                                @Override
-                                public void good(BaseModel m, Response response) {
-                                    try {
-                                        Singleton.toast(getContext(), m.getMessage(), Toast.LENGTH_LONG);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    mListener.onProgressComplete();
+                        myPosition.latitude + "",
+                        myPosition.longitude + "",
+                        MECHANIC,
+                        new MyCallback<BaseModel>() {
+                            @Override
+                            public void good(BaseModel m, Response response) {
+                                try {
+                                    Singleton.toast(getContext(), m.getMessage(), Toast.LENGTH_LONG);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
+                                mListener.onProgressComplete();
+                            }
 
-                                @Override
-                                public void bad(String error) {
-                                    mListener.onProgressComplete();
-                                    Singleton.toast(getActivity(), error, Toast.LENGTH_LONG);
-                                }
-                            });
+                            @Override
+                            public void bad(String error) {
+                                mListener.onProgressComplete();
+                                Singleton.toast(getActivity(), error, Toast.LENGTH_LONG);
+                            }
+                        });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -129,6 +128,7 @@ public class EmergencyFragment extends Fragment {
         super.onPause();
         mapHelper.getmMapView().onPause();
         mapHelper.removeOnMyLocationChangeListener();
+        isZoom = false;
     }
 
     @Override
