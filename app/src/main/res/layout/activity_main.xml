@@ -5,32 +5,53 @@
     android:layout_height="match_parent">
 
     <!-- Content -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/parent_layout"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/my_toolbar"
-            layout="@layout/layout_app_bar" />
-
-        <FrameLayout
+        <RelativeLayout
+            android:id="@+id/parent_layout"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@id/my_toolbar"
-            android:id="@+id/fragment_container">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </FrameLayout>
+            <include
+                android:id="@+id/my_toolbar"
+                layout="@layout/layout_app_bar" />
 
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@id/my_toolbar">
 
-    </RelativeLayout>
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </FrameLayout>
+
 
     <!-- Navigation drawer -->
     <android.support.design.widget.NavigationView
         android:id="@+id/navView"
-        android:layout_height="match_parent"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_view" />

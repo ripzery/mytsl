@@ -56,6 +56,8 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     Button btnLeft;
     @Bind(R.id.btnRight)
     Button btnRight;
+    @Bind(R.id.layoutProgress)
+    LinearLayout layoutProgress;
     private Fragment homeFragment;
     private Fragment newsFragment;
     private Fragment contactFragment;
@@ -77,7 +79,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
         navView.setCheckedItem(R.id.nav_home);
     }
 
-    public void setListener(){
+    public void setListener() {
         btnLeft.setOnClickListener(this);
         btnRight.setOnClickListener(this);
     }
@@ -198,10 +200,20 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     }
 
     @Override
+    public void onGetProfileComplete() {
+        layoutProgress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onGetProfileBegin() {
+        layoutProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnLeft :
-                if(!newsFragment.isVisible()){
+        switch (view.getId()) {
+            case R.id.btnLeft:
+                if (!newsFragment.isVisible()) {
                     replaceFragment(FRAGMENT_DISPLAY_NEWS);
                 }
 
@@ -210,8 +222,8 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
                 btnRight.setTextColor(ContextCompat.getColor(this, R.color.colorTextSecondary));
                 btnRight.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_right_white));
                 break;
-            case R.id.btnRight :
-                if(!eventFragment.isVisible()){
+            case R.id.btnRight:
+                if (!eventFragment.isVisible()) {
                     replaceFragment(FRAGMENT_DISPLAY_EVENT);
                 }
 

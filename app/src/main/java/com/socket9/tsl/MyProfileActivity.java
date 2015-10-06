@@ -242,6 +242,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 //            ivUser.setImageBitmap(imageBitmap);
             String encodedBitmap = "data:image/png;base64," + encode(compress(imageBitmap, 70));
             uploadPhoto(encodedBitmap);
+            save.setVisible(true);
         }
     }
 
