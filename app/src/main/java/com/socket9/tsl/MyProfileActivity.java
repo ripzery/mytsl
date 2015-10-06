@@ -165,14 +165,14 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             public void good(Profile m, Response response) {
                 try {
                     tvName.setText(m.getData().getNameEn());
-                    tvAddress.setText(m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
-                    tvEmail.setText(m.getData().getEmail() == null ? "Blank" : m.getData().getEmail());
-                    tvPhone.setText(m.getData().getPhone().equals("") ? "Blank" : m.getData().getPhone());
+                    tvAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
+                    tvEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "Blank" : m.getData().getEmail());
+                    tvPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "Blank" : m.getData().getPhone());
 
                     etName.setText(m.getData().getNameEn());
-                    etAddress.setText(m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
-                    etEmail.setText(m.getData().getEmail().equals("") ? "Blank" : m.getData().getEmail());
-                    etPhone.setText(m.getData().getPhone().equals("") ? "" : m.getData().getPhone());
+                    etAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
+                    etEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "Blank" : m.getData().getEmail());
+                    etPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "" : m.getData().getPhone());
 
                     if (m.getData().getPic() != null)
                         Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(ivUser);
