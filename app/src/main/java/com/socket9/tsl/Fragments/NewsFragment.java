@@ -72,9 +72,13 @@ public class NewsFragment extends Fragment {
         ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
             @Override
             public void good(ListNewsEvent m, Response response) {
-                NewsAdapter newsAdapter = new NewsAdapter(m.getData());
-                newsAdapter.setOnCardClickListener(listener);
-                recyclerView.setAdapter(newsAdapter);
+                try{
+                    NewsAdapter newsAdapter = new NewsAdapter(m.getData());
+                    newsAdapter.setOnCardClickListener(listener);
+                    recyclerView.setAdapter(newsAdapter);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override

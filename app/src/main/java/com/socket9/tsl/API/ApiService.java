@@ -45,7 +45,7 @@ public class ApiService {
         void login(@Field("email") String email, @Field("password") String password, MyCallback<User> cb);
 
         @FormUrlEncoded
-        @POST("/checklogin")
+        @POST("/checkLogin")
         void loginWithFb(@Field("facebookid") String facebookId, MyCallback<User> cb);
 
         @FormUrlEncoded

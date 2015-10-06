@@ -68,9 +68,14 @@ public class EventFragment extends Fragment {
         ApiService.getTSLApi().getListEvents(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
             @Override
             public void good(ListNewsEvent m, Response response) {
-                EventAdapter eventAdapter = new EventAdapter(m.getData());
-                eventAdapter.setOnCardClickListener(listener);
-                recyclerView.setAdapter(eventAdapter);
+                try {
+                    EventAdapter eventAdapter = new EventAdapter(m.getData());
+                    eventAdapter.setOnCardClickListener(listener);
+                    recyclerView.setAdapter(eventAdapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
