@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.socket9.tsl.Fragments.ContactFragment;
 import com.socket9.tsl.Fragments.EmergencyFragment;
 import com.socket9.tsl.Fragments.EventFragment;
@@ -64,6 +66,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initToolbar(myToolbar, "Main", false);
@@ -118,6 +121,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
                         break;
                     case R.id.nav_sign_out:
                         // Show dialog
+                        LoginManager.getInstance().logOut();
                         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finish();

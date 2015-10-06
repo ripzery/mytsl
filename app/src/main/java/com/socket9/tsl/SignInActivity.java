@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +54,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     Button btnFbLoginFake;
     @Bind(R.id.btnFbLoginReal)
     LoginButton btnFbLoginReal;
+    @Bind(R.id.progress)
+    ProgressBar progress;
+    @Bind(R.id.layoutProgress)
+    LinearLayout layoutProgress;
     private CallbackManager callbackManager;
 
     @Override
@@ -111,12 +117,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String hometown = "";
-                            try{
+                            try {
                                 hometown = object.getJSONObject("hometown").getString("name");
-                            }catch (Exception e){
+                            } catch (Exception e) {
 
                             }
-                            loginWithFb(facebookId, name, email, hometown);
+                            registerWithFb(facebookId, name, email, hometown);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -129,34 +135,44 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    public void loginWithFb(final String fbId, String name, String email, String address) {
+    public void registerWithFb(final String fbId, String name, String email, String address) {
         Timber.i(fbId);
         Timber.i(name);
         Timber.i(email);
         Timber.i(address);
+        layoutProgress.setVisibility(View.VISIBLE);
         ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId, new MyCallback<User>() {
             @Override
             public void good(User m, Response response) {
-                ApiService.getTSLApi().loginWithFb(fbId, new MyCallback<User>() {
-                    @Override
-                    public void good(User m, Response response) {
-                        Timber.d(m.getData().getToken());
-                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                        finish();
-                    }
-
-                    @Override
-                    public void bad(String error) {
-                        Timber.i(error);
-                        Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
-                    }
-                });
+                loginWithFacebook(fbId);
             }
 
             @Override
             public void bad(String error) {
                 Timber.i(error);
+                if (error.contains("already used")) {
+                    loginWithFacebook(fbId);
+                }
+            }
+        });
+    }
+
+    public void loginWithFacebook(String fbId) {
+        ApiService.getTSLApi().loginWithFb(fbId, new MyCallback<User>() {
+            @Override
+            public void good(User m, Response response) {
+                Timber.d(m.getData().getToken());
+                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                finish();
+                layoutProgress.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void bad(String error) {
+                Timber.i(error);
+                Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
+                layoutProgress.setVisibility(View.GONE);
             }
         });
     }
