@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +39,9 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, rootView);
+//        if(Singleton.getAccessToken() != null){
+//
+//        }
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

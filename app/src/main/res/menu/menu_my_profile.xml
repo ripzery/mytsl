@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.socket9.tsl.MyProfileActivity">
     <item
-        android:id="@+id/action_done"
-        android:title="Done"
+        android:id="@+id/action_save"
+        android:title="Save"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

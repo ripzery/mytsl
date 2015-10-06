@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,13 +26,14 @@ import com.socket9.tsl.Models.Profile;
 import com.socket9.tsl.Utils.Singleton;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.client.Response;
 import timber.log.Timber;
 
-public class MyProfileActivity extends BaseActivity {
+public class MyProfileActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
@@ -51,8 +54,23 @@ public class MyProfileActivity extends BaseActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     @Bind(R.id.progress)
     ProgressBar progress;
+    @Bind(R.id.tvName)
+    TextView tvName;
+    @Bind(R.id.tvPhone)
+    TextView tvPhone;
+    @Bind(R.id.tvEmail)
+    TextView tvEmail;
+    @Bind(R.id.tvPassword)
+    TextView tvPassword;
+    @Bind(R.id.tvAddress)
+    TextView tvAddress;
     private Photo photo;
     private Profile profile;
+    private ArrayList<EditText> editTextArrayList = new ArrayList<>();
+    private ArrayList<TextView> textViewArrayList = new ArrayList<>();
+    private TextWatcher textWatcher;
+    private Menu profileMenu;
+    private MenuItem save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +80,18 @@ public class MyProfileActivity extends BaseActivity {
         setListener();
         getProfile();
         initToolbar(myToolbar, "My Profile", true);
+
+        editTextArrayList.add(etName);
+        editTextArrayList.add(etAddress);
+        editTextArrayList.add(etEmail);
+        editTextArrayList.add(etPhone);
+        editTextArrayList.add(etPassword);
+
+        textViewArrayList.add(tvName);
+        textViewArrayList.add(tvAddress);
+        textViewArrayList.add(tvEmail);
+        textViewArrayList.add(tvPhone);
+        textViewArrayList.add(tvPassword);
     }
 
     public void setListener() {
@@ -76,15 +106,18 @@ public class MyProfileActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        profileMenu = menu;
         getMenuInflater().inflate(R.menu.menu_my_profile, menu);
+        save = menu.findItem(R.id.action_save);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_done:
+            case R.id.action_save:
                 updateProfile();
+
                 return true;
             default:
                 finish();
@@ -108,6 +141,7 @@ public class MyProfileActivity extends BaseActivity {
                         Timber.i(m.getMessage());
 //                        Toast.makeText(MyProfileActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
                         Singleton.toast(MyProfileActivity.this, m.getMessage(), Toast.LENGTH_LONG);
+                        finish();
                     }
 
                     @Override
@@ -117,18 +151,37 @@ public class MyProfileActivity extends BaseActivity {
                 });
     }
 
+    private void hideEditText(EditText et) {
+        for (int i = 0; i < editTextArrayList.size(); i++) {
+            editTextArrayList.get(i).setVisibility(editTextArrayList.get(i).equals(et) ? View.VISIBLE : View.GONE);
+            textViewArrayList.get(i).setVisibility(editTextArrayList.get(i).equals(et) ? View.GONE : View.VISIBLE);
+        }
+    }
+
     private void getProfile() {
         ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
             @Override
             public void good(Profile m, Response response) {
-                etName.setText(m.getData().getNameEn());
-                etAddress.setText(m.getData().getAddress());
-                etEmail.setText(m.getData().getEmail());
-                etPhone.setText(m.getData().getPhone());
-                Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(ivUser);
-                etAddress.setText(m.getData().getAddress());
-                Timber.i(m.getMessage());
-                progress.setVisibility(View.GONE);
+                try{
+                    tvName.setText(m.getData().getNameEn());
+                    tvAddress.setText(m.getData().getAddress() == null ? "Blank" : m.getData().getAddress());
+                    tvEmail.setText(m.getData().getEmail() == null ? "Blank" : m.getData().getEmail());
+                    tvPhone.setText(m.getData().getPhone().equals("") ? "Blank" : m.getData().getPhone());
+
+                    etName.setText(m.getData().getNameEn());
+                    etAddress.setText(m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
+                    etEmail.setText(m.getData().getEmail().equals("") ? "Blank" : m.getData().getEmail());
+                    etPhone.setText(m.getData().getPhone().equals("") ? "" : m.getData().getPhone());
+
+                    if (m.getData().getPic() != null)
+                        Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(ivUser);
+
+                    Timber.i(m.getMessage());
+                    progress.setVisibility(View.GONE);
+                    setViewListener();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -137,6 +190,41 @@ public class MyProfileActivity extends BaseActivity {
                 progress.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void setViewListener() {
+
+        tvName.setOnClickListener(this);
+        tvPhone.setOnClickListener(this);
+        tvAddress.setOnClickListener(this);
+        tvEmail.setOnClickListener(this);
+        tvPassword.setOnClickListener(this);
+
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if( save != null && !save.isVisible()){
+                    save.setVisible(true);
+                }
+            }
+        };
+
+        etName.addTextChangedListener(textWatcher);
+        etPhone.addTextChangedListener(textWatcher);
+        etPassword.addTextChangedListener(textWatcher);
+        etAddress.addTextChangedListener(textWatcher);
+        etEmail.addTextChangedListener(textWatcher);
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -187,4 +275,53 @@ public class MyProfileActivity extends BaseActivity {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tvName:
+                tvName.setVisibility(View.GONE);
+                hideEditText(etName);
+                break;
+            case R.id.tvPhone:
+                tvPhone.setVisibility(View.GONE);
+                hideEditText(etPhone);
+                break;
+            case R.id.tvAddress:
+                tvAddress.setVisibility(View.GONE);
+                hideEditText(etAddress);
+                break;
+            case R.id.tvEmail:
+//                tvEmail.setVisibility(View.GONE);
+//                hideEditText(etEmail);
+                break;
+            case R.id.tvPassword:
+                tvPassword.setVisibility(View.GONE);
+                hideEditText(etPassword);
+                break;
+        }
+    }
+//
+//    @Override
+//    public void onFocusChange(View view, boolean hasFocus) {
+//        if(!hasFocus) {
+//            switch (view.getId()) {
+//                case R.id.etName:
+//                    etName.setVisibility(View.GONE);
+//                    tvName.setVisibility(View.VISIBLE);
+//                    break;
+//                case R.id.etEmail:
+//                    etEmail.setVisibility(View.GONE);
+//                    tvEmail.setVisibility(View.VISIBLE);
+//                    break;
+//                case R.id.etAddress:
+//                    etAddress.setVisibility(View.GONE);
+//                    tvAddress.setVisibility(View.VISIBLE);
+//                    break;
+//                case R.id.etPhone:
+//                    etPhone.setVisibility(View.GONE);
+//                    tvPhone.setVisibility(View.VISIBLE);
+//                    break;
+//            }
+//        }
+//    }
 }

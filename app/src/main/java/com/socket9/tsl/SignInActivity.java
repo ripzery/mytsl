@@ -83,7 +83,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     public void setupFacebook() {
         callbackManager = CallbackManager.Factory.create();
-        btnFbLoginReal.setReadPermissions("user_friends", "user_hometown", "email");
+        btnFbLoginReal.setReadPermissions("user_friends", "user_hometown", "email","user_about_me");
 
         // Callback registration
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -105,7 +105,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
-    public void requestGraphApi(AccessToken token) {
+    public void requestGraphApi(final AccessToken token) {
         GraphRequest request = GraphRequest.newMeRequest(
                 token,
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -122,6 +122,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             } catch (Exception e) {
 
                             }
+                            Singleton.setAccessToken(token);
                             registerWithFb(facebookId, name, email, hometown);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -129,7 +130,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,hometown");
+        parameters.putString("fields", "id,name,email,hometown,picture");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -205,6 +206,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
                     @Override
                     public void bad(String error) {
+                        Singleton.toast(getApplicationContext(), error, Toast.LENGTH_LONG);
                         Timber.i(error);
                     }
                 });

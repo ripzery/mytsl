@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+
 /**
  * Created by visit on 9/15/15 AD.
  */
@@ -14,6 +16,7 @@ public class Singleton {
     public static final String SHARED_PREF_NAME = "NavigoSharedPref";
     public static final String SHARE_PREF_KEY_TOKEN = "TOKEN";
     private static SharedPreferences sharedPreferences;
+    private static AccessToken accessToken;
 
     public static Singleton getInstance() {
         return ourInstance;
@@ -29,6 +32,14 @@ public class Singleton {
 
     public void setSharedPrefInt(String key, int value){
         sharedPreferences.edit().putInt(key, value).apply();
+    }
+
+    public static AccessToken getAccessToken() {
+        return accessToken;
+    }
+
+    public static void setAccessToken(AccessToken accessToken) {
+        Singleton.accessToken = accessToken;
     }
 
     public SharedPreferences getSharedPref(){
