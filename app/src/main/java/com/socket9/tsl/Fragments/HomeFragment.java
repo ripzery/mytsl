@@ -17,6 +17,7 @@ import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.Models.Profile;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
@@ -37,7 +38,7 @@ public class HomeFragment extends Fragment {
     TextView tvName;
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
-    private OnHomeListener mListener;
+    private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -66,7 +67,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getProfile() {
-        mListener.onGetProfileBegin();
+        mListener.onProgressStart();
         ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
             @Override
             public void good(Profile m, Response response) {
@@ -77,13 +78,13 @@ public class HomeFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mListener.onGetProfileComplete();
+                mListener.onProgressComplete();
             }
 
             @Override
             public void bad(String error) {
                 Singleton.toast(getContext(), error, Toast.LENGTH_LONG);
-                mListener.onGetProfileComplete();
+                mListener.onProgressComplete();
             }
         });
     }
@@ -100,7 +101,7 @@ public class HomeFragment extends Fragment {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_HOME);
         try {
-            mListener = (OnHomeListener) context;
+            mListener = (OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnHomeListener");
@@ -111,13 +112,5 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-
-    public interface OnHomeListener {
-        // TODO: Update argument type and name
-        void onImageClick();
-        void onGetProfileComplete();
-        void onGetProfileBegin();
     }
 }

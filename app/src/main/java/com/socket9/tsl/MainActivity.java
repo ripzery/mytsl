@@ -25,12 +25,13 @@ import com.socket9.tsl.Fragments.EventFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.MyProfileFragment;
 import com.socket9.tsl.Fragments.NewsFragment;
+import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements HomeFragment.OnHomeListener, View.OnClickListener {
+public class MainActivity extends BaseActivity implements OnFragmentInteractionListener, View.OnClickListener {
 
     public static final int FRAGMENT_DISPLAY_HOME = 1;
     public static final int FRAGMENT_DISPLAY_NEWS = 2;
@@ -200,12 +201,12 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeLis
     }
 
     @Override
-    public void onGetProfileComplete() {
+    public void onProgressComplete() {
         layoutProgress.setVisibility(View.GONE);
     }
 
     @Override
-    public void onGetProfileBegin() {
+    public void onProgressStart() {
         layoutProgress.setVisibility(View.VISIBLE);
     }
 

@@ -1,7 +1,9 @@
 package com.socket9.tsl;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,11 +29,15 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Models.BaseModel;
+import com.socket9.tsl.Models.Photo;
 import com.socket9.tsl.Models.User;
 import com.socket9.tsl.Utils.Singleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -83,7 +92,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     public void setupFacebook() {
         callbackManager = CallbackManager.Factory.create();
-        btnFbLoginReal.setReadPermissions("user_friends", "user_hometown", "email","user_about_me");
+        btnFbLoginReal.setReadPermissions("user_friends", "user_hometown", "email", "user_about_me");
 
         // Callback registration
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -117,13 +126,19 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String hometown = "";
+                            String photo = "";
                             try {
                                 hometown = object.getJSONObject("hometown").getString("name");
                             } catch (Exception e) {
-
+                                e.printStackTrace();
+                            }
+                            try{
+                                photo = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
                             Singleton.setAccessToken(token);
-                            registerWithFb(facebookId, name, email, hometown);
+                            registerWithFb(facebookId, name, email, hometown, photo);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -136,7 +151,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    public void registerWithFb(final String fbId, String name, String email, String address) {
+    public void registerWithFb(final String fbId, String name, String email, String address, final String photo) {
         Timber.i(fbId);
         Timber.i(name);
         Timber.i(email);
@@ -145,28 +160,26 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId, new MyCallback<User>() {
             @Override
             public void good(User m, Response response) {
-                loginWithFacebook(fbId);
+                loginWithFacebook(fbId, photo);
             }
 
             @Override
             public void bad(String error) {
                 Timber.i(error);
                 if (error.contains("already used")) {
-                    loginWithFacebook(fbId);
+                    loginWithFacebook(fbId, photo);
                 }
             }
         });
     }
 
-    public void loginWithFacebook(String fbId) {
+    public void loginWithFacebook(String fbId, final String photo) {
         ApiService.getTSLApi().loginWithFb(fbId, new MyCallback<User>() {
             @Override
             public void good(User m, Response response) {
                 Timber.d(m.getData().getToken());
                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                finish();
-                layoutProgress.setVisibility(View.GONE);
+                updatePicture(photo);
             }
 
             @Override
@@ -176,6 +189,53 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 layoutProgress.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void updatePicture(String photo){
+        Glide.with(this).load(photo).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                String encodedBitmap = "data:image/png;base64," + encode(compress(resource, 100));
+                ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
+                    @Override
+                    public void good(Photo m, Response response) {
+                        ApiService.getTSLApi().updatePicture(Singleton.getInstance().getToken(),
+                            m.getData().getPathSave(), new MyCallback<BaseModel>() {
+                                @Override
+                                public void good(BaseModel m, Response response) {
+                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                    finish();
+                                    layoutProgress.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void bad(String error) {
+                                    Timber.i(error);
+                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                    finish();
+                                    layoutProgress.setVisibility(View.GONE);
+                                }
+                            });
+                    }
+
+                    @Override
+                    public void bad(String error) {
+                        Timber.i(error);        
+                    }
+                });
+            }
+        });
+
+    }
+
+    public byte[] compress(Bitmap bitmap, int percent) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, percent, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    public String encode(byte[] byteArray) {
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     @Override

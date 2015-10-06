@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +52,6 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     @Bind(R.id.etAddress)
     EditText etAddress;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    @Bind(R.id.progress)
-    ProgressBar progress;
     @Bind(R.id.tvName)
     TextView tvName;
     @Bind(R.id.tvPhone)
@@ -64,6 +62,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     TextView tvPassword;
     @Bind(R.id.tvAddress)
     TextView tvAddress;
+    @Bind(R.id.layoutProgress)
+    LinearLayout layoutProgress;
     private Photo photo;
     private Profile profile;
     private ArrayList<EditText> editTextArrayList = new ArrayList<>();
@@ -159,12 +159,13 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getProfile() {
+        layoutProgress.setVisibility(View.VISIBLE);
         ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
             @Override
             public void good(Profile m, Response response) {
-                try{
+                try {
                     tvName.setText(m.getData().getNameEn());
-                    tvAddress.setText(m.getData().getAddress() == null ? "Blank" : m.getData().getAddress());
+                    tvAddress.setText(m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
                     tvEmail.setText(m.getData().getEmail() == null ? "Blank" : m.getData().getEmail());
                     tvPhone.setText(m.getData().getPhone().equals("") ? "Blank" : m.getData().getPhone());
 
@@ -177,9 +178,9 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                         Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(ivUser);
 
                     Timber.i(m.getMessage());
-                    progress.setVisibility(View.GONE);
+                    layoutProgress.setVisibility(View.GONE);
                     setViewListener();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -187,7 +188,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void bad(String error) {
                 Timber.d(error);
-                progress.setVisibility(View.GONE);
+                layoutProgress.setVisibility(View.GONE);
             }
         });
     }
@@ -213,7 +214,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if( save != null && !save.isVisible()){
+                if (save != null && !save.isVisible()) {
                     save.setVisible(true);
                 }
             }
@@ -247,20 +248,20 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void uploadPhoto(String encodedBitmap) {
-        progress.setVisibility(View.VISIBLE);
+        layoutProgress.setVisibility(View.VISIBLE);
 
         ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
             @Override
             public void good(Photo m, Response response) {
                 Timber.i(m.getData().getPathUse());
                 photo = m;
-                progress.setVisibility(View.GONE);
+                layoutProgress.setVisibility(View.GONE);
                 Glide.with(MyProfileActivity.this).load(m.getData().getPathUse()).into(ivUser);
             }
 
             @Override
             public void bad(String error) {
-                progress.setVisibility(View.GONE);
+                layoutProgress.setVisibility(View.GONE);
                 Timber.d(error);
             }
         });

@@ -17,6 +17,7 @@ import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.ContactEntity;
 import com.socket9.tsl.Models.ListContacts;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
@@ -33,6 +34,7 @@ public class ContactFragment extends Fragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     private ContactAdapter.OnContactClickListener listener;
+    private OnFragmentInteractionListener mListener;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -64,17 +66,20 @@ public class ContactFragment extends Fragment {
     }
 
     public void getContacts(){
+        mListener.onProgressStart();
         ApiService.getTSLApi().getListContacts(Singleton.getInstance().getToken(), new MyCallback<ListContacts>() {
             @Override
             public void good(ListContacts m, Response response) {
                 ContactAdapter contactAdapter = new ContactAdapter(m.getData());
                 contactAdapter.setContactListener(listener);
                 recyclerView.setAdapter(contactAdapter);
+                mListener.onProgressComplete();
             }
 
             @Override
             public void bad(String error) {
                 Timber.i(error);
+                mListener.onProgressComplete();
             }
         });
     }
@@ -83,6 +88,18 @@ public class ContactFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_CONTACT);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHomeListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override

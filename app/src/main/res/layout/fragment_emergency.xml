@@ -20,7 +20,7 @@
             android:layout_height="0dp"
             android:baselineAligned="false"
             android:layout_weight="1"
-            android:background="#aa000000"
+            android:background="#bbffffff"
             android:alpha="0.7"
             android:orientation="horizontal">
 
@@ -60,13 +60,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="0dp"
-            android:background="@color/colorTextSecondary"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorTextPrimary"
             android:textAllCaps="true"
             android:layout_weight="1"
             android:text="Request"/>
 
     </LinearLayout>
-
-
 
 </FrameLayout>

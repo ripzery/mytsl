@@ -19,6 +19,7 @@ import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import com.socket9.tsl.Models.ListNewsEvent;
 import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
@@ -35,6 +36,7 @@ public class NewsFragment extends Fragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     private NewsAdapter.OnCardClickListener listener;
+    private OnFragmentInteractionListener mListener;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class NewsFragment extends Fragment {
     }
 
     public void getNews(){
+        mListener.onProgressStart();
         ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
             @Override
             public void good(ListNewsEvent m, Response response) {
@@ -79,11 +82,13 @@ public class NewsFragment extends Fragment {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                mListener.onProgressComplete();
             }
 
             @Override
             public void bad(String error) {
                 Timber.i(error);
+                mListener.onProgressComplete();
             }
         });
     }
@@ -93,6 +98,19 @@ public class NewsFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_NEWS);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHomeListener");
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
 

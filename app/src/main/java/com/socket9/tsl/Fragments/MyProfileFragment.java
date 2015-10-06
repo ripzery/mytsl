@@ -10,12 +10,15 @@ import android.view.ViewGroup;
 
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MyProfileFragment extends Fragment {
 
+
+    private OnFragmentInteractionListener mListener;
 
     public MyProfileFragment() {
         // Required empty public constructor
@@ -34,6 +37,18 @@ public class MyProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_PROFILE);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHomeListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
 }

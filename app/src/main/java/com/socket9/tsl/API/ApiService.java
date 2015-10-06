@@ -108,6 +108,11 @@ public class ApiService {
                            @Field("phone") String phone,
                            @Field("address") String address,
                            @Field("picture") String picture, MyCallback<BaseModel> cb);
+
+        @FormUrlEncoded
+        @POST("/updateProfile")
+        void updatePicture(@Field("token") String token,
+                           @Field("picture") String picture, MyCallback<BaseModel> cb);
     }
 
 }

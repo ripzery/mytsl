@@ -107,6 +107,7 @@
         android:layout_marginTop="16dp"
         android:layout_height="60dp"
         android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorTextPrimary"
         android:layout_gravity="bottom"
         android:text="@string/create.account.btn.register"/>
 

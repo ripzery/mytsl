@@ -1,6 +1,7 @@
 package com.socket9.tsl.Fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +14,12 @@ import android.view.ViewGroup;
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Adapters.EventAdapter;
+import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import com.socket9.tsl.Models.ListNewsEvent;
 import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
@@ -30,6 +33,7 @@ public class EventFragment extends Fragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     private EventAdapter.OnCardClickListener listener;
+    private OnFragmentInteractionListener mListener;
 
     public EventFragment() {
         // Required empty public constructor
@@ -65,6 +69,7 @@ public class EventFragment extends Fragment {
     }
 
     public void getEvents() {
+        mListener.onProgressStart();
         ApiService.getTSLApi().getListEvents(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
             @Override
             public void good(ListNewsEvent m, Response response) {
@@ -75,14 +80,32 @@ public class EventFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                mListener.onProgressComplete();
             }
 
             @Override
             public void bad(String error) {
                 Timber.i(error);
+                mListener.onProgressComplete();
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHomeListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override

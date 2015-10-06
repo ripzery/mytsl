@@ -43,15 +43,15 @@
                         style="@style/editTextContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:text="@string/profile.name.content" />
+                        android:text="@string/profile.name.content"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvName"
+                        style="@style/fontContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="26sp"
-                        style="@style/fontContent"/>
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
@@ -73,15 +73,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
-                        android:visibility="gone"
-                        android:text="@string/profile.phone.content" />
+                        android:text="@string/profile.phone.content"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvPhone"
+                        style="@style/fontContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="26sp"
-                        style="@style/fontContent"/>
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
@@ -104,14 +104,14 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:text="@string/profile.email.content"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvEmail"
                         fontPath="fonts/cmprasanmit/CmPrasanmitItalic.ttf"
                         android:layout_width="wrap_content"
-                        android:textSize="26sp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
@@ -130,20 +130,20 @@
                     <EditText
                         android:id="@+id/etPassword"
                         style="@style/editTextContent"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/create.account.et.password"
                         android:inputType="textPassword"
-                        android:text="@string/profile.password.content" />
+                        android:text="@string/profile.password.content"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvPassword"
                         style="@style/fontContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="26sp"
-                        android:text="********" />
+                        android:text="********"
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
@@ -161,17 +161,17 @@
 
                     <EditText
                         android:id="@+id/etAddress"
-                        android:visibility="gone"
                         style="@style/editTextContent"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvAddress"
                         style="@style/fontContent"
                         android:layout_width="wrap_content"
-                        android:textSize="26sp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
@@ -180,12 +180,23 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="64dp" />
+        <LinearLayout
+            android:id="@+id/layoutProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#aa000000"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="64dp" />
+
+        </LinearLayout>
+
 
     </FrameLayout>
 

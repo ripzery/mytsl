@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -77,7 +78,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                             public void good(User m, Response response) {
                                 Timber.d("Token : " + m.getData().getToken());
                                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                                startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
+                                Singleton.toast(getApplicationContext(), "Create account successful. Please activate account in your email.", Toast.LENGTH_LONG);
                                 finish();
                             }
 
