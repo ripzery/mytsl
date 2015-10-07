@@ -130,7 +130,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                         }
                     }).show();
                 }else
-                    finish();
+                    finish(); // finish if data isn't change
         }
         return false;
     }
