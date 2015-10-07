@@ -137,6 +137,7 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                             }
 
                         }).show();
+                        menuItem.setChecked(false);
                         break;
                 }
                 drawerLayout.closeDrawers();
