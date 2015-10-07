@@ -2,6 +2,7 @@ package com.socket9.tsl.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.Models.Profile;
 import com.socket9.tsl.R;
+import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
@@ -82,9 +84,15 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 Singleton.toast(getContext(), error, Toast.LENGTH_LONG);
                 mListener.onProgressComplete();
+                if(isTokenExpired){
+                    Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(getActivity(), SignInActivity.class));
+                    getActivity().finish();
+                }
             }
         });
     }

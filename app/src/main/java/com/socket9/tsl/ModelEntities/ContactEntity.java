@@ -26,6 +26,7 @@ public class ContactEntity {
     private int icon;
 
     public ContactEntity(int id, String titleEn, String subTitle, int icon) {
+        this.id = id;
         this.titleEn = titleEn;
         this.subTitle = subTitle;
         this.icon = icon;

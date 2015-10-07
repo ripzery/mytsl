@@ -145,8 +145,14 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void bad(String error) {
+                    public void bad(String error,boolean isTokenExpired) {
                         Timber.d(error);
+                        if(isTokenExpired){
+                            Singleton.toast(MyProfileActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                            Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                            startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
+                            finish();
+                        }
                     }
                 });
     }
@@ -186,9 +192,15 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 Timber.d(error);
                 layoutProgress.setVisibility(View.GONE);
+                if(isTokenExpired){
+                    Singleton.toast(MyProfileActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
+                    finish();
+                }
             }
         });
     }
@@ -260,9 +272,15 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 layoutProgress.setVisibility(View.GONE);
                 Timber.d(error);
+                if(isTokenExpired){
+                    Singleton.toast(MyProfileActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
+                    finish();
+                }
             }
         });
     }

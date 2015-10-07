@@ -83,7 +83,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                             }
 
                             @Override
-                            public void bad(String error) {
+                            public void bad(String error, boolean isTokenExpired) {
                                 Timber.i(error);
                             }
                         }

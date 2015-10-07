@@ -164,7 +164,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 Timber.i(error);
                 if (error.contains("already used")) {
                     loginWithFacebook(fbId, photo);
@@ -183,7 +183,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 Timber.i(error);
                 Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
                 layoutProgress.setVisibility(View.GONE);
@@ -209,7 +209,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                                 }
 
                                 @Override
-                                public void bad(String error) {
+                                public void bad(String error,boolean isTokenExpired) {
                                     Timber.i(error);
                                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                     finish();
@@ -219,7 +219,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     @Override
-                    public void bad(String error) {
+                    public void bad(String error,boolean isTokenExpired) {
                         Timber.i(error);        
                     }
                 });
@@ -265,9 +265,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     @Override
-                    public void bad(String error) {
+                    public void bad(String error,boolean isTokenExpired) {
                         Singleton.toast(getApplicationContext(), error, Toast.LENGTH_LONG);
                         Timber.i(error);
+                        if(isTokenExpired){
+                            Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                            startActivity(new Intent(SignInActivity.this, SignInActivity.class));
+                        }
                     }
                 });
 

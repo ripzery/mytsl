@@ -140,7 +140,11 @@ public class MapHelper {
 
     public void removeOnMyLocationChangeListener() {
         mapListener = null;
-        mMap.setOnMyLocationChangeListener(null);
+        try{
+            mMap.setOnMyLocationChangeListener(null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public Marker addMarkerThenZoom(LatLng latlng, int zoomLevel) {

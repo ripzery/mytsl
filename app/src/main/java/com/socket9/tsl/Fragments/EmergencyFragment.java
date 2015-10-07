@@ -2,6 +2,7 @@ package com.socket9.tsl.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.Models.BaseModel;
 import com.socket9.tsl.R;
+import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.MapHelper;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
@@ -85,9 +87,15 @@ public class EmergencyFragment extends Fragment {
                                 }
 
                                 @Override
-                                public void bad(String error) {
+                                public void bad(String error,boolean isTokenExpired) {
                                     mListener.onProgressComplete();
                                     Singleton.toast(getActivity(), error, Toast.LENGTH_LONG);
+                                    if(isTokenExpired){
+                                        Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                                        startActivity(new Intent(getActivity(), SignInActivity.class));
+                                        getActivity().finish();
+                                    }
                                 }
                             });
                 } catch (Exception e) {
@@ -98,33 +106,41 @@ public class EmergencyFragment extends Fragment {
     }
 
     private void initMap(Bundle savedInstanceState) {
-        mapHelper = new MapHelper();
-        mapHelper.initMap(getContext(), mapView, savedInstanceState);
-        mapHelper.getMap().setMyLocationEnabled(true);
-        mapListener = new MapHelper.MapListener() {
-            @Override
-            public void onMyLocationChanged(Location location) {
-            try {
-                Timber.i("%s", location.toString());
-                if (!isZoom) {
-                    mapHelper.moveTo(location.getLatitude(), location.getLongitude(), 17);
-                    myLocationMarker = mapHelper.addMarker(location.getLatitude(), location.getLongitude(), 0);
-                    isZoom = true;
-                } else {
-                    myLocationMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+        try {
+            mapHelper = new MapHelper();
+            mapHelper.initMap(getContext(), mapView, savedInstanceState);
+            mapHelper.getMap().setMyLocationEnabled(true);
+            mapListener = new MapHelper.MapListener() {
+                @Override
+                public void onMyLocationChanged(Location location) {
+
+                    Timber.i("%s", location.toString());
+                    if (!isZoom) {
+                        mapHelper.moveTo(location.getLatitude(), location.getLongitude(), 17);
+                        myLocationMarker = mapHelper.addMarker(location.getLatitude(), location.getLongitude(), 0);
+                        isZoom = true;
+                    } else {
+                        myLocationMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                    }
+
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            }
-        };
+            };
+        } catch (Exception e) {
+            Singleton.toast(getActivity(), "Please update Google Play Services", Toast.LENGTH_LONG);
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mapHelper.getmMapView().onResume();
-        mapHelper.setOnMyLocationChangeListener(mapListener);
+        try{
+            mapHelper.setOnMyLocationChangeListener(mapListener);
+        }catch (Exception e){
+            Singleton.toast(getActivity(), "Please update Google Play Services", Toast.LENGTH_LONG);
+            e.printStackTrace();
+        }
     }
 
     @Override

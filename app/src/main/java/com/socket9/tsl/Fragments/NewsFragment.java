@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -19,6 +20,7 @@ import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import com.socket9.tsl.Models.ListNewsEvent;
 import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
@@ -86,9 +88,15 @@ public class NewsFragment extends Fragment {
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error, boolean isTokenExpired) {
                 Timber.i(error);
                 mListener.onProgressComplete();
+                if(isTokenExpired){
+                    Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(getActivity(), SignInActivity.class));
+                    getActivity().finish();
+                }
             }
         });
     }

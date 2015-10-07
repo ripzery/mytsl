@@ -1,5 +1,6 @@
 package com.socket9.tsl;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -57,8 +59,14 @@ public class NewsEventActivity extends BaseActivity {
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 Timber.d(error);
+                if(isTokenExpired){
+                    Singleton.toast(NewsEventActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
+                    finish();
+                }
             }
         });
     }
@@ -71,8 +79,14 @@ public class NewsEventActivity extends BaseActivity {
             }
 
             @Override
-            public void bad(String error) {
+            public void bad(String error,boolean isTokenExpired) {
                 Timber.d(error);
+                if(isTokenExpired){
+                    Singleton.toast(NewsEventActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
+                    finish();
+                }
             }
         });
     }

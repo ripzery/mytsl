@@ -1,6 +1,9 @@
 package com.socket9.tsl.API;
 
+import android.widget.Toast;
+
 import com.socket9.tsl.Models.BaseModel;
+import com.socket9.tsl.Utils.Singleton;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -15,16 +18,16 @@ public abstract class MyCallback <T extends BaseModel> implements Callback<T>{
         if(m.isResult()){
             good(m, response);
         }else{
-            bad(m.getMessage());
+            bad(m.getMessage(), m.getMessage().contains("token") && m.getMessage().contains("invalid"));
         }
     }
 
     public abstract void good(T m, Response response);
 
-    public abstract void bad(String error);
+    public abstract void bad(String error, boolean isTokenExpired);
 
     @Override
     public void failure(RetrofitError error) {
-        bad(error.getLocalizedMessage());
+        bad(error.getLocalizedMessage(), false);
     }
 }

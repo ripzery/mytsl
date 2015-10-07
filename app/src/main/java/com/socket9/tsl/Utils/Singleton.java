@@ -16,7 +16,6 @@ public class Singleton {
     public static final String SHARED_PREF_NAME = "NavigoSharedPref";
     public static final String SHARE_PREF_KEY_TOKEN = "TOKEN";
     private static SharedPreferences sharedPreferences;
-    private static AccessToken accessToken;
 
     public static Singleton getInstance() {
         return ourInstance;
@@ -34,14 +33,6 @@ public class Singleton {
         sharedPreferences.edit().putInt(key, value).apply();
     }
 
-    public static AccessToken getAccessToken() {
-        return accessToken;
-    }
-
-    public static void setAccessToken(AccessToken accessToken) {
-        Singleton.accessToken = accessToken;
-    }
-
     public SharedPreferences getSharedPref(){
         return sharedPreferences;
     }
@@ -51,12 +42,16 @@ public class Singleton {
     }
 
     public static void toast(Context context, String message, int length) {
-        if (toast != null) {
-            toast.cancel();
-            toast = null;
+        try{
+            if (toast != null) {
+                toast.cancel();
+                toast = null;
+            }
+            toast = Toast.makeText(context, message, length);
+            toast.show();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        toast = Toast.makeText(context, message, length);
-        toast.show();
     }
 
 }
