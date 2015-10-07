@@ -107,9 +107,9 @@ public class ContactFragment extends Fragment {
     }
 
     public List<ContactEntity> addContact(List<ContactEntity> listContact) {
-        listContact.add(new ContactEntity(BASE_ID + 1, "email", "services@tsl.co.th", R.drawable.ic_location_on_black_24dp));
-        listContact.add(new ContactEntity(BASE_ID + 2, "call center", "1234", R.drawable.common_full_open_on_phone));
-        listContact.add(new ContactEntity(BASE_ID + 3, "website", "www.tsl.co.th", R.drawable.com_facebook_button_like_icon_selected));
+        listContact.add(new ContactEntity(BASE_ID + 1, "email", "services@tsl.co.th", R.drawable.ic_email_grey_500_24dp));
+        listContact.add(new ContactEntity(BASE_ID + 2, "call center", "1234", R.drawable.ic_call_grey_500_24dp));
+        listContact.add(new ContactEntity(BASE_ID + 3, "website", "www.tsl.co.th", R.drawable.ic_web_grey_500_24dp));
         listContact.add(new ContactEntity(BASE_ID + 4, "facebook", "TSL Auto Corporation", R.drawable.com_facebook_button_icon));
         listContact.add(new ContactEntity(BASE_ID + 5, "instagram", "TSL_Auto", R.mipmap.ic_launcher));
         return listContact;
