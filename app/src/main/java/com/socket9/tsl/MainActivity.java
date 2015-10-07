@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.socket9.tsl.Fragments.ContactFragment;
@@ -25,6 +27,7 @@ import com.socket9.tsl.Fragments.EventFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.MyProfileFragment;
 import com.socket9.tsl.Fragments.NewsFragment;
+import com.socket9.tsl.Utils.DialogHelper;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
@@ -124,10 +127,16 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                         break;
                     case R.id.nav_sign_out:
                         // Show dialog
-                        LoginManager.getInstance().logOut();
-                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                        finish();
+                        DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                LoginManager.getInstance().logOut();
+                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                                startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                                finish();
+                            }
+
+                        }).show();
                         break;
                 }
                 drawerLayout.closeDrawers();

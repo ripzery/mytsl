@@ -1,12 +1,12 @@
 package com.socket9.tsl;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +40,8 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     EditText etPhone;
     @Bind(R.id.etAddress)
     EditText etAddress;
+    @Bind(R.id.layoutProgress)
+    LinearLayout layoutProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnRegister:
+                layoutProgress.setVisibility(View.VISIBLE);
                 ApiService.getTSLApi().registerUser(etEmail.getText().toString(),
                         etPassword.getText().toString(),
                         etUsername.getText().toString(),
@@ -76,6 +79,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                         "", new MyCallback<User>() {
                             @Override
                             public void good(User m, Response response) {
+                                layoutProgress.setVisibility(View.GONE);
                                 Timber.d("Token : " + m.getData().getToken());
                                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
                                 Singleton.toast(getApplicationContext(), "Create account successful. Please activate account in your email.", Toast.LENGTH_LONG);
@@ -84,6 +88,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
 
                             @Override
                             public void bad(String error, boolean isTokenExpired) {
+                                layoutProgress.setVisibility(View.GONE);
                                 Timber.i(error);
                             }
                         }

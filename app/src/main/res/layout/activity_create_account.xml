@@ -1,115 +1,137 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context="com.socket9.tsl.CreateAccountActivity">
-
-    <include layout="@layout/layout_app_bar" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:layout_height="40dp">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context="com.socket9.tsl.CreateAccountActivity">
 
-        <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="@dimen/btn_width_large"
-            android:hint="@string/create.account.et.name"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/layout_app_bar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etUsername"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:hint="@string/create.account.et.name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:hint="@string/create.account.et.email" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:hint="@string/create.account.et.password"
+                android:inputType="textPassword" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:hint="@string/create.account.et.confirmpw"
+                android:inputType="textPassword" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:hint="@string/create.account.et.mobile"
+                android:inputType="phone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:hint="@string/create.account.et.address"
+                android:lines="3"
+                android:maxLines="3" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/create.account.btn.register"
+            android:textColor="@color/colorTextPrimary" />
+
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutProgress"
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
+        android:layout_height="match_parent"
+        android:background="#aa000000"
         android:gravity="center"
-        android:layout_height="40dp">
+        android:clickable="true"
+        android:visibility="gone">
 
-        <EditText
-            android:id="@+id/etEmail"
-            android:hint="@string/create.account.et.email"
-            android:layout_width="@dimen/btn_width_large"
+        <ProgressBar
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:layout_height="40dp">
+</FrameLayout>
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:hint="@string/create.account.et.password"
-            android:layout_width="@dimen/btn_width_large"
-            android:inputType="textPassword"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:layout_height="40dp">
-
-        <EditText
-            android:id="@+id/etConfirmPassword"
-            android:hint="@string/create.account.et.confirmpw"
-            android:layout_width="@dimen/btn_width_large"
-            android:inputType="textPassword"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:layout_height="40dp">
-
-        <EditText
-            android:id="@+id/etPhone"
-            android:hint="@string/create.account.et.mobile"
-            android:inputType="phone"
-            android:layout_width="@dimen/btn_width_large"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:layout_height="40dp">
-
-        <EditText
-            android:id="@+id/etAddress"
-            android:hint="@string/create.account.et.address"
-            android:layout_width="@dimen/btn_width_large"
-            android:lines="3"
-            android:maxLines="3"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_height="60dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/colorTextPrimary"
-        android:layout_gravity="bottom"
-        android:text="@string/create.account.btn.register"/>
-
-
-</LinearLayout>

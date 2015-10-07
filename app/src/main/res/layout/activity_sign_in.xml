@@ -32,12 +32,30 @@
             android:hint="Password"
             android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/btnLogin"
+        <LinearLayout
             android:layout_width="@dimen/btn_width_large"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="LOG IN" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:text="login" />
+
+            <Button
+                android:id="@+id/btnForgot"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="forgot pw"/>
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

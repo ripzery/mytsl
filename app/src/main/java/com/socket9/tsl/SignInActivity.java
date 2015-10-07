@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -32,6 +33,7 @@ import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Models.BaseModel;
 import com.socket9.tsl.Models.Photo;
 import com.socket9.tsl.Models.User;
+import com.socket9.tsl.Utils.DialogHelper;
 import com.socket9.tsl.Utils.Singleton;
 
 import org.json.JSONException;
@@ -67,6 +69,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     ProgressBar progress;
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
+    @Bind(R.id.btnForgot)
+    Button btnForgot;
     private CallbackManager callbackManager;
 
     @Override
@@ -86,6 +90,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     public void setListener() {
         btnLogin.setOnClickListener(this);
+        btnForgot.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         btnFbLoginFake.setOnClickListener(this);
     }
@@ -132,9 +137,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            try{
+                            try {
                                 photo = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             registerWithFb(facebookId, name, email, hometown, photo);
@@ -163,7 +168,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
 
             @Override
-            public void bad(String error,boolean isTokenExpired) {
+            public void bad(String error, boolean isTokenExpired) {
                 Timber.i(error);
                 if (error.contains("already used")) {
                     loginWithFacebook(fbId, photo);
@@ -182,7 +187,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
 
             @Override
-            public void bad(String error,boolean isTokenExpired) {
+            public void bad(String error, boolean isTokenExpired) {
                 Timber.i(error);
                 Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
                 layoutProgress.setVisibility(View.GONE);
@@ -190,7 +195,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    public void updatePicture(String photo){
+    public void updatePicture(String photo) {
         Glide.with(this).load(photo).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -199,27 +204,27 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void good(Photo m, Response response) {
                         ApiService.getTSLApi().updatePicture(Singleton.getInstance().getToken(),
-                            m.getData().getPathSave(), new MyCallback<BaseModel>() {
-                                @Override
-                                public void good(BaseModel m, Response response) {
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                    finish();
-                                    layoutProgress.setVisibility(View.GONE);
-                                }
+                                m.getData().getPathSave(), new MyCallback<BaseModel>() {
+                                    @Override
+                                    public void good(BaseModel m, Response response) {
+                                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                        finish();
+                                        layoutProgress.setVisibility(View.GONE);
+                                    }
 
-                                @Override
-                                public void bad(String error,boolean isTokenExpired) {
-                                    Timber.i(error);
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                    finish();
-                                    layoutProgress.setVisibility(View.GONE);
-                                }
-                            });
+                                    @Override
+                                    public void bad(String error, boolean isTokenExpired) {
+                                        Timber.i(error);
+                                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                        finish();
+                                        layoutProgress.setVisibility(View.GONE);
+                                    }
+                                });
                     }
 
                     @Override
-                    public void bad(String error,boolean isTokenExpired) {
-                        Timber.i(error);        
+                    public void bad(String error, boolean isTokenExpired) {
+                        Timber.i(error);
                     }
                 });
             }
@@ -254,9 +259,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
+                layoutProgress.setVisibility(View.VISIBLE);
                 ApiService.getTSLApi().login(etUsername.getText().toString(), etPassword.getText().toString(), new MyCallback<User>() {
                     @Override
                     public void good(User m, Response response) {
+                        layoutProgress.setVisibility(View.GONE);
                         Timber.d(m.getData().getToken());
                         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
                         startActivity(new Intent(SignInActivity.this, MainActivity.class));
@@ -264,10 +271,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     @Override
-                    public void bad(String error,boolean isTokenExpired) {
+                    public void bad(String error, boolean isTokenExpired) {
+                        layoutProgress.setVisibility(View.GONE);
                         Singleton.toast(getApplicationContext(), error, Toast.LENGTH_LONG);
                         Timber.i(error);
-                        if(isTokenExpired){
+                        if (isTokenExpired) {
                             Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                             startActivity(new Intent(SignInActivity.this, SignInActivity.class));
                         }
@@ -280,6 +288,28 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btnFbLoginFake:
                 btnFbLoginReal.performClick();
+                break;
+            case R.id.btnForgot:
+                DialogHelper.getForgotDialog(this, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
+                            @Override
+                            public void good(BaseModel m, Response response) {
+                                try{
+                                    Singleton.toast(SignInActivity.this, m.getMessage(), Toast.LENGTH_LONG);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void bad(String error, boolean isTokenExpired) {
+                                Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
+                            }
+                        });
+                    }
+                }).show();
                 break;
         }
     }
