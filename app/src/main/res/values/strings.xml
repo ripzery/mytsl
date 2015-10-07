@@ -40,7 +40,9 @@
     <string name="google.maps.key">AIzaSyBWzfHaOayY9QUlzwzVV4VWYqGhxclOIXE</string>
     <string name="facebook_app_id">1622350878031018</string>
 
-
+    <string name="contact.business.hours">Business Hours</string>
+    <string name="contact.email">Email</string>
+    <string name="contact.fax">Fax</string>
 
     <string name="lorem">Lorem ipsum dolor sit amet, congue malesuada. Mauris integer, pellentesque purus nam. Ipsum interdum felis facilisi ipsum aliquam. Tincidunt ornare non iaculis nec vitae, consectetur in.</string>
 </resources>

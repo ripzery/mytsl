@@ -1,5 +1,7 @@
 package com.socket9.tsl.ModelEntities;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by visit on 10/4/15 AD.
  */
@@ -20,7 +22,9 @@ public class ContactEntity {
     private String subTitle;
     private String Address;
     private String Fax;
+    private String Email;
     private double lng;
+    @SerializedName("Business Hours")
     private String BusinessHours;
     private double lat;
     private int icon;
@@ -118,5 +122,13 @@ public class ContactEntity {
 
     public void setIcon(int icon) {
         this.icon = icon;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 }

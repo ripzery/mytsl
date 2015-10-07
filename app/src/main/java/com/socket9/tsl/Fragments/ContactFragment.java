@@ -18,7 +18,6 @@ import com.socket9.tsl.Adapters.ContactAdapter;
 import com.socket9.tsl.BranchDetailActivity;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.ContactEntity;
-import com.socket9.tsl.Models.Contact;
 import com.socket9.tsl.Models.ListContacts;
 import com.socket9.tsl.R;
 import com.socket9.tsl.SignInActivity;
@@ -69,11 +68,12 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(ContactEntity contactEntity) {
                 Timber.i(contactEntity.getId() + "");
-                if(contactEntity.getId() < BASE_ID){ // contact from server
+                if (contactEntity.getId() < BASE_ID) { // contact from server
+                    startActivity(new Intent(getActivity(), BranchDetailActivity.class)
+                            .putExtra("contactId", contactEntity.getId())
+                            .putExtra("contactName", contactEntity.getTitleEn()));
 
-                    startActivity(new Intent(getActivity(), BranchDetailActivity.class).putExtra("contactId", contactEntity.getId()));
-
-                }else{ // manually added contact
+                } else { // manually added contact
 
                 }
             }
@@ -93,10 +93,10 @@ public class ContactFragment extends Fragment {
             }
 
             @Override
-            public void bad(String error,boolean isTokenExpired) {
+            public void bad(String error, boolean isTokenExpired) {
                 Timber.i(error);
                 mListener.onProgressComplete();
-                if(isTokenExpired){
+                if (isTokenExpired) {
                     Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(getActivity(), SignInActivity.class));

@@ -21,6 +21,10 @@ public class Singleton {
         return ourInstance;
     }
 
+    public static String getPlainText(String htmlString){
+        return htmlString.replaceAll("<.*?>","");
+    }
+
     public static void initSharePref(Context context){
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
