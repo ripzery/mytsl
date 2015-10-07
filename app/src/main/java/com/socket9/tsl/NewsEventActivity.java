@@ -2,12 +2,15 @@ package com.socket9.tsl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +36,10 @@ public class NewsEventActivity extends BaseActivity {
     WebView webView;
     boolean isNews;
     int id;
-    @Bind(R.id.progress)
-    ProgressBar progress;
+    @Bind(R.id.layoutProgress)
+    LinearLayout layoutProgress;
+    private ShareActionProvider mShareActionProvider;
+    private Intent sendIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class NewsEventActivity extends BaseActivity {
         isNews = getIntent().getBooleanExtra("isNews", true);
         initToolbar(myToolbar, "", true);
         id = getIntent().getIntExtra("id", 0);
-        progress.setVisibility(View.VISIBLE);
+        layoutProgress.setVisibility(View.VISIBLE);
         if (isNews)
             getNews(id);
         else
@@ -59,9 +64,9 @@ public class NewsEventActivity extends BaseActivity {
             }
 
             @Override
-            public void bad(String error,boolean isTokenExpired) {
+            public void bad(String error, boolean isTokenExpired) {
                 Timber.d(error);
-                if(isTokenExpired){
+                if (isTokenExpired) {
                     Singleton.toast(NewsEventActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
@@ -79,9 +84,9 @@ public class NewsEventActivity extends BaseActivity {
             }
 
             @Override
-            public void bad(String error,boolean isTokenExpired) {
+            public void bad(String error, boolean isTokenExpired) {
                 Timber.d(error);
-                if(isTokenExpired){
+                if (isTokenExpired) {
                     Singleton.toast(NewsEventActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
@@ -91,13 +96,23 @@ public class NewsEventActivity extends BaseActivity {
         });
     }
 
-    public void setInfo(NewsEventEntity entity) {
+    public void setInfo(final NewsEventEntity entity) {
 //        boolean isBlue = entity.getType().equalsIgnoreCase("service");
         webView.loadUrl(entity.getContentEn());
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                progress.setVisibility(View.GONE);
+                layoutProgress.setVisibility(View.GONE);
+
+                //Init share intent
+                sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, entity.getTitleEn());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                setShareIntent(sendIntent);
+
             }
 
         });
@@ -114,7 +129,18 @@ public class NewsEventActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_news_event, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         return true;
+    }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
@@ -124,6 +150,8 @@ public class NewsEventActivity extends BaseActivity {
         if (id == android.R.id.home) {
             finish();
             return true;
+        } else {
+            startActivity(Intent.createChooser(sendIntent, "Share to..."));
         }
 
         return super.onOptionsItemSelected(item);
