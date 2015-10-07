@@ -26,27 +26,33 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" />
         <activity
             android:name=".SignInActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_sign_in">
 
         </activity>
         <activity
             android:name=".CreateAccountActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_create_account" />
 
         <activity
             android:name=".NewsEventActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_news_event" />
 
         <activity
             android:name=".BranchDetailActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_place_detail" />
 
         <activity
             android:name=".MyProfileActivity"
             android:label="@string/title_activity_my_profile"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
 

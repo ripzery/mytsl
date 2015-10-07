@@ -20,6 +20,8 @@ import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.client.Response;
@@ -56,21 +58,22 @@ public class ContactFragment extends Fragment {
         return rootView;
     }
 
-    public void setListener(){
+    public void setListener() {
         listener = new ContactAdapter.OnContactClickListener() {
             @Override
             public void onClick(ContactEntity contactEntity) {
-                Timber.i(contactEntity.getId()+"");
+                Timber.i(contactEntity.getId() + "");
             }
         };
     }
 
-    public void getContacts(){
+    public void getContacts() {
         mListener.onProgressStart();
         ApiService.getTSLApi().getListContacts(Singleton.getInstance().getToken(), new MyCallback<ListContacts>() {
             @Override
             public void good(ListContacts m, Response response) {
-                ContactAdapter contactAdapter = new ContactAdapter(m.getData());
+                // Add more contact
+                ContactAdapter contactAdapter = new ContactAdapter(addContact(m.getData()));
                 contactAdapter.setContactListener(listener);
                 recyclerView.setAdapter(contactAdapter);
                 mListener.onProgressComplete();
@@ -82,6 +85,15 @@ public class ContactFragment extends Fragment {
                 mListener.onProgressComplete();
             }
         });
+    }
+
+    public List<ContactEntity> addContact(List<ContactEntity> listContact) {
+        listContact.add(new ContactEntity(listContact.size() + 1, "email", "services@tsl.co.th", R.drawable.ic_location_on_black_24dp));
+        listContact.add(new ContactEntity(listContact.size() + 2, "call center", "1234", R.drawable.common_full_open_on_phone));
+        listContact.add(new ContactEntity(listContact.size() + 3, "website", "www.tsl.co.th", R.drawable.com_facebook_button_like_icon_selected));
+        listContact.add(new ContactEntity(listContact.size() + 4, "facebook", "TSL Auto Corporation", R.drawable.com_facebook_button_icon));
+        listContact.add(new ContactEntity(listContact.size() + 5, "instagram", "TSL_Auto", R.mipmap.ic_launcher));
+        return listContact;
     }
 
     @Override

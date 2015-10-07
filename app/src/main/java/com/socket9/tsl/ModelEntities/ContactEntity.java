@@ -17,11 +17,19 @@ public class ContactEntity {
     private String Phone;
     private String titleTh;
     private String titleEn;
+    private String subTitle;
     private String Address;
     private String Fax;
     private double lng;
     private String BusinessHours;
     private double lat;
+    private int icon;
+
+    public ContactEntity(int id, String titleEn, String subTitle, int icon) {
+        this.titleEn = titleEn;
+        this.subTitle = subTitle;
+        this.icon = icon;
+    }
 
     public void setPhone(String Phone) {
         this.Phone = Phone;
@@ -93,5 +101,21 @@ public class ContactEntity {
 
     public void setTitleEn(String titleEn) {
         this.titleEn = titleEn;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

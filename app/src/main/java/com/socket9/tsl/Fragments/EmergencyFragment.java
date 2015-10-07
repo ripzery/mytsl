@@ -70,26 +70,26 @@ public class EmergencyFragment extends Fragment {
                     LatLng myPosition = myLocationMarker.getPosition();
                     mListener.onProgressStart();
                     ApiService.getTSLApi().emergencyCall(Singleton.getInstance().getToken(),
-                        myPosition.latitude + "",
-                        myPosition.longitude + "",
-                        MECHANIC,
-                        new MyCallback<BaseModel>() {
-                            @Override
-                            public void good(BaseModel m, Response response) {
-                                try {
-                                    Singleton.toast(getContext(), m.getMessage(), Toast.LENGTH_LONG);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                            myPosition.latitude + "",
+                            myPosition.longitude + "",
+                            MECHANIC,
+                            new MyCallback<BaseModel>() {
+                                @Override
+                                public void good(BaseModel m, Response response) {
+                                    try {
+                                        Singleton.toast(getContext(), m.getMessage(), Toast.LENGTH_LONG);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    mListener.onProgressComplete();
                                 }
-                                mListener.onProgressComplete();
-                            }
 
-                            @Override
-                            public void bad(String error) {
-                                mListener.onProgressComplete();
-                                Singleton.toast(getActivity(), error, Toast.LENGTH_LONG);
-                            }
-                        });
+                                @Override
+                                public void bad(String error) {
+                                    mListener.onProgressComplete();
+                                    Singleton.toast(getActivity(), error, Toast.LENGTH_LONG);
+                                }
+                            });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -104,6 +104,7 @@ public class EmergencyFragment extends Fragment {
         mapListener = new MapHelper.MapListener() {
             @Override
             public void onMyLocationChanged(Location location) {
+            try {
                 Timber.i("%s", location.toString());
                 if (!isZoom) {
                     mapHelper.moveTo(location.getLatitude(), location.getLongitude(), 17);
@@ -112,6 +113,9 @@ public class EmergencyFragment extends Fragment {
                 } else {
                     myLocationMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             }
         };
     }
@@ -166,9 +170,6 @@ public class EmergencyFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
-
-
 
 
 }

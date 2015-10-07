@@ -1,5 +1,6 @@
 package com.socket9.tsl.Adapters;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -44,7 +45,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
 //        holder.tvContent.setText(contactList.get(position).getAddress());
-        holder.tvTitle.setText(contactList.get(position).getTitleEn());
+            holder.tvTitle.setText(contactList.get(position).getTitleEn());
+        if(contactList.get(position).getSubTitle() != null)
+            holder.tvContent.setText(contactList.get(position).getSubTitle());
+        if(contactList.get(position).getIcon() != 0)
+            holder.ivIcon.setImageDrawable(ContextCompat.getDrawable(holder.ivIcon.getContext(), contactList.get(position).getIcon()));
+
     }
 
     @Override
