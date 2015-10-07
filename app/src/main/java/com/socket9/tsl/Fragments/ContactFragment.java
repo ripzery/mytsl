@@ -15,8 +15,10 @@ import android.widget.Toast;
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Adapters.ContactAdapter;
+import com.socket9.tsl.BranchDetailActivity;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.ContactEntity;
+import com.socket9.tsl.Models.Contact;
 import com.socket9.tsl.Models.ListContacts;
 import com.socket9.tsl.R;
 import com.socket9.tsl.SignInActivity;
@@ -40,6 +42,7 @@ public class ContactFragment extends Fragment {
     RecyclerView recyclerView;
     private ContactAdapter.OnContactClickListener listener;
     private OnFragmentInteractionListener mListener;
+    private static final int BASE_ID = 1000;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -66,6 +69,13 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(ContactEntity contactEntity) {
                 Timber.i(contactEntity.getId() + "");
+                if(contactEntity.getId() < BASE_ID){ // contact from server
+
+                    startActivity(new Intent(getActivity(), BranchDetailActivity.class).putExtra("contactId", contactEntity.getId()));
+
+                }else{ // manually added contact
+
+                }
             }
         };
     }
@@ -97,7 +107,6 @@ public class ContactFragment extends Fragment {
     }
 
     public List<ContactEntity> addContact(List<ContactEntity> listContact) {
-        int BASE_ID = 1000;
         listContact.add(new ContactEntity(BASE_ID + 1, "email", "services@tsl.co.th", R.drawable.ic_location_on_black_24dp));
         listContact.add(new ContactEntity(BASE_ID + 2, "call center", "1234", R.drawable.common_full_open_on_phone));
         listContact.add(new ContactEntity(BASE_ID + 3, "website", "www.tsl.co.th", R.drawable.com_facebook_button_like_icon_selected));
