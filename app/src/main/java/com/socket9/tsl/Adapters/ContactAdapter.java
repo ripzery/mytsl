@@ -14,9 +14,12 @@ import com.socket9.tsl.R;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by visit on 10/5/15 AD.
  */
+
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder>{
 
     private OnContactClickListener listener;
@@ -29,12 +32,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public ContactViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_contact, parent, false);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(contactList.get(parent.indexOfChild(itemView)));
-            }
-        });
+
         return new ContactViewHolder(itemView);
     }
 
@@ -58,7 +56,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return contactList.size();
     }
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder{
+    public class ContactViewHolder extends RecyclerView.ViewHolder{
         TextView tvTitle;
         TextView tvContent;
         ImageView ivIcon;
@@ -68,6 +66,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvContent = (TextView) itemView.findViewById(R.id.tvContent);
             ivIcon = (ImageView) itemView.findViewById(R.id.ivIcon);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Timber.d("IndexOfChild : " + getAdapterPosition());
+                    listener.onClick(contactList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 

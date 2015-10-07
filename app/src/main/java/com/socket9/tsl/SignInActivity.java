@@ -137,7 +137,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            Singleton.setAccessToken(token);
                             registerWithFb(facebookId, name, email, hometown, photo);
                         } catch (JSONException e) {
                             e.printStackTrace();
