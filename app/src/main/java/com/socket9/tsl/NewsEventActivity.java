@@ -151,7 +151,7 @@ public class NewsEventActivity extends BaseActivity {
             finish();
             return true;
         } else {
-            startActivity(Intent.createChooser(sendIntent, "Share to..."));
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
         }
 
         return super.onOptionsItemSelected(item);

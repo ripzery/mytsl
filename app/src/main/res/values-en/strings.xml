@@ -114,6 +114,10 @@
     <string name="sign.in.register">Register</string>
     <string name="sign.in.login">Login</string>
 
+    <!-- Share -->
+    <string name="share">Share to&#8230;</string>
+
 
     <string name="lorem">Lorem ipsum dolor sit amet, congue malesuada. Mauris integer, pellentesque purus nam. Ipsum interdum felis facilisi ipsum aliquam. Tincidunt ornare non iaculis nec vitae, consectetur in.</string>
+    <string name="toolbar.contact">Contact</string>
 </resources>

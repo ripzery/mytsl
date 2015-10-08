@@ -114,5 +114,9 @@
     <string name="sign.in.register">ลงทะเบียน</string>
     <string name="sign.in.login">เข้าสู่ระบบ</string>
 
+    <!-- Share -->
+    <string name="share">แชร์ไปยัง&#8230;</string>
+
     <string name="lorem">ลอเร็ม ยิปมันส์ ดอเลอร์ ซิท อเมท, คองกิว มาเลซูดาร์. เมาริส อินทีเจอร์, เพลเลนเทส พูรัส น้ำ. ยิปมันส์ อินเทอร์ดัม เฟลิส ฟาซิลิซิ ยิปมัน อาลิคูอัม. ทินซิดันท์ ออนาเร่ นอน อิอาคูลิส เนส วิต้า, คอนเซคคัว อิน.</string>
+    <string name="toolbar.Contact">ติดต่อ</string>
 </resources>
