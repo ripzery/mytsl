@@ -16,6 +16,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/hugh"
+            android:visibility="invisible"
             app:civ_border_color="@color/colorTextPrimary"
             app:civ_border_width="2dp" />
 
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Annop Vor"
+            android:visibility="invisible"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 

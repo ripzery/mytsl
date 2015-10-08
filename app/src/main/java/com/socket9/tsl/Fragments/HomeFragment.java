@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.MainActivity;
@@ -75,10 +78,23 @@ public class HomeFragment extends Fragment {
             public void good(Profile m, Response response) {
                 try {
                     if (m.getData().getPic() != null)
-                        Glide.with(getActivity()).load(m.getData().getPic()).centerCrop().into(ivUser);
+                        Glide.with(getActivity()).load(m.getData().getPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser){
+                            @Override
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                ivUser.setVisibility(View.VISIBLE);
+                                super.onResourceReady(resource, animation);
+                            }
+                        });
                     else if(m.getData().getFacebookPic() != null)
-                        Glide.with(getActivity()).load(m.getData().getFacebookPic()).centerCrop().into(ivUser);
+                        Glide.with(getActivity()).load(m.getData().getFacebookPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser){
+                            @Override
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                ivUser.setVisibility(View.VISIBLE);
+                                super.onResourceReady(resource, animation);
+                            }
+                        });
                     tvName.setText(m.getData().getNameEn());
+                    tvName.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

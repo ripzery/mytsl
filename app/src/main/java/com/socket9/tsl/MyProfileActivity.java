@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Models.BaseModel;
@@ -181,17 +184,23 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             public void good(Profile m, Response response) {
                 try {
                     tvName.setText(m.getData().getNameEn());
-                    tvAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
-                    tvEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "Blank" : m.getData().getEmail());
-                    tvPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "Blank" : m.getData().getPhone());
+                    tvAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "-" : m.getData().getAddress());
+                    tvEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "-" : m.getData().getEmail());
+                    tvPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "-" : m.getData().getPhone());
 
                     etName.setText(m.getData().getNameEn());
-                    etAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "Blank" : m.getData().getAddress());
-                    etEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "Blank" : m.getData().getEmail());
+                    etAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "-" : m.getData().getAddress());
+                    etEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "-" : m.getData().getEmail());
                     etPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "" : m.getData().getPhone());
 
                     if (m.getData().getPic() != null)
-                        Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(ivUser);
+                        Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(new GlideDrawableImageViewTarget(ivUser){
+                            @Override
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                ivUser.setVisibility(View.VISIBLE);
+                                super.onResourceReady(resource, animation);
+                            }
+                        });
 
                     Timber.i(m.getMessage());
                     layoutProgress.setVisibility(View.GONE);
