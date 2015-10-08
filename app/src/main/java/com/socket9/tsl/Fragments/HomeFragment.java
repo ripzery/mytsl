@@ -93,6 +93,9 @@ public class HomeFragment extends Fragment {
                                 super.onResourceReady(resource, animation);
                             }
                         });
+                    else{
+                        ivUser.setVisibility(View.VISIBLE);
+                    }
                     tvName.setText(m.getData().getNameEn());
                     tvName.setVisibility(View.VISIBLE);
                 } catch (Exception e) {

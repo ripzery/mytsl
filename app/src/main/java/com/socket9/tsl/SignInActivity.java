@@ -70,7 +70,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     ProgressBar progress;
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
-//    @Bind(R.id.btnForgot)
+    @Bind(R.id.ivForgotPassword)
+    ImageView ivForgotPassword;
+    //    @Bind(R.id.btnForgot)
 //    Button btnForgot;
     private CallbackManager callbackManager;
 
@@ -91,7 +93,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     public void setListener() {
         btnLogin.setOnClickListener(this);
-//        btnForgot.setOnClickListener(this);
+        ivForgotPassword.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         btnFbLoginFake.setOnClickListener(this);
         tvCall.setOnClickListener(this);
@@ -163,7 +165,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         Timber.i(email);
         Timber.i(address);
         layoutProgress.setVisibility(View.VISIBLE);
-        ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId,photo, new MyCallback<User>() {
+        ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId, photo, new MyCallback<User>() {
             @Override
             public void good(User m, Response response) {
                 loginWithFacebook(fbId, photo);
@@ -304,28 +306,28 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
                 }).show();
                 break;
-//            case R.id.btnForgot:
-//                DialogHelper.getForgotDialog(this, new MaterialDialog.InputCallback() {
-//                    @Override
-//                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-//                        ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
-//                            @Override
-//                            public void good(BaseModel m, Response response) {
-//                                try{
-//                                    Singleton.toast(SignInActivity.this, m.getMessage(), Toast.LENGTH_LONG);
-//                                }catch (Exception e){
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void bad(String error, boolean isTokenExpired) {
-//                                Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
-//                            }
-//                        });
-//                    }
-//                }).show();
-//                break;
+            case R.id.ivForgotPassword:
+                DialogHelper.getForgotDialog(this, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
+                            @Override
+                            public void good(BaseModel m, Response response) {
+                                try{
+                                    Singleton.toast(SignInActivity.this, m.getMessage(), Toast.LENGTH_LONG);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void bad(String error, boolean isTokenExpired) {
+                                Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
+                            }
+                        });
+                    }
+                }).show();
+                break;
         }
     }
 }

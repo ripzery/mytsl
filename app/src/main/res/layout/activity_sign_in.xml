@@ -19,25 +19,60 @@
             android:layout_marginBottom="24dp"
             android:src="@drawable/logo_landscape"/>
 
-        <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="@dimen/btn_width_large"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/colorTextPrimary"
-            android:textColorHint="@color/colorTextPrimary"
-            android:hint="@string/sign.in.username.hint"
-            android:inputType="text" />
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="@dimen/btn_width_large"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/colorTextPrimary"
-            android:textColorHint="@color/colorTextPrimary"
-            android:hint="@string/sign.in.password.hint"
-            android:inputType="textPassword" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/username"/>
+
+            <EditText
+                android:id="@+id/etUsername"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorTextPrimary"
+                android:textColorHint="@color/colorTextSecondary"
+                android:hint="@string/sign.in.username.hint"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/password_white"/>
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="@dimen/btn_width_large"
+                android:layout_height="50dp"
+                android:textColor="@color/colorTextPrimary"
+                android:textColorHint="@color/colorTextSecondary"
+                android:hint="@string/sign.in.password.hint"
+                android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/ivForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/forgot_password"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +103,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="32dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -92,15 +127,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_height="64dp">
 
             <Button
                 android:id="@+id/btnFbLoginFake"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="16dp"
+                android:background="@color/colorFacebook"
+                android:textColor="@color/colorTextPrimary"
+                android:drawableLeft="@drawable/fb_white"
+                android:paddingLeft="48dp"
+                android:drawablePadding="-36dp"
                 android:layout_weight="1"
                 android:text="@string/sign.in.login" />
 
@@ -108,8 +145,7 @@
                 android:id="@+id/btnFbLoginReal"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="16dp" />
+                android:layout_gravity="center_vertical"/>
 
 
             <Button
@@ -117,6 +153,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/colorTextPrimary"
+                android:background="@color/colorTextSecondary"
                 android:text="@string/sign.in.register"
                 android:textAllCaps="true" />
 
@@ -127,13 +165,13 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:paddingTop="16dp">
+            android:paddingTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign.in.need.help"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/colorPrimaryLight"
                 android:textAllCaps="true" />
 
             <TextView

@@ -12,11 +12,11 @@
     <!-- Toolbar title -->
     <string name="toolbar.branch.detail">Contact Info</string>
     <string name="toolbar.create.account">Register</string>
-    <string name="toolbar.emergency">Emergency</string>
-    <string name="toolbar.contact">Contact</string>
+    <string name="toolbar.emergency">EMERGENCY CALL</string>
+    <string name="toolbar.contact">CONTACT US</string>
     <string name="toolbar.main">Main</string>
     <string name="toolbar.home">Home</string>
-    <string name="toolbar.my.profile">My Profile</string>
+    <string name="toolbar.my.profile">PROFILE</string>
 
     <!-- Dialog -->
     <string name="dialog.forgot.pw.title">Forgot Password</string>
@@ -108,7 +108,7 @@
     <!-- Sign In -->
     <string name="sign.in.username.hint">Username</string>
     <string name="sign.in.password.hint">Password</string>
-    <string name="sign.in.or">Or</string>
+    <string name="sign.in.or">OR</string>
     <string name="sign.in.need.help">Need Help?</string>
     <string name="sign.in.call.us">Call Us Now</string>
     <string name="sign.in.register">Register</string>

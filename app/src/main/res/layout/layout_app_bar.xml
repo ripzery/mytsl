@@ -9,6 +9,15 @@
     android:gravity="center"
     android:theme="@style/ToolbarThemeOverlay">
 
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:src="@drawable/logo_nav"
+        android:layout_marginBottom="8dp"/>
+
     <TextView
         android:id="@+id/toolbarTitle"
         android:layout_width="wrap_content"

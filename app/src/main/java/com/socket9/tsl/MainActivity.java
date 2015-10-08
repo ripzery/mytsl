@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +67,8 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     Button btnChangeLanguage;
     @Bind(R.id.btnSignOut)
     Button btnSignOut;
+    @Bind(R.id.ivLogo)
+    ImageView ivLogo;
     private Fragment homeFragment;
     private Fragment newsFragment;
     private Fragment contactFragment;
@@ -182,11 +185,12 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     // call from fragment only
     public void onFragmentAttached(int number) {
         String mTitle = "";
-        toolbarTitle.setVisibility(number == FRAGMENT_DISPLAY_NEWS ? View.GONE : View.VISIBLE);
+        toolbarTitle.setVisibility(number == FRAGMENT_DISPLAY_NEWS || number == FRAGMENT_DISPLAY_HOME ? View.GONE : View.VISIBLE);
         layoutNewsEvent.setVisibility(number == FRAGMENT_DISPLAY_NEWS ? View.VISIBLE : View.GONE);
+        ivLogo.setVisibility(number == FRAGMENT_DISPLAY_HOME ? View.VISIBLE : View.GONE);
         switch (number) {
             case FRAGMENT_DISPLAY_HOME:
-                mTitle = getString(R.string.nav_home);
+
                 break;
             case FRAGMENT_DISPLAY_EMERGENCY:
                 mTitle = getString(R.string.nav_emergency);
@@ -257,9 +261,9 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                 DialogHelper.getChangeLangDialog(this, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-                        if(i == 0){
+                        if (i == 0) {
                             setLocale("th");
-                        }else{
+                        } else {
                             setLocale("en");
                         }
                         startActivity(new Intent(MainActivity.this, MainActivity.class));

@@ -201,6 +201,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                                 super.onResourceReady(resource, animation);
                             }
                         });
+                    else
+                        ivUser.setVisibility(View.VISIBLE);
 
                     Timber.i(m.getMessage());
                     layoutProgress.setVisibility(View.GONE);
