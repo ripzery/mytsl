@@ -90,7 +90,7 @@ public class EventFragment extends Fragment {
                 Timber.i(error);
                 mListener.onProgressComplete();
                 if(isTokenExpired){
-                    Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(getActivity(), getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(getActivity(), SignInActivity.class));
                     getActivity().finish();

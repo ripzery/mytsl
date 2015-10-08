@@ -34,7 +34,7 @@
             android:background="@drawable/button_corner_left"
             android:textColor="@color/colorTextPrimary"
             android:layout_marginRight="-4dip"
-            android:text="News" />
+            android:text="@string/news" />
 
         <Button
             android:id="@+id/btnRight"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_corner_right_white"
             android:textColor="@color/colorTextSecondary"
-            android:text="Event" />
+            android:text="@string/event" />
 
     </LinearLayout>
 

@@ -46,7 +46,7 @@ public class ApiService {
 
         @FormUrlEncoded
         @POST("/checkLogin")
-        void loginWithFb(@Field("facebookid") String facebookId, MyCallback<User> cb);
+        void loginWithFb(@Field("facebookid") String facebookId,@Field("facebookpic") String facebookpic, MyCallback<User> cb);
 
         @FormUrlEncoded
         @POST("/forgetPassword")
@@ -89,7 +89,8 @@ public class ApiService {
                           @Field("email") String email,
                           @Field("address") String address,
                           @Field("phone") String phone,
-                          @Field("facebookid") String facebookId, MyCallback<User> cb);
+                          @Field("facebookid") String facebookId,
+                          @Field("facebookpic") String facebookPic, MyCallback<User> cb);
 
         @FormUrlEncoded
         @POST("/emergencyCall")

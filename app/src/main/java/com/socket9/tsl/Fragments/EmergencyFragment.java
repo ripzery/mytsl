@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
@@ -33,7 +35,7 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EmergencyFragment extends Fragment {
+public class EmergencyFragment extends Fragment implements View.OnClickListener {
 
 
     @Bind(R.id.mapView)
@@ -42,11 +44,17 @@ public class EmergencyFragment extends Fragment {
     Button btnRequest;
     private static final String MECHANIC = "MECHANIC";
     private static final String TOWCAR = "TOW CAR";
+    @Bind(R.id.ivMechanic)
+    ImageView ivMechanic;
+    @Bind(R.id.ivTowCar)
+    ImageView ivTowCar;
     private MapHelper mapHelper;
     private MapHelper.MapListener mapListener;
     private boolean isZoom = false;
     private Marker myLocationMarker;
+    private boolean isMechanic = true;
     private OnFragmentInteractionListener mListener;
+    private String requestEmergency = "MECHANIC";
 
     public EmergencyFragment() {
         // Required empty public constructor
@@ -65,6 +73,9 @@ public class EmergencyFragment extends Fragment {
     }
 
     private void setListener() {
+        ivMechanic.setOnClickListener(this);
+        ivTowCar.setOnClickListener(this);
+
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +85,7 @@ public class EmergencyFragment extends Fragment {
                     ApiService.getTSLApi().emergencyCall(Singleton.getInstance().getToken(),
                             myPosition.latitude + "",
                             myPosition.longitude + "",
-                            MECHANIC,
+                            requestEmergency,
                             new MyCallback<BaseModel>() {
                                 @Override
                                 public void good(BaseModel m, Response response) {
@@ -87,11 +98,11 @@ public class EmergencyFragment extends Fragment {
                                 }
 
                                 @Override
-                                public void bad(String error,boolean isTokenExpired) {
+                                public void bad(String error, boolean isTokenExpired) {
                                     mListener.onProgressComplete();
                                     Singleton.toast(getActivity(), error, Toast.LENGTH_LONG);
-                                    if(isTokenExpired){
-                                        Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                                    if (isTokenExpired) {
+                                        Singleton.toast(getActivity(), getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                                         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                                         startActivity(new Intent(getActivity(), SignInActivity.class));
                                         getActivity().finish();
@@ -126,7 +137,7 @@ public class EmergencyFragment extends Fragment {
                 }
             };
         } catch (Exception e) {
-            Singleton.toast(getActivity(), "Please update Google Play Services", Toast.LENGTH_LONG);
+            Singleton.toast(getActivity(), getString(R.string.toast_update_google_play_services), Toast.LENGTH_LONG);
             e.printStackTrace();
         }
     }
@@ -135,10 +146,10 @@ public class EmergencyFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mapHelper.getmMapView().onResume();
-        try{
+        try {
             mapHelper.setOnMyLocationChangeListener(mapListener);
-        }catch (Exception e){
-            Singleton.toast(getActivity(), "Please update Google Play Services", Toast.LENGTH_LONG);
+        } catch (Exception e) {
+            Singleton.toast(getActivity(), getString(R.string.toast_update_google_play_services), Toast.LENGTH_LONG);
             e.printStackTrace();
         }
     }
@@ -188,4 +199,25 @@ public class EmergencyFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.ivTowCar:
+                if(isMechanic){
+                    ivTowCar.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.towcar_active_en));
+                    ivMechanic.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mechanic_en));
+                    requestEmergency = "TOWCAR";
+                    isMechanic = false;
+                }
+                break;
+            case R.id.ivMechanic:
+                if(!isMechanic){
+                    ivMechanic.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mechanic_active_en));
+                    ivTowCar.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.towcar_en));
+                    requestEmergency = "MECHANIC";
+                    isMechanic = true;
+                }
+                break;
+        }
+    }
 }

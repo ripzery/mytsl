@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -69,8 +70,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     ProgressBar progress;
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
-    @Bind(R.id.btnForgot)
-    Button btnForgot;
+//    @Bind(R.id.btnForgot)
+//    Button btnForgot;
     private CallbackManager callbackManager;
 
     @Override
@@ -90,9 +91,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     public void setListener() {
         btnLogin.setOnClickListener(this);
-        btnForgot.setOnClickListener(this);
+//        btnForgot.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         btnFbLoginFake.setOnClickListener(this);
+        tvCall.setOnClickListener(this);
     }
 
     public void setupFacebook() {
@@ -161,7 +163,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         Timber.i(email);
         Timber.i(address);
         layoutProgress.setVisibility(View.VISIBLE);
-        ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId, new MyCallback<User>() {
+        ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId,photo, new MyCallback<User>() {
             @Override
             public void good(User m, Response response) {
                 loginWithFacebook(fbId, photo);
@@ -178,18 +180,23 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
     public void loginWithFacebook(String fbId, final String photo) {
-        ApiService.getTSLApi().loginWithFb(fbId, new MyCallback<User>() {
+        ApiService.getTSLApi().loginWithFb(fbId, photo, new MyCallback<User>() {
             @Override
             public void good(User m, Response response) {
                 Timber.d(m.getData().getToken());
                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                updatePicture(photo);
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                finish();
+                layoutProgress.setVisibility(View.GONE);
+//                updatePicture(photo);
             }
 
             @Override
             public void bad(String error, boolean isTokenExpired) {
                 Timber.i(error);
                 Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                finish();
                 layoutProgress.setVisibility(View.GONE);
             }
         });
@@ -289,28 +296,36 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             case R.id.btnFbLoginFake:
                 btnFbLoginReal.performClick();
                 break;
-            case R.id.btnForgot:
-                DialogHelper.getForgotDialog(this, new MaterialDialog.InputCallback() {
+            case R.id.tvCall:
+                DialogHelper.getCallUsDialog(this, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                        ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
-                            @Override
-                            public void good(BaseModel m, Response response) {
-                                try{
-                                    Singleton.toast(SignInActivity.this, m.getMessage(), Toast.LENGTH_LONG);
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void bad(String error, boolean isTokenExpired) {
-                                Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
-                            }
-                        });
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        Timber.i("Call Us");
                     }
                 }).show();
                 break;
+//            case R.id.btnForgot:
+//                DialogHelper.getForgotDialog(this, new MaterialDialog.InputCallback() {
+//                    @Override
+//                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+//                        ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
+//                            @Override
+//                            public void good(BaseModel m, Response response) {
+//                                try{
+//                                    Singleton.toast(SignInActivity.this, m.getMessage(), Toast.LENGTH_LONG);
+//                                }catch (Exception e){
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void bad(String error, boolean isTokenExpired) {
+//                                Singleton.toast(SignInActivity.this, error, Toast.LENGTH_LONG);
+//                            }
+//                        });
+//                    }
+//                }).show();
+//                break;
         }
     }
 }

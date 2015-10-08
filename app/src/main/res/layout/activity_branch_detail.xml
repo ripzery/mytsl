@@ -73,7 +73,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Phone"
+                        android:text="@string/contact.phone"
                         android:textAllCaps="true"
                         android:textColor="@color/colorPrimary"
                         android:textSize="16sp" />
@@ -125,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="16dp"
-                        android:text="Email"
+                        android:text="@string/contact.email"
                         android:textSize="16sp" />
 
                     <ImageView

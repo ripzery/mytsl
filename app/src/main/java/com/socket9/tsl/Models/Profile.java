@@ -32,6 +32,7 @@ public class Profile extends BaseModel {
         private String address;
         private String nameEn;
         private String pic;
+        private String facebookPic;
         private String email;
 
         public void setPhone(String phone) {
@@ -80,6 +81,14 @@ public class Profile extends BaseModel {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getFacebookPic() {
+            return facebookPic;
+        }
+
+        public void setFacebookPic(String facebookPic) {
+            this.facebookPic = facebookPic;
         }
     }
 }

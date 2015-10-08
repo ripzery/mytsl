@@ -15,6 +15,7 @@ public class Singleton {
     private static Toast toast;
     public static final String SHARED_PREF_NAME = "NavigoSharedPref";
     public static final String SHARE_PREF_KEY_TOKEN = "TOKEN";
+    public static final String SHARE_PREF_LANG = "Language";
     private static SharedPreferences sharedPreferences;
 
     public static Singleton getInstance() {

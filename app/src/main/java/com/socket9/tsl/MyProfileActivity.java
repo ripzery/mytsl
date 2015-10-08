@@ -82,7 +82,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         ButterKnife.bind(this);
         setListener();
         getProfile();
-        initToolbar(myToolbar, "My Profile", true);
+        initToolbar(myToolbar, getString(R.string.toolbar_my_profile), true);
 
         editTextArrayList.add(etName);
         editTextArrayList.add(etAddress);
@@ -158,7 +158,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     public void bad(String error, boolean isTokenExpired) {
                         Timber.d(error);
                         if (isTokenExpired) {
-                            Singleton.toast(MyProfileActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                            Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                             Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                             startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
                             finish();
@@ -206,7 +206,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 Timber.d(error);
                 layoutProgress.setVisibility(View.GONE);
                 if (isTokenExpired) {
-                    Singleton.toast(MyProfileActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
                     finish();
@@ -299,7 +299,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 layoutProgress.setVisibility(View.GONE);
                 Timber.d(error);
                 if (isTokenExpired) {
-                    Singleton.toast(MyProfileActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
                     finish();

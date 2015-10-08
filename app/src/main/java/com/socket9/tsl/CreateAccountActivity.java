@@ -48,7 +48,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
         ButterKnife.bind(this);
-        initToolbar(myToolbar, "REGISTER", true);
+        initToolbar(myToolbar, getString(R.string.toolbar_create_account), true);
         setListener();
     }
 
@@ -76,13 +76,13 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                         etEmail.getText().toString(),
                         etAddress.getText().toString(),
                         etPhone.getText().toString(),
-                        "", new MyCallback<User>() {
+                        "","", new MyCallback<User>() {
                             @Override
                             public void good(User m, Response response) {
                                 layoutProgress.setVisibility(View.GONE);
                                 Timber.d("Token : " + m.getData().getToken());
                                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                                Singleton.toast(getApplicationContext(), "Create account successful. Please activate account in your email.", Toast.LENGTH_LONG);
+                                Singleton.toast(getApplicationContext(), getString(R.string.toast_activate_account), Toast.LENGTH_LONG);
                                 finish();
                             }
 

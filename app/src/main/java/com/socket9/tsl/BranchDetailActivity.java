@@ -50,7 +50,7 @@ public class BranchDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_branch_detail);
         ButterKnife.bind(this);
-        initToolbar(myToolbar, "Contact Info", true);
+        initToolbar(myToolbar, getString(R.string.toolbar_branch_detail), true);
         initMap(savedInstanceState);
         int contactId = getIntent().getIntExtra("contactId", 0);
         String contactName = getIntent().getStringExtra("contactName");
@@ -65,7 +65,7 @@ public class BranchDetailActivity extends BaseActivity {
             mapHelper.getMap().setMyLocationEnabled(false);
 
         } catch (Exception e) {
-            Singleton.toast(BranchDetailActivity.this, "Please update Google Play Services", Toast.LENGTH_LONG);
+            Singleton.toast(BranchDetailActivity.this, getString(R.string.toast_update_google_play_services), Toast.LENGTH_LONG);
             e.printStackTrace();
         }
     }
@@ -98,7 +98,7 @@ public class BranchDetailActivity extends BaseActivity {
                 layoutProgress.setVisibility(View.GONE);
                 Timber.d(error);
                 if (isTokenExpired) {
-                    Singleton.toast(BranchDetailActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(BranchDetailActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(BranchDetailActivity.this, SignInActivity.class));
                     finish();

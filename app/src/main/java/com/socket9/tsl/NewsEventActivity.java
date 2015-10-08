@@ -67,7 +67,7 @@ public class NewsEventActivity extends BaseActivity {
             public void bad(String error, boolean isTokenExpired) {
                 Timber.d(error);
                 if (isTokenExpired) {
-                    Singleton.toast(NewsEventActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(NewsEventActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
                     finish();
@@ -87,7 +87,7 @@ public class NewsEventActivity extends BaseActivity {
             public void bad(String error, boolean isTokenExpired) {
                 Timber.d(error);
                 if (isTokenExpired) {
-                    Singleton.toast(NewsEventActivity.this, "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(NewsEventActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
                     finish();

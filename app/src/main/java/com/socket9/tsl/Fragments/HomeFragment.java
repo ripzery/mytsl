@@ -76,6 +76,8 @@ public class HomeFragment extends Fragment {
                 try {
                     if (m.getData().getPic() != null)
                         Glide.with(getActivity()).load(m.getData().getPic()).centerCrop().into(ivUser);
+                    else if(m.getData().getFacebookPic() != null)
+                        Glide.with(getActivity()).load(m.getData().getFacebookPic()).centerCrop().into(ivUser);
                     tvName.setText(m.getData().getNameEn());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -88,7 +90,7 @@ public class HomeFragment extends Fragment {
                 Singleton.toast(getContext(), error, Toast.LENGTH_LONG);
                 mListener.onProgressComplete();
                 if(isTokenExpired){
-                    Singleton.toast(getActivity(), "Someone has access your account, please login again.", Toast.LENGTH_LONG);
+                    Singleton.toast(getActivity(), getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
                     Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                     startActivity(new Intent(getActivity(), SignInActivity.class));
                     getActivity().finish();

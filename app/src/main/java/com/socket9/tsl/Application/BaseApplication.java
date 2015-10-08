@@ -27,6 +27,11 @@ public class BaseApplication extends Application implements Application.Activity
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
+
+        String language = Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, "");
+        if(language.equals("")){
+            Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_LANG, "en");
+        }
     }
 
     @Override

@@ -62,6 +62,10 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     Button btnRight;
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
+    @Bind(R.id.btnChangeLanguage)
+    Button btnChangeLanguage;
+    @Bind(R.id.btnSignOut)
+    Button btnSignOut;
     private Fragment homeFragment;
     private Fragment newsFragment;
     private Fragment contactFragment;
@@ -75,7 +79,11 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initToolbar(myToolbar, "Main", false);
+
+        boolean isEnglish = Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, "").equals("en");
+        btnChangeLanguage.setText(getString(isEnglish ? R.string.dialog_change_lang_english : R.string.dialog_change_lang_thai));
+
+        initToolbar(myToolbar, getString(R.string.toolbar_main), false);
         initFragment();
         setListener();
         setupDrawerContent();
@@ -86,6 +94,8 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     public void setListener() {
         btnLeft.setOnClickListener(this);
         btnRight.setOnClickListener(this);
+        btnChangeLanguage.setOnClickListener(this);
+        btnSignOut.setOnClickListener(this);
     }
 
     private void initFragment() {
@@ -125,20 +135,20 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                         replaceFragment(FRAGMENT_DISPLAY_EMERGENCY);
                         menuItem.setChecked(true);
                         break;
-                    case R.id.nav_sign_out:
-                        // Show dialog
-                        DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                LoginManager.getInstance().logOut();
-                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                                startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                                finish();
-                            }
-
-                        }).show();
-                        menuItem.setChecked(false);
-                        break;
+//                    case R.id.nav_sign_out:
+//                        // Show dialog
+//                        DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
+//                            @Override
+//                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+//                                LoginManager.getInstance().logOut();
+//                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+//                                startActivity(new Intent(MainActivity.this, SignInActivity.class));
+//                                finish();
+//                            }
+//
+//                        }).show();
+//                        menuItem.setChecked(false);
+//                        break;
                 }
                 drawerLayout.closeDrawers();
                 return true;
@@ -176,19 +186,19 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
         layoutNewsEvent.setVisibility(number == FRAGMENT_DISPLAY_NEWS ? View.VISIBLE : View.GONE);
         switch (number) {
             case FRAGMENT_DISPLAY_HOME:
-                mTitle = "Home";
+                mTitle = getString(R.string.nav_home);
                 break;
             case FRAGMENT_DISPLAY_EMERGENCY:
-                mTitle = "Emergency";
+                mTitle = getString(R.string.nav_emergency);
                 break;
             case FRAGMENT_DISPLAY_CONTACT:
-                mTitle = "Contact";
+                mTitle = getString(R.string.nav_contact);
                 break;
             case FRAGMENT_DISPLAY_NEWS:
 
                 break;
             case FRAGMENT_DISPLAY_PROFILE:
-                mTitle = "Profile";
+                mTitle = getString(R.string.toolbar_my_profile);
                 break;
         }
         toolbarTitle.setText(mTitle);
@@ -242,6 +252,34 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                 btnLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_left_white));
                 btnRight.setTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary));
                 btnRight.setBackground(ContextCompat.getDrawable(this, R.drawable.button_corner_right));
+                break;
+            case R.id.btnChangeLanguage:
+                DialogHelper.getChangeLangDialog(this, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                        if(i == 0){
+                            setLocale("th");
+                        }else{
+                            setLocale("en");
+                        }
+                        startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        finish();
+                        return true;
+                    }
+                }).show();
+                break;
+            case R.id.btnSignOut:
+                // Show dialog
+                DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        LoginManager.getInstance().logOut();
+                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                        finish();
+                    }
+
+                }).show();
                 break;
         }
     }

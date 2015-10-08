@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg2"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -13,15 +14,19 @@
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="@dimen/btn_width_large"
-            android:layout_height="150dp"
-            android:layout_marginTop="16dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/logo_landscape"/>
 
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="@dimen/btn_width_large"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Username"
+            android:textColor="@color/colorTextPrimary"
+            android:textColorHint="@color/colorTextPrimary"
+            android:hint="@string/sign.in.username.hint"
             android:inputType="text" />
 
         <EditText
@@ -29,11 +34,13 @@
             android:layout_width="@dimen/btn_width_large"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
-            android:hint="Password"
+            android:textColor="@color/colorTextPrimary"
+            android:textColorHint="@color/colorTextPrimary"
+            android:hint="@string/sign.in.password.hint"
             android:inputType="textPassword" />
 
         <LinearLayout
-            android:layout_width="@dimen/btn_width_large"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal">
@@ -41,17 +48,18 @@
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="16dp"
+                android:layout_height="64dp"
                 android:layout_weight="1"
-                android:text="login" />
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorTextPrimary"
+                android:text="@string/sign.in.login" />
 
-            <Button
-                android:id="@+id/btnForgot"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:text="forgot pw"/>
+            <!--<Button-->
+                <!--android:id="@+id/btnForgot"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="forgot pw"/>-->
 
         </LinearLayout>
 
@@ -73,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="OR"
+                android:text="@string/sign.in.or"
                 android:textColor="@color/colorTextSecondary" />
 
             <View
@@ -94,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
-                android:text="Login Fb" />
+                android:text="@string/sign.in.login" />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btnFbLoginReal"
@@ -109,7 +117,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Register"
+                android:text="@string/sign.in.register"
                 android:textAllCaps="true" />
 
         </LinearLayout>
@@ -124,7 +132,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="need help?"
+                android:text="@string/sign.in.need.help"
+                android:textColor="@color/colorTextPrimary"
                 android:textAllCaps="true" />
 
             <TextView
@@ -132,7 +141,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="call us now"
+                android:text="@string/sign.in.call.us"
+                android:textColor="@color/colorTextPrimary"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
