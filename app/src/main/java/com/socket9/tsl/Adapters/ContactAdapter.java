@@ -24,6 +24,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     private OnContactClickListener listener;
     private List<ContactEntity> contactList;
+    private static final int BASE_ID = 1000;
 
     public ContactAdapter(List<ContactEntity> contactList) {
         this.contactList = contactList;
@@ -44,8 +45,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void onBindViewHolder(ContactViewHolder holder, int position) {
 //        holder.tvContent.setText(contactList.get(position).getAddress());
             holder.tvTitle.setText(contactList.get(position).getTitleEn());
-        if(contactList.get(position).getSubTitle() != null)
+        if(contactList.get(position).getSubTitle() != null && contactList.get(position).getId() > BASE_ID) {
             holder.tvContent.setText(contactList.get(position).getSubTitle());
+            holder.tvContent.setVisibility(View.VISIBLE);
+        }
         if(contactList.get(position).getIcon() != 0)
             holder.ivIcon.setImageDrawable(ContextCompat.getDrawable(holder.ivIcon.getContext(), contactList.get(position).getIcon()));
 

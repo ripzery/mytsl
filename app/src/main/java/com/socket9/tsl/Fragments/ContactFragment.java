@@ -108,10 +108,10 @@ public class ContactFragment extends Fragment {
 
     public List<ContactEntity> addContact(List<ContactEntity> listContact) {
         listContact.add(new ContactEntity(BASE_ID + 1, getString(R.string.contact_us_email), "services@tsl.co.th", R.drawable.ic_email_grey_500_24dp));
-        listContact.add(new ContactEntity(BASE_ID + 2, getString(R.string.contact_us_call_center), "1234", R.drawable.ic_call_grey_500_24dp));
-        listContact.add(new ContactEntity(BASE_ID + 3, getString(R.string.contact_us_website), "www.tsl.co.th", R.drawable.ic_web_grey_500_24dp));
-        listContact.add(new ContactEntity(BASE_ID + 4, getString(R.string.contact_us_facebook), "TSL Auto Corporation", R.drawable.com_facebook_button_icon));
-        listContact.add(new ContactEntity(BASE_ID + 5, getString(R.string.contact_us_instagram), "TSL_Auto", R.mipmap.ic_launcher));
+        listContact.add(new ContactEntity(BASE_ID + 2, getString(R.string.contact_us_call_center), "1234", R.drawable.call_grey));
+        listContact.add(new ContactEntity(BASE_ID + 3, getString(R.string.contact_us_website), "www.tsl.co.th", R.drawable.www_grey));
+        listContact.add(new ContactEntity(BASE_ID + 4, getString(R.string.contact_us_facebook), "TSL Auto Corporation", R.drawable.fb_grey));
+        listContact.add(new ContactEntity(BASE_ID + 5, getString(R.string.contact_us_instagram), "TSL_Auto", R.drawable.ig_grey));
         return listContact;
     }
 
