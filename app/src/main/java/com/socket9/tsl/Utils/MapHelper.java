@@ -148,20 +148,26 @@ public class MapHelper {
     }
 
     public Marker addMarkerThenZoom(LatLng latlng, int zoomLevel) {
+        Marker mMarker = null;
         // create marker
-        MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latlng.latitude, latlng.longitude)).title("Hello Maps");
+        try{
+            MarkerOptions marker = new MarkerOptions().position(
+                    new LatLng(latlng.latitude, latlng.longitude)).title("Hello Maps");
 
-        // Changing marker icon
+            // Changing marker icon
 //        marker.icon(BitmapDescriptorFactory
 //                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
-        // adding marker
-        Marker mMarker = mMap.addMarker(marker);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(latlng.latitude, latlng.longitude)).zoom(zoomLevel).build();
-        mMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
+            // adding marker
+            mMarker = mMap.addMarker(marker);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(latlng.latitude, latlng.longitude)).zoom(zoomLevel).build();
+            mMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
 
         try {
             return mMarker;

@@ -5,60 +5,37 @@
     android:layout_height="match_parent">
 
     <!-- Content -->
-
-
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/parent_layout"
+        <include
+            android:id="@+id/my_toolbar"
+            layout="@layout/layout_app_bar" />
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="fill_parent"
+            android:layout_below="@id/my_toolbar">
 
-            <include
-                android:id="@+id/my_toolbar"
-                layout="@layout/layout_app_bar" />
+        </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@id/my_toolbar">
-
-            </FrameLayout>
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutProgress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#aa000000"
-            android:gravity="center"
-            android:clickable="true"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </FrameLayout>
-
+    </RelativeLayout>
 
     <!-- Navigation drawer -->
     <android.support.design.widget.NavigationView
         android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
         android:layout_gravity="start"
+        android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
+        app:itemIconTint="@color/colorTextPrimary"
         app:itemTextAppearance="@style/itemTextStyle"
         app:itemTextColor="@color/colorTextPrimary"
-        app:itemIconTint="@color/colorTextPrimary"
         app:menu="@menu/drawer_view">
 
         <LinearLayout
@@ -67,6 +44,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="16dp"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btnChangeLanguage"
                 android:layout_width="wrap_content"
@@ -74,9 +52,9 @@
                 android:background="@color/colorPrimary"
                 android:drawableLeft="@drawable/language"
                 android:drawablePadding="8dp"
-                android:textColor="@color/colorTextPrimary"
+                android:text="@string/nav.change.lang.english"
                 android:textAllCaps="true"
-                android:text="@string/nav.change.lang.english"/>
+                android:textColor="@color/colorTextPrimary" />
 
             <View
                 android:layout_width="0dp"
@@ -90,9 +68,9 @@
                 android:background="@color/colorPrimary"
                 android:drawableLeft="@drawable/signout"
                 android:drawablePadding="8dp"
+                android:text="@string/nav.signout"
                 android:textAllCaps="true"
-                android:textColor="@color/colorTextPrimary"
-                android:text="@string/nav.signout"/>
+                android:textColor="@color/colorTextPrimary" />
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>

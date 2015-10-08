@@ -66,14 +66,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     Button btnFbLoginFake;
     @Bind(R.id.btnFbLoginReal)
     LoginButton btnFbLoginReal;
-    @Bind(R.id.progress)
-    ProgressBar progress;
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
     @Bind(R.id.ivForgotPassword)
     ImageView ivForgotPassword;
-    //    @Bind(R.id.btnForgot)
-//    Button btnForgot;
     private CallbackManager callbackManager;
 
     @Override

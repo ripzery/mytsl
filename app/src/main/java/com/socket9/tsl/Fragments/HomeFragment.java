@@ -41,8 +41,6 @@ public class HomeFragment extends Fragment {
     CircleImageView ivUser;
     @Bind(R.id.tvName)
     TextView tvName;
-    @Bind(R.id.layoutProgress)
-    LinearLayout layoutProgress;
     private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {

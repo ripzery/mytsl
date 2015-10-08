@@ -1,56 +1,16 @@
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent">-->
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.socket9.tsl.NewsEventActivity">
 
-    <LinearLayout
+    <include layout="@layout/layout_app_bar" />
+
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.socket9.tsl.NewsEventActivity">
+        android:layout_height="match_parent" />
 
-        <include layout="@layout/layout_app_bar" />
-
-
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#aa000000"
-        android:clickable="true"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-</FrameLayout>
-
-
-    <!--<FrameLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="200dp"--><!--android:background="@color/colorPrimary">-->
-
-    <!--<ImageView--><!--android:id="@+id/ivPhoto"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:scaleType="centerCrop" />-->
-
-    <!--<TextView--><!--android:id="@+id/tvTag"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginTop="16dp"--><!--android:paddingBottom="4dp"--><!--android:paddingLeft="16dp"--><!--android:paddingRight="16dp"--><!--android:paddingTop="4dp"--><!--android:textAllCaps="true"--><!--android:background="@color/colorTextSecondary"--><!--android:textColor="@color/colorTextPrimary"--><!--android:textSize="12sp" />-->
-
-    <!--</FrameLayout>-->
-
-    <!--<TextView--><!--android:id="@+id/tvTitle"--><!--style="@style/fontTitleLight"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_margin="16dp"--><!--android:text="Test"--><!--android:textColor="@color/colorPrimary"--><!--android:textSize="22sp" />-->
-
-    <!--<TextView--><!--android:id="@+id/tvDate"--><!--style="@style/fontContent"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginLeft="16dp"--><!--android:text="test"--><!--android:textAllCaps="true"--><!--android:textSize="18sp" />-->
-
-    <!--<TextView--><!--android:id="@+id/tvContent"--><!--style="@style/fontContent"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginLeft="16dp"--><!--android:layout_marginRight="16dp"--><!--android:layout_marginTop="16dp"--><!--android:text="@string/lorem"--><!--android:textSize="16sp" />-->
-
-
-    <!--</ScrollView>-->
+</LinearLayout>

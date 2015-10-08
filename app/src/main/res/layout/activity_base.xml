@@ -4,38 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/parent_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+   <FrameLayout
+       android:id="@+id/layoutContent"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/my_toolbar"
-            layout="@layout/layout_app_bar" />
+   </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@id/my_toolbar">
-
-        </FrameLayout>
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#aa000000"
-        android:clickable="true"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <include layout="@layout/layout_progress" />
 
 </FrameLayout>

@@ -11,7 +11,7 @@
 
     <!-- Toolbar title -->
     <string name="toolbar.branch.detail">Contact Info</string>
-    <string name="toolbar.create.account">Register</string>
+    <string name="toolbar.create.account">REGISTER</string>
     <string name="toolbar.emergency">EMERGENCY CALL</string>
     <string name="toolbar.contact">CONTACT US</string>
     <string name="toolbar.main">Main</string>

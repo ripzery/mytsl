@@ -11,12 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.socket9.tsl.Utils.Singleton;
 
 import java.util.Locale;
 
+import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -25,11 +27,20 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
     private ActionBar mActionBar;
+    private FrameLayout baseLayout;
+    private FrameLayout childLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate " + TAG);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        baseLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
+        childLayout = (FrameLayout) baseLayout.findViewById(R.id.layoutContent);
+        getLayoutInflater().inflate(layoutResID, childLayout, true);
+        super.setContentView(baseLayout);
     }
 
     public void setLocale(String lang) {
@@ -52,7 +63,6 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         switch (id){
             case android.R.id.home:
                 finish();
@@ -65,10 +75,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void initToolbar(Toolbar myToolbar, String title, boolean isBackVisible){
         setSupportActionBar(myToolbar);
         mActionBar = getSupportActionBar();
-//        mActionBar.setTitle(title);
         TextView tvTitle = (TextView) myToolbar.findViewById(R.id.toolbarTitle);
         tvTitle.setText(title);
-//        title.setText(title);
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setDisplayHomeAsUpEnabled(true);

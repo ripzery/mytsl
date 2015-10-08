@@ -1,206 +1,184 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_app_bar" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivUser"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/default_photo"
+            android:visibility="invisible"
+            app:civ_border_color="@color/colorTextPrimary"
+            app:civ_border_width="2dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:orientation="vertical">
 
-            <include layout="@layout/layout_app_bar" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivUser"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="invisible"
-                app:civ_border_color="@color/colorTextPrimary"
-                app:civ_border_width="2dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/default_photo" />
-
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile.name.title" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    style="@style/textTitle"
+                <EditText
+                    android:id="@+id/etName"
+                    style="@style/editTextContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile.name.title" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/etName"
-                        style="@style/editTextContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile.name.content"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvName"
-                        style="@style/fontContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="26sp" />
-
-                </LinearLayout>
-
+                    android:text="@string/profile.name.content"
+                    android:visibility="gone" />
 
                 <TextView
-                    style="@style/textTitle"
+                    android:id="@+id/tvName"
+                    style="@style/fontContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/profile.phone.title" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/etPhone"
-                        style="@style/editTextContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:text="@string/profile.phone.content"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvPhone"
-                        style="@style/fontContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="26sp" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    style="@style/textTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/profile.email.title" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/etEmail"
-                        style="@style/editTextContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:text="@string/profile.email.content"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvEmail"
-                        fontPath="fonts/cmprasanmit/CmPrasanmitItalic.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="26sp" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    style="@style/textTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/profile.password.title" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/etPassword"
-                        style="@style/editTextContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/create.account.et.password"
-                        android:inputType="textPassword"
-                        android:text="@string/profile.password.content"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvPassword"
-                        style="@style/fontContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="********"
-                        android:textSize="26sp" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    style="@style/textTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/profile.address.title" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/etAddress"
-                        style="@style/editTextContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tvAddress"
-                        style="@style/fontContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="26sp" />
-
-                </LinearLayout>
-
+                    android:textSize="26sp" />
 
             </LinearLayout>
 
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/profile.phone.title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etPhone"
+                    style="@style/editTextContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:text="@string/profile.phone.content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    style="@style/fontContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/profile.email.title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    style="@style/editTextContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:text="@string/profile.email.content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    fontPath="fonts/cmprasanmit/CmPrasanmitItalic.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/profile.password.title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    style="@style/editTextContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create.account.et.password"
+                    android:inputType="textPassword"
+                    android:text="@string/profile.password.content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvPassword"
+                    style="@style/fontContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="********"
+                    android:textSize="26sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/profile.address.title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    style="@style/editTextContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    style="@style/fontContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
-
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/layoutProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#aa000000"
-        android:clickable="true"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="64dp" />
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>
