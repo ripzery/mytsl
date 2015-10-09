@@ -88,8 +88,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
 
                             @Override
                             public void bad(String error, boolean isTokenExpired) {
-                                layoutProgress.setVisibility(View.GONE);
-                                Timber.i(error);
+                                Singleton.toast(CreateAccountActivity.this, error, Toast.LENGTH_LONG);
                             }
                         }
                 );

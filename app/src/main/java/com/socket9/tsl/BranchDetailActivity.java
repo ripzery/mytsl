@@ -92,18 +92,6 @@ public class BranchDetailActivity extends BaseActivity {
                 }
 
             }
-
-            @Override
-            public void bad(String error, boolean isTokenExpired) {
-                layoutProgress.setVisibility(View.GONE);
-                Timber.d(error);
-                if (isTokenExpired) {
-                    Singleton.toast(BranchDetailActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
-                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                    startActivity(new Intent(BranchDetailActivity.this, SignInActivity.class));
-                    finish();
-                }
-            }
         });
     }
 

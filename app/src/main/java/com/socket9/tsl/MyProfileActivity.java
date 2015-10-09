@@ -211,18 +211,6 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
             }
-
-            @Override
-            public void bad(String error, boolean isTokenExpired) {
-                Timber.d(error);
-                layoutProgress.setVisibility(View.GONE);
-                if (isTokenExpired) {
-                    Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
-                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                    startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
-                    finish();
-                }
-            }
         });
     }
 
@@ -303,18 +291,6 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 photo = m;
                 layoutProgress.setVisibility(View.GONE);
                 Glide.with(MyProfileActivity.this).load(m.getData().getPathUse()).into(ivUser);
-            }
-
-            @Override
-            public void bad(String error, boolean isTokenExpired) {
-                layoutProgress.setVisibility(View.GONE);
-                Timber.d(error);
-                if (isTokenExpired) {
-                    Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
-                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                    startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
-                    finish();
-                }
             }
         });
     }

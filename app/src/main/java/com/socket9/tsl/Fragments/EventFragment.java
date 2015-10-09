@@ -82,19 +82,6 @@ public class EventFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mListener.onProgressComplete();
-            }
-
-            @Override
-            public void bad(String error,boolean isTokenExpired) {
-                Timber.i(error);
-                mListener.onProgressComplete();
-                if(isTokenExpired){
-                    Singleton.toast(getActivity(), getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
-                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                    startActivity(new Intent(getActivity(), SignInActivity.class));
-                    getActivity().finish();
-                }
             }
         });
     }

@@ -62,17 +62,6 @@ public class NewsEventActivity extends BaseActivity {
             public void good(NewsEvent m, Response response) {
                 setInfo(m.getData());
             }
-
-            @Override
-            public void bad(String error, boolean isTokenExpired) {
-                Timber.d(error);
-                if (isTokenExpired) {
-                    Singleton.toast(NewsEventActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
-                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                    startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
-                    finish();
-                }
-            }
         });
     }
 
@@ -83,16 +72,6 @@ public class NewsEventActivity extends BaseActivity {
                 setInfo(m.getData());
             }
 
-            @Override
-            public void bad(String error, boolean isTokenExpired) {
-                Timber.d(error);
-                if (isTokenExpired) {
-                    Singleton.toast(NewsEventActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
-                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                    startActivity(new Intent(NewsEventActivity.this, SignInActivity.class));
-                    finish();
-                }
-            }
         });
     }
 
@@ -103,7 +82,6 @@ public class NewsEventActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 layoutProgress.setVisibility(View.GONE);
-
                 //Init share intent
                 sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
