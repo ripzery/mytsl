@@ -47,43 +47,30 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
-    private
     Toolbar myToolbar;
     @Bind(R.id.ivUser)
-    private
     ImageView ivUser;
     @Bind(R.id.etName)
-    private
     EditText etName;
     @Bind(R.id.etPhone)
-    private
     EditText etPhone;
     @Bind(R.id.etEmail)
-    private
     EditText etEmail;
     @Bind(R.id.etPassword)
-    private
     EditText etPassword;
     @Bind(R.id.etAddress)
-    private
     EditText etAddress;
     @Bind(R.id.tvName)
-    private
     TextView tvName;
     @Bind(R.id.tvPhone)
-    private
     TextView tvPhone;
     @Bind(R.id.tvEmail)
-    private
     TextView tvEmail;
     @Bind(R.id.tvPassword)
-    private
     TextView tvPassword;
     @Bind(R.id.tvAddress)
-    private
     TextView tvAddress;
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
     private Photo photo;
     private Profile profile;

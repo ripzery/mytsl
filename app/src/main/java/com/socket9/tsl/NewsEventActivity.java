@@ -29,13 +29,10 @@ public class NewsEventActivity extends BaseActivity {
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
-    private
     Toolbar myToolbar;
     @Bind(R.id.webView)
-    private
     WebView webView;
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
     private ShareActionProvider mShareActionProvider;
     private Intent sendIntent;

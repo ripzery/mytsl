@@ -31,7 +31,6 @@ public class EventFragment extends Fragment {
 
 
     @Bind(R.id.recyclerView)
-    private
     RecyclerView recyclerView;
     private EventAdapter.OnCardClickListener listener;
     @Nullable

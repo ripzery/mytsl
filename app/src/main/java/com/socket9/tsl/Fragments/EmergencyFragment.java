@@ -40,16 +40,12 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
     private static final String MECHANIC = "MECHANIC";
     private static final String TOWCAR = "TOW CAR";
     @Bind(R.id.mapView)
-    private
     MapView mapView;
     @Bind(R.id.btnRequest)
-    private
     Button btnRequest;
     @Bind(R.id.ivMechanic)
-    private
     ImageView ivMechanic;
     @Bind(R.id.ivTowCar)
-    private
     ImageView ivTowCar;
     private MapHelper mapHelper;
     private MapHelper.MapListener mapListener;

@@ -51,37 +51,26 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     @Bind(R.id.parent_layout)
     RelativeLayout parentLayout;
     @Bind(R.id.my_toolbar)
-    private
     Toolbar myToolbar;
     @Bind(R.id.navView)
-    private
     NavigationView navView;
     @Bind(R.id.drawer_layout)
-    private
     DrawerLayout drawerLayout;
     @Bind(R.id.toolbarTitle)
-    private
     TextView toolbarTitle;
     @Bind(R.id.layoutNewsEvent)
-    private
     LinearLayout layoutNewsEvent;
     @Bind(R.id.btnLeft)
-    private
     Button btnLeft;
     @Bind(R.id.btnRight)
-    private
     Button btnRight;
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
     @Bind(R.id.btnChangeLanguage)
-    private
     Button btnChangeLanguage;
     @Bind(R.id.btnSignOut)
-    private
     Button btnSignOut;
     @Bind(R.id.ivLogo)
-    private
     ImageView ivLogo;
     private Fragment homeFragment;
     private Fragment newsFragment;

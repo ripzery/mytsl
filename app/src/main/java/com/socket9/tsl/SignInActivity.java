@@ -52,31 +52,22 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @Bind(R.id.ivLogo)
     ImageView ivLogo;
     @Bind(R.id.etUsername)
-    private
     EditText etUsername;
     @Bind(R.id.etPassword)
-    private
     EditText etPassword;
     @Bind(R.id.btnRegister)
-    private
     Button btnRegister;
     @Bind(R.id.tvCall)
-    private
     TextView tvCall;
     @Bind(R.id.btnLogin)
-    private
     Button btnLogin;
     @Bind(R.id.btnFbLoginFake)
-    private
     Button btnFbLoginFake;
     @Bind(R.id.btnFbLoginReal)
-    private
     LoginButton btnFbLoginReal;
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
     @Bind(R.id.ivForgotPassword)
-    private
     ImageView ivForgotPassword;
     private CallbackManager callbackManager;
 

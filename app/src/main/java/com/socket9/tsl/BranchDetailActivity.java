@@ -25,28 +25,20 @@ import retrofit.client.Response;
 public class BranchDetailActivity extends BaseActivity {
 
     @Bind(R.id.toolbarTitle)
-    private
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
-    private
     Toolbar myToolbar;
     @Bind(R.id.mapView)
-    private
     MapView mapView;
     @Bind(R.id.tvAddress)
-    private
     TextView tvAddress;
     @Bind(R.id.tvPhone)
-    private
     TextView tvPhone;
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
     @Bind(R.id.tvHours)
-    private
     TextView tvHours;
     @Bind(R.id.tvEmail)
-    private
     TextView tvEmail;
     private MapHelper mapHelper;
     private MapHelper.MapListener mapListener;

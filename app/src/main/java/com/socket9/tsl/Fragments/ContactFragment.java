@@ -39,7 +39,6 @@ public class ContactFragment extends Fragment {
 
     private static final int BASE_ID = 1000;
     @Bind(R.id.recyclerView)
-    private
     RecyclerView recyclerView;
     private ContactAdapter.OnContactClickListener listener;
     @Nullable

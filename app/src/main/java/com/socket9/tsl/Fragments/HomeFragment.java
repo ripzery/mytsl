@@ -36,10 +36,8 @@ public class HomeFragment extends Fragment {
 
 
     @Bind(R.id.ivUser)
-    private
     CircleImageView ivUser;
     @Bind(R.id.tvName)
-    private
     TextView tvName;
     @Nullable
     private OnFragmentInteractionListener mListener;

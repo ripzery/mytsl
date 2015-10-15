@@ -35,7 +35,6 @@ public class NewsFragment extends Fragment {
 
 
     @Bind(R.id.recyclerView)
-    private
     RecyclerView recyclerView;
     private NewsAdapter.OnCardClickListener listener;
     @Nullable

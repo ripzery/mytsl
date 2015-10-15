@@ -33,7 +33,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
 
     @Override

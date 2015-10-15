@@ -27,28 +27,20 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     @Bind(R.id.etConfirmPassword)
     EditText etConfirmPassword;
     @Bind(R.id.my_toolbar)
-    private
     Toolbar myToolbar;
     @Bind(R.id.btnRegister)
-    private
     Button btnRegister;
     @Bind(R.id.etUsername)
-    private
     EditText etUsername;
     @Bind(R.id.etEmail)
-    private
     EditText etEmail;
     @Bind(R.id.etPassword)
-    private
     EditText etPassword;
     @Bind(R.id.etPhone)
-    private
     EditText etPhone;
     @Bind(R.id.etAddress)
-    private
     EditText etAddress;
     @Bind(R.id.layoutProgress)
-    private
     LinearLayout layoutProgress;
 
     @Override
