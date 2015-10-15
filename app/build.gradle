@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.socket9.tsl"
         minSdkVersion 19
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -39,4 +39,6 @@ dependencies {
         transitive = true
     }
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.android.support:support-annotations:23.0.1'
+    compile 'com.intellij:annotations:12.0'
 }

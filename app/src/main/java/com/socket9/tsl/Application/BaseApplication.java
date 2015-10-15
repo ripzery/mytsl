@@ -3,6 +3,7 @@ package com.socket9.tsl.Application;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.Singleton;
@@ -11,10 +12,11 @@ import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
- * Created by visit on 10/2/15 AD.
+ * Created by Euro on 10/2/15 AD.
  */
-public class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks{
+public class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
+    @NonNull
     public static String token = "";
 
     @Override
@@ -29,7 +31,7 @@ public class BaseApplication extends Application implements Application.Activity
         );
 
         String language = Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, "");
-        if(language.equals("")){
+        if (language.equals("")) {
             Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_LANG, "en");
         }
     }

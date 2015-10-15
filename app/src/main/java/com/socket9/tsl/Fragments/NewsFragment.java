@@ -4,13 +4,14 @@ package com.socket9.tsl.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -20,14 +21,12 @@ import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import com.socket9.tsl.Models.ListNewsEvent;
 import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
-import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.client.Response;
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,8 +35,10 @@ public class NewsFragment extends Fragment {
 
 
     @Bind(R.id.recyclerView)
+    private
     RecyclerView recyclerView;
     private NewsAdapter.OnCardClickListener listener;
+    @Nullable
     private OnFragmentInteractionListener mListener;
 
     public NewsFragment() {
@@ -46,7 +47,7 @@ public class NewsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
@@ -59,10 +60,10 @@ public class NewsFragment extends Fragment {
         return rootView;
     }
 
-    public void initOnCardClickListener(){
+    private void initOnCardClickListener() {
         listener = new NewsAdapter.OnCardClickListener() {
             @Override
-            public void onCardClick(NewsEventEntity viewHolder) {
+            public void onCardClick(@NonNull NewsEventEntity viewHolder) {
 //                Timber.d(viewHolder.getId()+"");
                 Intent intent = new Intent(getActivity(), NewsEventActivity.class);
                 intent.putExtra("id", viewHolder.getId());
@@ -72,16 +73,16 @@ public class NewsFragment extends Fragment {
         };
     }
 
-    public void getNews(){
+    private void getNews() {
         mListener.onProgressStart();
         ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
             @Override
-            public void good(ListNewsEvent m, Response response) {
-                try{
+            public void good(@NonNull ListNewsEvent m, Response response) {
+                try {
                     NewsAdapter newsAdapter = new NewsAdapter(m.getData());
                     newsAdapter.setOnCardClickListener(listener);
                     recyclerView.setAdapter(newsAdapter);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 mListener.onProgressComplete();
@@ -91,7 +92,7 @@ public class NewsFragment extends Fragment {
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_NEWS);
         try {

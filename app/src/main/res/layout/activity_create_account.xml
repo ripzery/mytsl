@@ -32,7 +32,8 @@
             android:id="@+id/etEmail"
             android:layout_width="@dimen/btn_width_large"
             android:layout_height="wrap_content"
-            android:hint="@string/create.account.et.email" />
+            android:hint="@string/create.account.et.email"
+            android:inputType="textEmailAddress" />
 
     </LinearLayout>
 

@@ -17,11 +17,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:baselineAligned="false"
-            android:layout_weight="1"
-            android:background="#bbffffff"
+            android:layout_height="75dp"
             android:alpha="0.7"
+            android:background="#bbffffff"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -35,7 +34,7 @@
                     android:id="@+id/ivMechanic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/mechanic_active_en"/>
+                    android:src="@drawable/mechanic_active_en" />
 
             </LinearLayout>
 
@@ -50,7 +49,7 @@
                     android:id="@+id/ivTowCar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/towcar_en"/>
+                    android:src="@drawable/towcar_en" />
 
             </LinearLayout>
 
@@ -60,13 +59,12 @@
         <Button
             android:id="@+id/btnRequest"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="0dp"
+            android:layout_height="75dp"
             android:background="@color/colorPrimary"
-            android:textColor="@color/colorTextPrimary"
+            android:padding="0dp"
+            android:text="@string/emergency.call.request"
             android:textAllCaps="true"
-            android:layout_weight="1"
-            android:text="@string/emergency.call.request"/>
+            android:textColor="@color/colorTextPrimary" />
 
     </LinearLayout>
 

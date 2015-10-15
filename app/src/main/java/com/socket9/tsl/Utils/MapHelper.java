@@ -3,6 +3,8 @@ package com.socket9.tsl.Utils;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.socket9.tsl.R;
 
 /**
- * Created by visit on 9/16/15 AD.
+ * Created by Euro on 9/16/15 AD.
  */
 public class MapHelper {
     //    This latlng is the center location of Samui island
@@ -25,9 +27,10 @@ public class MapHelper {
     public static double longitude = 99.994406;
     private GoogleMap mMap;
     private MapView mMapView;
+    @Nullable
     private MapListener mapListener = null;
 
-    public void initMap(Context context, View rootView, Bundle savedInstanceState) {
+    public void initMap(@NonNull Context context, @NonNull View rootView, Bundle savedInstanceState) {
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
@@ -39,7 +42,7 @@ public class MapHelper {
         mMap = mMapView.getMap();
     }
 
-    public void initMap(Context context, MapView mMapView, Bundle savedInstanceState) {
+    public void initMap(@NonNull Context context, @NonNull MapView mMapView, Bundle savedInstanceState) {
         this.mMapView = mMapView;
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
@@ -103,9 +106,9 @@ public class MapHelper {
         }
     }
 
-    public void moveTo(double latitude, double longitude, int zoomLevel) {
+    public void moveTo(double latitude, double longitude) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(latitude, longitude)).zoom(zoomLevel).build();
+                .target(new LatLng(latitude, longitude)).zoom(17).build();
         mMap.moveCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
     }
@@ -117,7 +120,7 @@ public class MapHelper {
                 .newCameraPosition(cameraPosition));
     }
 
-    public void zoomTo(Marker marker, int zoomLevel) {
+    public void zoomTo(@NonNull Marker marker, int zoomLevel) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude)).zoom(zoomLevel).build();
         mMap.animateCamera(CameraUpdateFactory
@@ -140,17 +143,18 @@ public class MapHelper {
 
     public void removeOnMyLocationChangeListener() {
         mapListener = null;
-        try{
+        try {
             mMap.setOnMyLocationChangeListener(null);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Marker addMarkerThenZoom(LatLng latlng, int zoomLevel) {
+    @Nullable
+    public Marker addMarkerThenZoom(@NonNull LatLng latlng) {
         Marker mMarker = null;
         // create marker
-        try{
+        try {
             MarkerOptions marker = new MarkerOptions().position(
                     new LatLng(latlng.latitude, latlng.longitude)).title("Hello Maps");
 
@@ -161,10 +165,10 @@ public class MapHelper {
             // adding marker
             mMarker = mMap.addMarker(marker);
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(latlng.latitude, latlng.longitude)).zoom(zoomLevel).build();
+                    .target(new LatLng(latlng.latitude, latlng.longitude)).zoom(15).build();
             mMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

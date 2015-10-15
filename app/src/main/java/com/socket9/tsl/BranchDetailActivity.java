@@ -1,7 +1,7 @@
 package com.socket9.tsl;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.TypedValue;
@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,25 +21,32 @@ import com.socket9.tsl.Utils.Singleton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.client.Response;
-import timber.log.Timber;
 
 public class BranchDetailActivity extends BaseActivity {
 
     @Bind(R.id.toolbarTitle)
+    private
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
+    private
     Toolbar myToolbar;
     @Bind(R.id.mapView)
+    private
     MapView mapView;
     @Bind(R.id.tvAddress)
+    private
     TextView tvAddress;
     @Bind(R.id.tvPhone)
+    private
     TextView tvPhone;
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
     @Bind(R.id.tvHours)
+    private
     TextView tvHours;
     @Bind(R.id.tvEmail)
+    private
     TextView tvEmail;
     private MapHelper mapHelper;
     private MapHelper.MapListener mapListener;
@@ -58,36 +64,36 @@ public class BranchDetailActivity extends BaseActivity {
 
     }
 
-    public void initMap(Bundle savedInstanceState) {
+    private void initMap(Bundle savedInstanceState) {
         try {
             mapHelper = new MapHelper();
             mapHelper.initMap(this, mapView, savedInstanceState);
             mapHelper.getMap().setMyLocationEnabled(false);
 
         } catch (Exception e) {
-            Singleton.toast(BranchDetailActivity.this, getString(R.string.toast_update_google_play_services), Toast.LENGTH_LONG);
+            Singleton.toast(BranchDetailActivity.this, getString(R.string.toast_update_google_play_services));
             e.printStackTrace();
         }
     }
 
-    public void getContact(int id, final String contactName) {
+    private void getContact(int id, final String contactName) {
         layoutProgress.setVisibility(View.VISIBLE);
         ApiService.getTSLApi().getContact(Singleton.getInstance().getToken(), id, new MyCallback<Contact>() {
 
             @Override
-            public void good(Contact m, Response response) {
+            public void good(@NonNull Contact m, Response response) {
                 layoutProgress.setVisibility(View.GONE);
                 toolbarTitle.setText(contactName);
                 toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 LatLng contactLatLng = new LatLng(m.getData().getLat(), m.getData().getLng());
-                mapHelper.addMarkerThenZoom(contactLatLng, 15);
+                mapHelper.addMarkerThenZoom(contactLatLng);
 
-                try{
+                try {
                     tvPhone.setText(Singleton.getPlainText(m.getData().getPhone()));
                     tvEmail.setText(Singleton.getPlainText(m.getData().getEmail()));
                     tvHours.setText(Html.fromHtml(m.getData().getBusinessHours()));
                     tvAddress.setText(Singleton.getPlainText(m.getData().getAddress()));
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

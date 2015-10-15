@@ -1,7 +1,7 @@
 package com.socket9.tsl.Models;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
 public class Profile extends BaseModel {
 
@@ -11,12 +11,12 @@ public class Profile extends BaseModel {
      */
     private DataEntity data;
 
-    public void setData(DataEntity data) {
-        this.data = data;
-    }
-
     public DataEntity getData() {
         return data;
+    }
+
+    public void setData(DataEntity data) {
+        this.data = data;
     }
 
     public static class DataEntity {
@@ -35,44 +35,44 @@ public class Profile extends BaseModel {
         private String facebookPic;
         private String email;
 
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public void setNameTh(String nameTh) {
-            this.nameTh = nameTh;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public void setNameEn(String nameEn) {
-            this.nameEn = nameEn;
-        }
-
-        public void setPic(String pic) {
-            this.pic = pic;
-        }
-
         public String getPhone() {
             return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
         }
 
         public String getNameTh() {
             return nameTh;
         }
 
+        public void setNameTh(String nameTh) {
+            this.nameTh = nameTh;
+        }
+
         public String getAddress() {
             return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
         }
 
         public String getNameEn() {
             return nameEn;
         }
 
+        public void setNameEn(String nameEn) {
+            this.nameEn = nameEn;
+        }
+
         public String getPic() {
             return pic;
+        }
+
+        public void setPic(String pic) {
+            this.pic = pic;
         }
 
         public String getEmail() {

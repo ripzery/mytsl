@@ -3,6 +3,7 @@ package com.socket9.tsl;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -52,22 +52,31 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @Bind(R.id.ivLogo)
     ImageView ivLogo;
     @Bind(R.id.etUsername)
+    private
     EditText etUsername;
     @Bind(R.id.etPassword)
+    private
     EditText etPassword;
     @Bind(R.id.btnRegister)
+    private
     Button btnRegister;
     @Bind(R.id.tvCall)
+    private
     TextView tvCall;
     @Bind(R.id.btnLogin)
+    private
     Button btnLogin;
     @Bind(R.id.btnFbLoginFake)
+    private
     Button btnFbLoginFake;
     @Bind(R.id.btnFbLoginReal)
+    private
     LoginButton btnFbLoginReal;
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
     @Bind(R.id.ivForgotPassword)
+    private
     ImageView ivForgotPassword;
     private CallbackManager callbackManager;
 
@@ -86,7 +95,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     }
 
-    public void setListener() {
+    private void setListener() {
         btnLogin.setOnClickListener(this);
         ivForgotPassword.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -94,7 +103,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         tvCall.setOnClickListener(this);
     }
 
-    public void setupFacebook() {
+    private void setupFacebook() {
         callbackManager = CallbackManager.Factory.create();
         btnFbLoginReal.setReadPermissions("user_friends", "user_hometown", "email", "user_about_me");
 
@@ -102,7 +111,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
+                    public void onSuccess(@NonNull LoginResult loginResult) {
                         requestGraphApi(loginResult.getAccessToken());
                     }
 
@@ -112,21 +121,21 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     @Override
-                    public void onError(FacebookException exception) {
+                    public void onError(@NonNull FacebookException exception) {
                         if (exception.getLocalizedMessage().contains("CONNECTION_FAILURE")) {
-                            Singleton.toast(SignInActivity.this, "Please check your internet connection", Toast.LENGTH_LONG);
+                            Singleton.toast(SignInActivity.this, "Please check your internet connection");
                         }
                         // App code
                     }
                 });
     }
 
-    public void requestGraphApi(final AccessToken token) {
+    private void requestGraphApi(final AccessToken token) {
         GraphRequest request = GraphRequest.newMeRequest(
                 token,
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
+                    public void onCompleted(@NonNull JSONObject object, GraphResponse response) {
                         // Application code
                         try {
                             String facebookId = object.getString("id");
@@ -157,7 +166,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    public void registerWithFb(final String fbId, String name, String email, String address, final String photo) {
+    private void registerWithFb(final String fbId, String name, String email, String address, final String photo) {
         Timber.i(fbId);
         Timber.i(name);
         Timber.i(email);
@@ -170,7 +179,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
 
             @Override
-            public void bad(String error, boolean isTokenExpired) {
+            public void bad(@NonNull String error, boolean isTokenExpired) {
                 if (error.contains("already used")) {
                     loginWithFacebook(fbId, photo);
                 }
@@ -178,11 +187,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    public void loginWithFacebook(String fbId, final String photo) {
+    private void loginWithFacebook(String fbId, final String photo) {
         setProgressVisible(true);
         ApiService.getTSLApi().loginWithFb(fbId, photo, new MyCallback<User>() {
             @Override
-            public void good(User m, Response response) {
+            public void good(@NonNull User m, Response response) {
                 Timber.d(m.getData().getToken());
                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
@@ -201,11 +210,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     public void updatePicture(String photo) {
         Glide.with(this).load(photo).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+            public void onResourceReady(@NonNull Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 String encodedBitmap = "data:image/png;base64," + encode(compress(resource, 100));
                 ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
                     @Override
-                    public void good(Photo m, Response response) {
+                    public void good(@NonNull Photo m, Response response) {
                         ApiService.getTSLApi().updatePicture(Singleton.getInstance().getToken(),
                                 m.getData().getPathSave(), new MyCallback<BaseModel>() {
                                     @Override
@@ -224,13 +233,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     }
 
-    public byte[] compress(Bitmap bitmap, int percent) {
+    private byte[] compress(@NonNull Bitmap bitmap, int percent) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, percent, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
-    public String encode(byte[] byteArray) {
+    private String encode(@NonNull byte[] byteArray) {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
@@ -248,13 +257,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
                 setProgressVisible(true);
                 ApiService.getTSLApi().login(etUsername.getText().toString(), etPassword.getText().toString(), new MyCallback<User>() {
                     @Override
-                    public void good(User m, Response response) {
+                    public void good(@NonNull User m, Response response) {
                         Timber.d(m.getData().getToken());
                         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
                         startActivity(new Intent(SignInActivity.this, MainActivity.class));
@@ -271,21 +280,23 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.tvCall:
                 DialogHelper.getCallUsDialog(this, new MaterialDialog.SingleButtonCallback() {
+                    @SuppressWarnings("NullableProblems")
                     @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         Timber.i("Call Us");
                     }
                 }).show();
                 break;
             case R.id.ivForgotPassword:
                 DialogHelper.getForgotDialog(this, new MaterialDialog.InputCallback() {
+                    @SuppressWarnings("NullableProblems")
                     @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                    public void onInput(@NonNull MaterialDialog materialDialog, @NonNull CharSequence charSequence) {
                         ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
                             @Override
-                            public void good(BaseModel m, Response response) {
+                            public void good(@NonNull BaseModel m, Response response) {
                                 try {
-                                    Singleton.toast(SignInActivity.this, m.getMessage(), Toast.LENGTH_LONG);
+                                    Singleton.toast(SignInActivity.this, m.getMessage());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

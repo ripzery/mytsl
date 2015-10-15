@@ -3,7 +3,7 @@ package com.socket9.tsl.ModelEntities;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
 public class ContactEntity {
 
@@ -36,52 +36,52 @@ public class ContactEntity {
         this.icon = icon;
     }
 
-    public void setPhone(String Phone) {
-        this.Phone = Phone;
-    }
-
-    public void setAddress(String Address) {
-        this.Address = Address;
-    }
-
-    public void setFax(String Fax) {
-        this.Fax = Fax;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    public void setBusinessHours(String BusinessHours) {
-        this.BusinessHours = BusinessHours;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
     public String getPhone() {
         return Phone;
+    }
+
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
     }
 
     public String getAddress() {
         return Address;
     }
 
+    public void setAddress(String Address) {
+        this.Address = Address;
+    }
+
     public String getFax() {
         return Fax;
+    }
+
+    public void setFax(String Fax) {
+        this.Fax = Fax;
     }
 
     public double getLng() {
         return lng;
     }
 
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
     public String getBusinessHours() {
         return BusinessHours;
     }
 
+    public void setBusinessHours(String BusinessHours) {
+        this.BusinessHours = BusinessHours;
+    }
+
     public double getLat() {
         return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
     public int getId() {

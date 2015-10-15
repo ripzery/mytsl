@@ -2,6 +2,7 @@ package com.socket9.tsl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +12,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -24,19 +23,19 @@ import com.socket9.tsl.Utils.Singleton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.client.Response;
-import timber.log.Timber;
 
 public class NewsEventActivity extends BaseActivity {
 
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
+    private
     Toolbar myToolbar;
     @Bind(R.id.webView)
+    private
     WebView webView;
-    boolean isNews;
-    int id;
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
     private ShareActionProvider mShareActionProvider;
     private Intent sendIntent;
@@ -46,9 +45,9 @@ public class NewsEventActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_event);
         ButterKnife.bind(this);
-        isNews = getIntent().getBooleanExtra("isNews", true);
+        boolean isNews = getIntent().getBooleanExtra("isNews", true);
         initToolbar(myToolbar, "", true);
-        id = getIntent().getIntExtra("id", 0);
+        int id = getIntent().getIntExtra("id", 0);
         layoutProgress.setVisibility(View.VISIBLE);
         if (isNews)
             getNews(id);
@@ -56,26 +55,26 @@ public class NewsEventActivity extends BaseActivity {
             getEvent(id);
     }
 
-    public void getNews(int id) {
+    private void getNews(int id) {
         ApiService.getTSLApi().getNew(Singleton.getInstance().getToken(), id, new MyCallback<NewsEvent>() {
             @Override
-            public void good(NewsEvent m, Response response) {
+            public void good(@NonNull NewsEvent m, Response response) {
                 setInfo(m.getData());
             }
         });
     }
 
-    public void getEvent(int id) {
+    private void getEvent(int id) {
         ApiService.getTSLApi().getEvent(Singleton.getInstance().getToken(), id, new MyCallback<NewsEvent>() {
             @Override
-            public void good(NewsEvent m, Response response) {
+            public void good(@NonNull NewsEvent m, Response response) {
                 setInfo(m.getData());
             }
 
         });
     }
 
-    public void setInfo(final NewsEventEntity entity) {
+    private void setInfo(@NonNull final NewsEventEntity entity) {
 //        boolean isBlue = entity.getType().equalsIgnoreCase("service");
         webView.loadUrl(entity.getContentEn());
         webView.setWebViewClient(new WebViewClient() {
@@ -104,7 +103,7 @@ public class NewsEventActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_news_event, menu);
 
@@ -122,7 +121,7 @@ public class NewsEventActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {

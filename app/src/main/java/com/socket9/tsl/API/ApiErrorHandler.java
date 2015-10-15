@@ -1,25 +1,23 @@
 package com.socket9.tsl.API;
 
-import android.content.Context;
-import android.widget.Toast;
-
-import com.socket9.tsl.Utils.Singleton;
+import android.support.annotation.NonNull;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
-public class ApiErrorHandler implements ErrorHandler {
+class ApiErrorHandler implements ErrorHandler {
 
+    @NonNull
     @Override
-    public Throwable handleError(RetrofitError cause) {
+    public Throwable handleError(@NonNull RetrofitError cause) {
         String description;
-        if(cause.getKind() == RetrofitError.Kind.NETWORK){
+        if (cause.getKind() == RetrofitError.Kind.NETWORK) {
             //Network error here
             description = "Please check your internet connection";
-        }else{
+        } else {
             description = cause.getMessage();
         }
         return new Exception(description);

@@ -16,6 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/icon_app_512"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".EntryActivity">
             <intent-filter>
@@ -27,7 +28,17 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <data android:scheme="tsl" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".SignInActivity"
             android:label="@string/title_activity_sign_in"

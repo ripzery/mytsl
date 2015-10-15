@@ -1,6 +1,7 @@
 package com.socket9.tsl;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -22,25 +22,33 @@ import timber.log.Timber;
 
 public class CreateAccountActivity extends BaseActivity implements View.OnClickListener {
 
-    @Bind(R.id.my_toolbar)
-    Toolbar myToolbar;
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
-    @Bind(R.id.btnRegister)
-    Button btnRegister;
-    @Bind(R.id.etUsername)
-    EditText etUsername;
-    @Bind(R.id.etEmail)
-    EditText etEmail;
-    @Bind(R.id.etPassword)
-    EditText etPassword;
     @Bind(R.id.etConfirmPassword)
     EditText etConfirmPassword;
+    @Bind(R.id.my_toolbar)
+    private
+    Toolbar myToolbar;
+    @Bind(R.id.btnRegister)
+    private
+    Button btnRegister;
+    @Bind(R.id.etUsername)
+    private
+    EditText etUsername;
+    @Bind(R.id.etEmail)
+    private
+    EditText etEmail;
+    @Bind(R.id.etPassword)
+    private
+    EditText etPassword;
     @Bind(R.id.etPhone)
+    private
     EditText etPhone;
     @Bind(R.id.etAddress)
+    private
     EditText etAddress;
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
 
     @Override
@@ -52,7 +60,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
         setListener();
     }
 
-    public void setListener() {
+    private void setListener() {
         btnRegister.setOnClickListener(this);
     }
 
@@ -65,7 +73,7 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
 
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.btnRegister:
                 layoutProgress.setVisibility(View.VISIBLE);
@@ -76,19 +84,19 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
                         etEmail.getText().toString(),
                         etAddress.getText().toString(),
                         etPhone.getText().toString(),
-                        "","", new MyCallback<User>() {
+                        "", "", new MyCallback<User>() {
                             @Override
-                            public void good(User m, Response response) {
+                            public void good(@NonNull User m, Response response) {
                                 layoutProgress.setVisibility(View.GONE);
                                 Timber.d("Token : " + m.getData().getToken());
                                 Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                                Singleton.toast(getApplicationContext(), getString(R.string.toast_activate_account), Toast.LENGTH_LONG);
+                                Singleton.toast(getApplicationContext(), getString(R.string.toast_activate_account));
                                 finish();
                             }
 
                             @Override
                             public void bad(String error, boolean isTokenExpired) {
-                                Singleton.toast(CreateAccountActivity.this, error, Toast.LENGTH_LONG);
+                                Singleton.toast(CreateAccountActivity.this, error);
                             }
                         }
                 );

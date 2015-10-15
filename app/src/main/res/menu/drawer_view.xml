@@ -36,8 +36,8 @@
             android:title="@string/nav.contact" />
 
         <!--<item-->
-            <!--android:id="@+id/nav_sign_out"-->
-            <!--android:icon="@drawable/signout"-->
-            <!--android:title="@string/nav.signout" />-->
+        <!--android:id="@+id/nav_sign_out"-->
+        <!--android:icon="@drawable/signout"-->
+        <!--android:title="@string/nav.signout" />-->
     </group>
 </menu>

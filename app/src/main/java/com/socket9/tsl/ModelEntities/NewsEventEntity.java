@@ -1,7 +1,7 @@
 package com.socket9.tsl.ModelEntities;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
 public class NewsEventEntity {
     /**
@@ -21,52 +21,52 @@ public class NewsEventEntity {
     private String contentEn;
     private String contentTh;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setTitleTh(String titleTh) {
-        this.titleTh = titleTh;
-    }
-
-    public void setTitleEn(String titleEn) {
-        this.titleEn = titleEn;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitleTh() {
         return titleTh;
     }
 
+    public void setTitleTh(String titleTh) {
+        this.titleTh = titleTh;
+    }
+
     public String getTitleEn() {
         return titleEn;
+    }
+
+    public void setTitleEn(String titleEn) {
+        this.titleEn = titleEn;
     }
 
     public String getPic() {
         return pic;
     }
 
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getDate() {
         return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getContentEn() {

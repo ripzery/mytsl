@@ -4,10 +4,9 @@ import android.content.Context;
 
 import com.socket9.tsl.Models.BaseModel;
 import com.socket9.tsl.Models.Contact;
-import com.socket9.tsl.Models.NewsEvent;
 import com.socket9.tsl.Models.ListContacts;
 import com.socket9.tsl.Models.ListNewsEvent;
-import com.socket9.tsl.Models.ListNewsEvent;
+import com.socket9.tsl.Models.NewsEvent;
 import com.socket9.tsl.Models.Photo;
 import com.socket9.tsl.Models.Profile;
 import com.socket9.tsl.Models.User;
@@ -18,11 +17,11 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 
 /**
- * Created by visit on 10/3/15 AD.
+ * Created by Euro on 10/3/15 AD.
  */
 public class ApiService {
 
-    public static final String BASE_URL = "http://tsl.socket9.com/api";
+    private static final String BASE_URL = "http://tsl.socket9.com/api";
     private static TSLApi service;
     private static Context context;
 
@@ -46,7 +45,7 @@ public class ApiService {
 
         @FormUrlEncoded
         @POST("/checkLogin")
-        void loginWithFb(@Field("facebookid") String facebookId,@Field("facebookpic") String facebookpic, MyCallback<User> cb);
+        void loginWithFb(@Field("facebookid") String facebookId, @Field("facebookpic") String facebookpic, MyCallback<User> cb);
 
         @FormUrlEncoded
         @POST("/forgetPassword")
@@ -62,7 +61,7 @@ public class ApiService {
 
         @FormUrlEncoded
         @POST("/getNew")
-        void getNew(@Field("token") String token,@Field("newid") int newId, MyCallback<NewsEvent> cb);
+        void getNew(@Field("token") String token, @Field("newid") int newId, MyCallback<NewsEvent> cb);
 
         @FormUrlEncoded
         @POST("/getListEvents")

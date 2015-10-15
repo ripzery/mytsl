@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/logo_nav"
-        android:layout_marginBottom="8dp"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/toolbarTitle"
@@ -30,28 +30,31 @@
 
     <LinearLayout
         android:id="@+id/layoutNewsEvent"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="36dp"
+        android:layout_marginEnd="36dp"
         android:gravity="center"
         android:visibility="gone">
 
         <Button
             android:id="@+id/btnLeft"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="-4dip"
             android:background="@drawable/button_corner_left"
-            android:textColor="@color/colorTextPrimary"
-            android:layout_marginRight="-4dip"
-            android:text="@string/news" />
+            android:text="@string/news"
+            android:textColor="@color/colorTextPrimary" />
 
         <Button
             android:id="@+id/btnRight"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@drawable/button_corner_right_white"
-            android:textColor="@color/colorTextSecondary"
-            android:text="@string/event" />
+            android:text="@string/event"
+            android:textColor="@color/colorTextSecondary" />
 
     </LinearLayout>
 

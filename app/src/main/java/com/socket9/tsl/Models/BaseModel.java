@@ -1,7 +1,7 @@
 package com.socket9.tsl.Models;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
 public class BaseModel {
     /**
@@ -11,19 +11,19 @@ public class BaseModel {
     private String message;
     private boolean result;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setResult(boolean result) {
-        this.result = result;
-    }
-
     public String getMessage() {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public boolean isResult() {
         return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
     }
 }

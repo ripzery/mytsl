@@ -8,17 +8,20 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by visit on 10/7/15 AD.
+ * Created by Euro on 10/7/15 AD.
  */
-public class PickImageChooser {
+class PickImageChooser {
 
-    public static Intent getPickImageChooserIntent(Context context){
+    @NonNull
+    public static Intent getPickImageChooserIntent(@NonNull Context context) {
         // Determine Uri of camera image to save.
         Uri outputFileUri = getCaptureImageOutputUri(context);
 
@@ -72,7 +75,8 @@ public class PickImageChooser {
     /**
      * Get URI to image received from capture by camera.
      */
-    private static Uri getCaptureImageOutputUri(Context context) {
+    @Nullable
+    private static Uri getCaptureImageOutputUri(@NonNull Context context) {
         Uri outputFileUri = null;
         File getImage = context.getExternalCacheDir();
         if (getImage != null) {
@@ -83,12 +87,13 @@ public class PickImageChooser {
     }
 
     /**
-     * Get the URI of the selected image from {@link #getPickImageChooserIntent()}.<br/>
+     * Get the URI of the selected image from .<br/>
      * Will return the correct URI for camera and gallery image.
      *
      * @param data the returned data of the activity result
      */
-    public static Uri getPickImageResultUri(Intent data,Context context) {
+    @Nullable
+    public static Uri getPickImageResultUri(@Nullable Intent data, @NonNull Context context) {
         boolean isCamera = true;
         if (data != null) {
             String action = data.getAction();

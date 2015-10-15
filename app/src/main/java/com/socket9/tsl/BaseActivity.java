@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.socket9.tsl.Events.BadEvent;
 import com.socket9.tsl.Events.GoodEvent;
@@ -28,15 +28,13 @@ import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
- * Created by visit on 10/2/15 AD.
+ * Created by Euro on 10/2/15 AD.
  */
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
-    private ActionBar mActionBar;
-    private FrameLayout baseLayout;
-    private FrameLayout childLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +43,13 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(int layoutResID) {
-        baseLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
-        childLayout = (FrameLayout) baseLayout.findViewById(R.id.layoutContent);
+        FrameLayout baseLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
+        FrameLayout childLayout = (FrameLayout) baseLayout.findViewById(R.id.layoutContent);
         getLayoutInflater().inflate(layoutResID, childLayout, true);
         super.setContentView(baseLayout);
     }
 
-    public void setLocale(String lang) {
+    void setLocale(@NonNull String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -61,27 +59,40 @@ public class BaseActivity extends AppCompatActivity {
         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_LANG, lang);
     }
 
+
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop() {
+
         super.onStop();
     }
 
-    public void setProgressVisible(boolean isVisible){
+    void setProgressVisible(boolean isVisible) {
         layoutProgress.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     // Compiler didn't detect that this is use by Eventbus
-    public void onEvent(BadEvent event) {
+    public void onEvent(@NonNull BadEvent event) {
         setProgressVisible(false);
-        if(!event.message.contains("is already used")){
-            Singleton.toast(getApplicationContext(), event.message, Toast.LENGTH_LONG);
+        if (!event.message.contains("is already used")) {
+            Singleton.toast(getApplicationContext(), event.message);
         }
         Timber.i(event.message);
         if (event.isTokenExpired) {
@@ -101,7 +112,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         switch (id) {
@@ -113,9 +124,9 @@ public class BaseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void initToolbar(Toolbar myToolbar, String title, boolean isBackVisible) {
+    void initToolbar(@NonNull Toolbar myToolbar, String title, boolean isBackVisible) {
         setSupportActionBar(myToolbar);
-        mActionBar = getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         TextView tvTitle = (TextView) myToolbar.findViewById(R.id.toolbarTitle);
         tvTitle.setText(title);
         mActionBar.setDisplayShowCustomEnabled(true);

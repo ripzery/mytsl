@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,41 +41,52 @@ import timber.log.Timber;
 
 public class MyProfileActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private final ArrayList<EditText> editTextArrayList = new ArrayList<>();
+    private final ArrayList<TextView> textViewArrayList = new ArrayList<>();
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
+    private
     Toolbar myToolbar;
     @Bind(R.id.ivUser)
+    private
     ImageView ivUser;
     @Bind(R.id.etName)
+    private
     EditText etName;
     @Bind(R.id.etPhone)
+    private
     EditText etPhone;
     @Bind(R.id.etEmail)
+    private
     EditText etEmail;
     @Bind(R.id.etPassword)
+    private
     EditText etPassword;
     @Bind(R.id.etAddress)
+    private
     EditText etAddress;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     @Bind(R.id.tvName)
+    private
     TextView tvName;
     @Bind(R.id.tvPhone)
+    private
     TextView tvPhone;
     @Bind(R.id.tvEmail)
+    private
     TextView tvEmail;
     @Bind(R.id.tvPassword)
+    private
     TextView tvPassword;
     @Bind(R.id.tvAddress)
+    private
     TextView tvAddress;
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
     private Photo photo;
     private Profile profile;
-    private ArrayList<EditText> editTextArrayList = new ArrayList<>();
-    private ArrayList<TextView> textViewArrayList = new ArrayList<>();
-    private TextWatcher textWatcher;
-    private Menu profileMenu;
     private MenuItem save;
 
     @Override
@@ -100,7 +111,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         textViewArrayList.add(tvPassword);
     }
 
-    public void setListener() {
+    private void setListener() {
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,16 +121,15 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        profileMenu = menu;
         getMenuInflater().inflate(R.menu.menu_my_profile, menu);
         save = menu.findItem(R.id.action_save);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
                 updateProfile();
@@ -128,11 +138,11 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 if (save.isVisible()) {
                     DialogHelper.getUpdateProfileDialog(this, new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                             finish();
                         }
                     }).show();
-                }else
+                } else
                     finish(); // finish if data isn't change
         }
         return false;
@@ -150,10 +160,10 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 etAddress.getText().toString(),
                 picture, new MyCallback<BaseModel>() {
                     @Override
-                    public void good(BaseModel m, Response response) {
+                    public void good(@NonNull BaseModel m, Response response) {
                         Timber.i(m.getMessage());
 //                        Toast.makeText(MyProfileActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
-                        Singleton.toast(MyProfileActivity.this, m.getMessage(), Toast.LENGTH_LONG);
+                        Singleton.toast(MyProfileActivity.this, m.getMessage());
                         finish();
                     }
 
@@ -161,7 +171,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     public void bad(String error, boolean isTokenExpired) {
                         Timber.d(error);
                         if (isTokenExpired) {
-                            Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid), Toast.LENGTH_LONG);
+                            Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid));
                             Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                             startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
                             finish();
@@ -181,7 +191,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         layoutProgress.setVisibility(View.VISIBLE);
         ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
             @Override
-            public void good(Profile m, Response response) {
+            public void good(@NonNull Profile m, Response response) {
                 try {
                     tvName.setText(m.getData().getNameEn());
                     tvAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "-" : m.getData().getAddress());
@@ -194,9 +204,9 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                     etPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "" : m.getData().getPhone());
 
                     if (m.getData().getPic() != null)
-                        Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(new GlideDrawableImageViewTarget(ivUser){
+                        Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(new GlideDrawableImageViewTarget(ivUser) {
                             @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                            public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
                                 ivUser.setVisibility(View.VISIBLE);
                                 super.onResourceReady(resource, animation);
                             }
@@ -222,7 +232,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         tvEmail.setOnClickListener(this);
         tvPassword.setOnClickListener(this);
 
-        textWatcher = new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -254,7 +264,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         if (save.isVisible()) {
             DialogHelper.getUpdateProfileDialog(this, new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                     MyProfileActivity.super.onBackPressed();
                 }
             }).show();
@@ -270,23 +280,23 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 //            ivUser.setImageBitmap(imageBitmap);
-            String encodedBitmap = "data:image/png;base64," + encode(compress(imageBitmap, 70));
+            String encodedBitmap = "data:image/png;base64," + encode(compress(imageBitmap));
             uploadPhoto(encodedBitmap);
             save.setVisible(true);
         }
     }
 
-    public void uploadPhoto(String encodedBitmap) {
+    private void uploadPhoto(String encodedBitmap) {
         layoutProgress.setVisibility(View.VISIBLE);
 
         ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
             @Override
-            public void good(Photo m, Response response) {
+            public void good(@NonNull Photo m, Response response) {
                 Timber.i(m.getData().getPathUse());
                 photo = m;
                 layoutProgress.setVisibility(View.GONE);
@@ -295,18 +305,18 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
-    public byte[] compress(Bitmap bitmap, int percent) {
+    private byte[] compress(@NonNull Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, percent, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
-    public String encode(byte[] byteArray) {
+    private String encode(@NonNull byte[] byteArray) {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.tvName:
                 tvName.setVisibility(View.GONE);

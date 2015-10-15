@@ -5,7 +5,7 @@ import com.socket9.tsl.ModelEntities.ContactEntity;
 import java.util.List;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
 public class ListContacts extends BaseModel {
     private List<ContactEntity> data;

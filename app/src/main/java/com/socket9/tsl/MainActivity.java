@@ -1,7 +1,9 @@
 package com.socket9.tsl;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +36,7 @@ import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements OnFragmentInteractionListener, View.OnClickListener {
 
@@ -42,32 +45,43 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     public static final int FRAGMENT_DISPLAY_CONTACT = 3;
     public static final int FRAGMENT_DISPLAY_EMERGENCY = 4;
     public static final int FRAGMENT_DISPLAY_PROFILE = 5;
-    public static final int FRAGMENT_DISPLAY_EVENT = 6;
-    @Bind(R.id.my_toolbar)
-    Toolbar myToolbar;
+    private static final int FRAGMENT_DISPLAY_EVENT = 6;
     @Bind(R.id.fragment_container)
     FrameLayout fragmentContainer;
     @Bind(R.id.parent_layout)
     RelativeLayout parentLayout;
+    @Bind(R.id.my_toolbar)
+    private
+    Toolbar myToolbar;
     @Bind(R.id.navView)
+    private
     NavigationView navView;
     @Bind(R.id.drawer_layout)
+    private
     DrawerLayout drawerLayout;
     @Bind(R.id.toolbarTitle)
+    private
     TextView toolbarTitle;
     @Bind(R.id.layoutNewsEvent)
+    private
     LinearLayout layoutNewsEvent;
     @Bind(R.id.btnLeft)
+    private
     Button btnLeft;
     @Bind(R.id.btnRight)
+    private
     Button btnRight;
     @Bind(R.id.layoutProgress)
+    private
     LinearLayout layoutProgress;
     @Bind(R.id.btnChangeLanguage)
+    private
     Button btnChangeLanguage;
     @Bind(R.id.btnSignOut)
+    private
     Button btnSignOut;
     @Bind(R.id.ivLogo)
+    private
     ImageView ivLogo;
     private Fragment homeFragment;
     private Fragment newsFragment;
@@ -80,6 +94,9 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        checkIfEnterFromUrl();
+//        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, );
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -94,7 +111,19 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
         navView.setCheckedItem(R.id.nav_home);
     }
 
-    public void setListener() {
+    private void checkIfEnterFromUrl() {
+        if (getIntent().getData() != null) {
+            try {
+                Uri data = getIntent().getData();
+                Timber.i(data.getQueryParameter("token"));
+                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, data.getQueryParameter("token"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void setListener() {
         btnLeft.setOnClickListener(this);
         btnRight.setOnClickListener(this);
         btnChangeLanguage.setOnClickListener(this);
@@ -117,10 +146,10 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
         return true;
     }
 
-    public void setupDrawerContent() {
+    private void setupDrawerContent() {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
                         replaceFragment(FRAGMENT_DISPLAY_HOME);
@@ -159,7 +188,7 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
         });
     }
 
-    public void replaceFragment(int mode) {
+    private void replaceFragment(int mode) {
         switch (mode) {
             case FRAGMENT_DISPLAY_HOME:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
@@ -209,7 +238,7 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -235,7 +264,7 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.btnLeft:
                 if (!newsFragment.isVisible()) {
@@ -276,7 +305,7 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                 // Show dialog
                 DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         LoginManager.getInstance().logOut();
                         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));

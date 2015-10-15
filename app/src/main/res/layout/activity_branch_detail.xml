@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/layout_app_bar" />
@@ -11,10 +11,10 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            tools:context="com.socket9.tsl.BranchDetailActivity"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context="com.socket9.tsl.BranchDetailActivity">
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
@@ -27,8 +27,8 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:src="@drawable/ic_location_on_black_24dp" />
 
             </LinearLayout>
@@ -62,8 +62,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                     android:id="@+id/tvPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text="@string/profile.phone.content"
                     android:textSize="16sp" />
 
@@ -99,8 +99,8 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,14 +119,14 @@
                     android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text="@string/contact.email"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:src="@drawable/ic_email_grey_500_24dp" />
 
             </LinearLayout>
@@ -137,8 +137,8 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:src="@drawable/ic_access_time_grey_500_24dp" />
 
             </LinearLayout>
@@ -165,8 +165,8 @@
                 android:id="@+id/tvHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text=""
                 android:textSize="16sp" />

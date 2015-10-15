@@ -2,15 +2,14 @@ package com.socket9.tsl.Fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -21,7 +20,6 @@ import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.Models.Profile;
 import com.socket9.tsl.R;
-import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
@@ -38,9 +36,12 @@ public class HomeFragment extends Fragment {
 
 
     @Bind(R.id.ivUser)
+    private
     CircleImageView ivUser;
     @Bind(R.id.tvName)
+    private
     TextView tvName;
+    @Nullable
     private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -69,29 +70,29 @@ public class HomeFragment extends Fragment {
         getProfile();
     }
 
-    public void getProfile() {
+    private void getProfile() {
         mListener.onProgressStart();
         ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
             @Override
-            public void good(Profile m, Response response) {
+            public void good(@NonNull Profile m, Response response) {
                 try {
                     if (m.getData().getPic() != null)
-                        Glide.with(getActivity()).load(m.getData().getPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser){
+                        Glide.with(getActivity()).load(m.getData().getPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser) {
                             @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                            public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
                                 ivUser.setVisibility(View.VISIBLE);
                                 super.onResourceReady(resource, animation);
                             }
                         });
-                    else if(m.getData().getFacebookPic() != null)
-                        Glide.with(getActivity()).load(m.getData().getFacebookPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser){
+                    else if (m.getData().getFacebookPic() != null)
+                        Glide.with(getActivity()).load(m.getData().getFacebookPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser) {
                             @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                            public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
                                 ivUser.setVisibility(View.VISIBLE);
                                 super.onResourceReady(resource, animation);
                             }
                         });
-                    else{
+                    else {
                         ivUser.setVisibility(View.VISIBLE);
                     }
                     tvName.setText(m.getData().getNameEn());
@@ -112,7 +113,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_HOME);
         try {

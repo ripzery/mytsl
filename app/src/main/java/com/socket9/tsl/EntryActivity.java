@@ -1,6 +1,5 @@
 package com.socket9.tsl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,9 +8,9 @@ import com.socket9.tsl.Utils.Singleton;
 import timber.log.Timber;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
-public class EntryActivity  extends BaseActivity{
+public class EntryActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

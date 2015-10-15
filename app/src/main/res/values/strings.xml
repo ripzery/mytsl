@@ -62,7 +62,7 @@
 
     <!-- Navigation Drawer -->
     <string name="nav.home">Home</string>
-    <string name="nav.news">News &amp; Event</string>
+    <string name="nav.news" translatable="false">News &amp; Event</string>
     <string name="nav.contact">Contact Us</string>
     <string name="nav.emergency">Emergency Call</string>
     <string name="nav.signout">Sign Out</string>
@@ -120,4 +120,9 @@
 
     <string name="lorem">Lorem ipsum dolor sit amet, congue malesuada. Mauris integer, pellentesque purus nam. Ipsum interdum felis facilisi ipsum aliquam. Tincidunt ornare non iaculis nec vitae, consectetur in.</string>
     <string name="toolbar.Contact">Contact</string>
+    <string name="profile.address.hint">Your address</string>
+    <string name="profile.email.hint">Your email</string>
+    <string name="profile.name.hint">Your name</string>
+    <string name="profile.password.hint">Your password</string>
+    <string name="profile.phone.hint">Your phone number</string>
 </resources>

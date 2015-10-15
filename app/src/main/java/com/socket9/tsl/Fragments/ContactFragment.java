@@ -4,13 +4,14 @@ package com.socket9.tsl.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -20,7 +21,6 @@ import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.ContactEntity;
 import com.socket9.tsl.Models.ListContacts;
 import com.socket9.tsl.R;
-import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
@@ -37,11 +37,13 @@ import timber.log.Timber;
 public class ContactFragment extends Fragment {
 
 
+    private static final int BASE_ID = 1000;
     @Bind(R.id.recyclerView)
+    private
     RecyclerView recyclerView;
     private ContactAdapter.OnContactClickListener listener;
+    @Nullable
     private OnFragmentInteractionListener mListener;
-    private static final int BASE_ID = 1000;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -49,7 +51,7 @@ public class ContactFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
@@ -63,10 +65,10 @@ public class ContactFragment extends Fragment {
         return rootView;
     }
 
-    public void setListener() {
+    private void setListener() {
         listener = new ContactAdapter.OnContactClickListener() {
             @Override
-            public void onClick(ContactEntity contactEntity) {
+            public void onClick(@NonNull ContactEntity contactEntity) {
                 Timber.i(contactEntity.getId() + "");
                 if (contactEntity.getId() < BASE_ID) { // contact from server
                     startActivity(new Intent(getActivity(), BranchDetailActivity.class)
@@ -80,11 +82,11 @@ public class ContactFragment extends Fragment {
         };
     }
 
-    public void getContacts() {
+    private void getContacts() {
         mListener.onProgressStart();
         ApiService.getTSLApi().getListContacts(Singleton.getInstance().getToken(), new MyCallback<ListContacts>() {
             @Override
-            public void good(ListContacts m, Response response) {
+            public void good(@NonNull ListContacts m, Response response) {
                 // Add more contact
                 ContactAdapter contactAdapter = new ContactAdapter(addContact(m.getData()));
                 contactAdapter.setContactListener(listener);
@@ -94,7 +96,8 @@ public class ContactFragment extends Fragment {
         });
     }
 
-    public List<ContactEntity> addContact(List<ContactEntity> listContact) {
+    @NonNull
+    private List<ContactEntity> addContact(@NonNull List<ContactEntity> listContact) {
         listContact.add(new ContactEntity(BASE_ID + 1, getString(R.string.contact_us_email), "services@tsl.co.th", R.drawable.ic_email_grey_500_24dp));
         listContact.add(new ContactEntity(BASE_ID + 2, getString(R.string.contact_us_call_center), "1234", R.drawable.call_grey));
         listContact.add(new ContactEntity(BASE_ID + 3, getString(R.string.contact_us_website), "www.tsl.co.th", R.drawable.www_grey));
@@ -104,7 +107,7 @@ public class ContactFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_CONTACT);
         try {

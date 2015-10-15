@@ -2,9 +2,10 @@ package com.socket9.tsl.Fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,7 +22,6 @@ import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.Models.BaseModel;
 import com.socket9.tsl.R;
-import com.socket9.tsl.SignInActivity;
 import com.socket9.tsl.Utils.MapHelper;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
@@ -38,22 +37,28 @@ import timber.log.Timber;
 public class EmergencyFragment extends Fragment implements View.OnClickListener {
 
 
-    @Bind(R.id.mapView)
-    MapView mapView;
-    @Bind(R.id.btnRequest)
-    Button btnRequest;
     private static final String MECHANIC = "MECHANIC";
     private static final String TOWCAR = "TOW CAR";
+    @Bind(R.id.mapView)
+    private
+    MapView mapView;
+    @Bind(R.id.btnRequest)
+    private
+    Button btnRequest;
     @Bind(R.id.ivMechanic)
+    private
     ImageView ivMechanic;
     @Bind(R.id.ivTowCar)
+    private
     ImageView ivTowCar;
     private MapHelper mapHelper;
     private MapHelper.MapListener mapListener;
     private boolean isZoom = false;
     private Marker myLocationMarker;
     private boolean isMechanic = true;
+    @Nullable
     private OnFragmentInteractionListener mListener;
+    @NonNull
     private String requestEmergency = "MECHANIC";
 
     public EmergencyFragment() {
@@ -62,7 +67,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_emergency, container, false);
@@ -88,9 +93,9 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                             requestEmergency,
                             new MyCallback<BaseModel>() {
                                 @Override
-                                public void good(BaseModel m, Response response) {
+                                public void good(@NonNull BaseModel m, Response response) {
                                     try {
-                                        Singleton.toast(getContext(), m.getMessage(), Toast.LENGTH_LONG);
+                                        Singleton.toast(getContext(), m.getMessage());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -111,11 +116,11 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
             mapHelper.getMap().setMyLocationEnabled(true);
             mapListener = new MapHelper.MapListener() {
                 @Override
-                public void onMyLocationChanged(Location location) {
+                public void onMyLocationChanged(@NonNull Location location) {
 
                     Timber.i("%s", location.toString());
                     if (!isZoom) {
-                        mapHelper.moveTo(location.getLatitude(), location.getLongitude(), 17);
+                        mapHelper.moveTo(location.getLatitude(), location.getLongitude());
                         myLocationMarker = mapHelper.addMarker(location.getLatitude(), location.getLongitude(), 0);
                         isZoom = true;
                     } else {
@@ -125,7 +130,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 }
             };
         } catch (Exception e) {
-            Singleton.toast(getActivity(), getString(R.string.toast_update_google_play_services), Toast.LENGTH_LONG);
+            Singleton.toast(getActivity(), getString(R.string.toast_update_google_play_services));
             e.printStackTrace();
         }
     }
@@ -137,7 +142,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
         try {
             mapHelper.setOnMyLocationChangeListener(mapListener);
         } catch (Exception e) {
-            Singleton.toast(getActivity(), getString(R.string.toast_update_google_play_services), Toast.LENGTH_LONG);
+            Singleton.toast(getActivity(), getString(R.string.toast_update_google_play_services));
             e.printStackTrace();
         }
     }
@@ -163,7 +168,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_EMERGENCY);
         try {
@@ -188,10 +193,10 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
 
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
+    public void onClick(@NonNull View view) {
+        switch (view.getId()) {
             case R.id.ivTowCar:
-                if(isMechanic){
+                if (isMechanic) {
                     ivTowCar.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.towcar_active_en));
                     ivMechanic.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mechanic_en));
                     requestEmergency = "TOWCAR";
@@ -199,7 +204,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 }
                 break;
             case R.id.ivMechanic:
-                if(!isMechanic){
+                if (!isMechanic) {
                     ivMechanic.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mechanic_active_en));
                     ivTowCar.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.towcar_en));
                     requestEmergency = "MECHANIC";

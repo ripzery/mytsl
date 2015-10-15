@@ -5,7 +5,7 @@ import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import java.util.List;
 
 /**
- * Created by visit on 10/4/15 AD.
+ * Created by Euro on 10/4/15 AD.
  */
 public class ListNewsEvent extends BaseModel {
 
@@ -15,12 +15,12 @@ public class ListNewsEvent extends BaseModel {
      */
     private List<NewsEventEntity> data;
 
-    public void setData(List<NewsEventEntity> data) {
-        this.data = data;
-    }
-
     public List<NewsEventEntity> getData() {
         return data;
+    }
+
+    public void setData(List<NewsEventEntity> data) {
+        this.data = data;
     }
 
 }
