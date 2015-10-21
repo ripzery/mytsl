@@ -1,8 +1,10 @@
 package com.socket9.tsl.Utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.util.TypedValue;
 
 import com.socket9.tsl.API.ApiService;
 import com.socket9.tsl.API.MyCallback;
@@ -13,7 +15,7 @@ import java.io.ByteArrayOutputStream;
 /**
  * Created by Euro on 10/8/15 AD.
  */
-class PhotoHelper {
+public class PhotoHelper {
     private static byte[] compress(@NonNull Bitmap bitmap, int percent) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, percent, byteArrayOutputStream);
@@ -30,7 +32,7 @@ class PhotoHelper {
         return encode(compress(bitmap, percent));
     }
 
-    public static void uploadPhoto(String encodedBitmap, MyCallback<Photo> callback) {
-        ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, callback);
+    public static int convertDpToPx(Context context, int dp){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 }

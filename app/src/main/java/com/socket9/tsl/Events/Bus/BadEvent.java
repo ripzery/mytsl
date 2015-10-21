@@ -1,4 +1,4 @@
-package com.socket9.tsl.Events;
+package com.socket9.tsl.Events.Bus;
 
 /**
  * Created by Euro on 10/9/2015 AD.

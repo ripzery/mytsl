@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Euro on 10/7/15 AD.
  */
-class PickImageChooser {
+public class PickImageChooser {
 
     @NonNull
     public static Intent getPickImageChooserIntent(@NonNull Context context) {

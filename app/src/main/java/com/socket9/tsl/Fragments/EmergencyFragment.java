@@ -17,18 +17,18 @@ import android.widget.ImageView;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
 import com.socket9.tsl.MainActivity;
-import com.socket9.tsl.Models.BaseModel;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.MapHelper;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 import timber.log.Timber;
 
 /**
@@ -82,27 +82,21 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
             public void onClick(View view) {
                 try {
                     LatLng myPosition = myLocationMarker.getPosition();
-                    mListener.onProgressStart();
-                    ApiService.getTSLApi().emergencyCall(Singleton.getInstance().getToken(),
-                            myPosition.latitude + "",
-                            myPosition.longitude + "",
-                            requestEmergency,
-                            new MyCallback<BaseModel>() {
-                                @Override
-                                public void good(@NonNull BaseModel m, Response response) {
-                                    try {
-                                        Singleton.toast(getContext(), m.getMessage());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    mListener.onProgressComplete();
-                                }
-                            });
+                    BusProvider.post(new ApiFire.EmergencyCall(myPosition.latitude + "", myPosition.longitude + "", requestEmergency));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    @Subscribe
+    public void onReceiveEmergencyCall(ApiReceive.EmergencyCall emergencyCall) {
+        try {
+            Singleton.toast(getContext(), emergencyCall.getBaseModel().getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initMap(Bundle savedInstanceState) {
@@ -166,19 +160,14 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        BusProvider.getInstance().register(this);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_EMERGENCY);
-        try {
-            mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHomeListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override

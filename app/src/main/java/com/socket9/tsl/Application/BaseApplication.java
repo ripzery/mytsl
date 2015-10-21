@@ -5,7 +5,9 @@ import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.socket9.tsl.API.FireApiService;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.Singleton;
 
 import timber.log.Timber;
@@ -34,6 +36,17 @@ public class BaseApplication extends Application implements Application.Activity
         if (language.equals("")) {
             Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_LANG, "en");
         }
+        Timber.i("Applciation Created");
+        BusProvider.getInstance().register(FireApiService.getInstance());
+    }
+
+
+
+    @Override
+    public void onTerminate() {
+        Timber.i("Application Terminate");
+        BusProvider.getInstance().unregister(FireApiService.getInstance());
+        super.onTerminate();
     }
 
     @Override

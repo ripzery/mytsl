@@ -28,7 +28,6 @@ import com.socket9.tsl.Fragments.ContactFragment;
 import com.socket9.tsl.Fragments.EmergencyFragment;
 import com.socket9.tsl.Fragments.EventFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
-import com.socket9.tsl.Fragments.MyProfileFragment;
 import com.socket9.tsl.Fragments.NewsFragment;
 import com.socket9.tsl.Utils.DialogHelper;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
@@ -38,7 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends BaseActivity implements OnFragmentInteractionListener, View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int FRAGMENT_DISPLAY_HOME = 1;
     public static final int FRAGMENT_DISPLAY_NEWS = 2;
@@ -64,8 +63,6 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     Button btnLeft;
     @Bind(R.id.btnRight)
     Button btnRight;
-    @Bind(R.id.layoutProgress)
-    LinearLayout layoutProgress;
     @Bind(R.id.btnChangeLanguage)
     Button btnChangeLanguage;
     @Bind(R.id.btnSignOut)
@@ -125,7 +122,6 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
         eventFragment = new EventFragment();
         contactFragment = new ContactFragment();
         emergencyFragment = new EmergencyFragment();
-        profileFragment = new MyProfileFragment();
     }
 
     @Override
@@ -191,9 +187,6 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
             case FRAGMENT_DISPLAY_EMERGENCY:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, emergencyFragment).commit();
                 break;
-            case FRAGMENT_DISPLAY_PROFILE:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
-                break;
             case FRAGMENT_DISPLAY_EVENT:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, eventFragment).commit();
                 break;
@@ -219,9 +212,6 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
             case FRAGMENT_DISPLAY_NEWS:
 
                 break;
-            case FRAGMENT_DISPLAY_PROFILE:
-                mTitle = getString(R.string.toolbar_my_profile);
-                break;
         }
         toolbarTitle.setText(mTitle);
     }
@@ -234,22 +224,6 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onImageClick() {
-//        replaceFragment(FRAGMENT_DISPLAY_PROFILE);
-        startActivity(new Intent(this, MyProfileActivity.class));
-    }
-
-    @Override
-    public void onProgressComplete() {
-        layoutProgress.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onProgressStart() {
-        layoutProgress.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -10,14 +10,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
-import com.socket9.tsl.Models.User;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 import timber.log.Timber;
 
 public class CreateAccountActivity extends BaseActivity implements View.OnClickListener {
@@ -40,8 +40,6 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
     EditText etPhone;
     @Bind(R.id.etAddress)
     EditText etAddress;
-    @Bind(R.id.layoutProgress)
-    LinearLayout layoutProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,35 +61,27 @@ public class CreateAccountActivity extends BaseActivity implements View.OnClickL
         return true;
     }
 
+    @Subscribe
+    public void onReceiveRegister(ApiReceive.RegisterUser registerUser) {
+        Timber.d("Token : " + registerUser.getUser().getData().getToken());
+        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, registerUser.getUser().getData().getToken());
+        Singleton.toast(getApplicationContext(), getString(R.string.toast_activate_account));
+        finish();
+    }
+
 
     @Override
     public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.btnRegister:
-                layoutProgress.setVisibility(View.VISIBLE);
-                ApiService.getTSLApi().registerUser(etEmail.getText().toString(),
+                BusProvider.post(new ApiFire.RegisterUser(etEmail.getText().toString(),
                         etPassword.getText().toString(),
                         etUsername.getText().toString(),
                         etUsername.getText().toString(),
                         etEmail.getText().toString(),
                         etAddress.getText().toString(),
                         etPhone.getText().toString(),
-                        "", "", new MyCallback<User>() {
-                            @Override
-                            public void good(@NonNull User m, Response response) {
-                                layoutProgress.setVisibility(View.GONE);
-                                Timber.d("Token : " + m.getData().getToken());
-                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                                Singleton.toast(getApplicationContext(), getString(R.string.toast_activate_account));
-                                finish();
-                            }
-
-                            @Override
-                            public void bad(String error, boolean isTokenExpired) {
-                                Singleton.toast(CreateAccountActivity.this, error);
-                            }
-                        }
-                );
+                        "", ""));
                 break;
         }
     }

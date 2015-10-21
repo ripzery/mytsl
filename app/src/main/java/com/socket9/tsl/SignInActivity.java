@@ -1,10 +1,8 @@
 package com.socket9.tsl;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +13,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -28,22 +23,18 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
-import com.socket9.tsl.Models.BaseModel;
-import com.socket9.tsl.Models.Photo;
-import com.socket9.tsl.Models.User;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.DialogHelper;
 import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 import timber.log.Timber;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
@@ -65,11 +56,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     Button btnFbLoginFake;
     @Bind(R.id.btnFbLoginReal)
     LoginButton btnFbLoginReal;
-    @Bind(R.id.layoutProgress)
-    LinearLayout layoutProgress;
     @Bind(R.id.ivForgotPassword)
     ImageView ivForgotPassword;
     private CallbackManager callbackManager;
+    private String facebookId;
+    private String fbPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,22 +120,22 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     public void onCompleted(@NonNull JSONObject object, GraphResponse response) {
                         // Application code
                         try {
-                            String facebookId = object.getString("id");
+                            facebookId = object.getString("id");
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String hometown = "";
-                            String photo = "";
+                            fbPhoto = "";
                             try {
                                 hometown = object.getJSONObject("hometown").getString("name");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             try {
-                                photo = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                fbPhoto = object.getJSONObject("picture").getJSONObject("data").getString("url");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            registerWithFb(facebookId, name, email, hometown, photo);
+                            BusProvider.post(new ApiFire.LoginWithFb(email, name, name, email, hometown, facebookId, fbPhoto));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -156,83 +147,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         request.executeAsync();
     }
 
-
-    private void registerWithFb(final String fbId, String name, String email, String address, final String photo) {
-        Timber.i(fbId);
-        Timber.i(name);
-        Timber.i(email);
-        Timber.i(address);
-        layoutProgress.setVisibility(View.VISIBLE);
-        ApiService.getTSLApi().registerUser(email, "123456", name, name, email, address, "", fbId, photo, new MyCallback<User>() {
-            @Override
-            public void good(User m, Response response) {
-                loginWithFacebook(fbId, photo);
-            }
-
-            @Override
-            public void bad(@NonNull String error, boolean isTokenExpired) {
-                if (error.contains("already used")) {
-                    loginWithFacebook(fbId, photo);
-                }
-            }
-        });
-    }
-
-    private void loginWithFacebook(String fbId, final String photo) {
-        setProgressVisible(true);
-        ApiService.getTSLApi().loginWithFb(fbId, photo, new MyCallback<User>() {
-            @Override
-            public void good(@NonNull User m, Response response) {
-                Timber.d(m.getData().getToken());
-                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                finish();
-//                updatePicture(photo);
-            }
-
-            @Override
-            public void bad(String error, boolean isTokenExpired) {
-                startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-    }
-
-    public void updatePicture(String photo) {
-        Glide.with(this).load(photo).asBitmap().into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(@NonNull Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                String encodedBitmap = "data:image/png;base64," + encode(compress(resource, 100));
-                ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
-                    @Override
-                    public void good(@NonNull Photo m, Response response) {
-                        ApiService.getTSLApi().updatePicture(Singleton.getInstance().getToken(),
-                                m.getData().getPathSave(), new MyCallback<BaseModel>() {
-                                    @Override
-                                    public void good(BaseModel m, Response response) {
-                                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                        finish();
-                                        layoutProgress.setVisibility(View.GONE);
-                                    }
-
-                                });
-                    }
-
-                });
-            }
-        });
-
-    }
-
-    private byte[] compress(@NonNull Bitmap bitmap, int percent) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, percent, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    private String encode(@NonNull byte[] byteArray) {
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -247,21 +161,33 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         return true;
     }
 
+    @Subscribe
+    public void onReceiveLogin(ApiReceive.Login login) {
+        Timber.d(login.getUser().getData().getToken());
+        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+        finish();
+    }
+
+    @Subscribe
+    public void onReceiveForgetPassword(ApiReceive.ForgetPassword forgetPassword) {
+        try {
+            Singleton.toast(SignInActivity.this, forgetPassword.getModel().getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void onReceiveLoginWithFacebook(ApiReceive.Login m) {
+        startActivity(new Intent(SignInActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+
+    }
+
     @Override
     public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
-                setProgressVisible(true);
-                ApiService.getTSLApi().login(etUsername.getText().toString(), etPassword.getText().toString(), new MyCallback<User>() {
-                    @Override
-                    public void good(@NonNull User m, Response response) {
-                        Timber.d(m.getData().getToken());
-                        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, m.getData().getToken());
-                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                        finish();
-                    }
-                });
-
+                BusProvider.post(new ApiFire.Login(etUsername.getText().toString(), etPassword.getText().toString()));
                 break;
             case R.id.btnRegister:
                 startActivity(new Intent(this, CreateAccountActivity.class));
@@ -283,16 +209,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     @SuppressWarnings("NullableProblems")
                     @Override
                     public void onInput(@NonNull MaterialDialog materialDialog, @NonNull CharSequence charSequence) {
-                        ApiService.getTSLApi().forgetPassword(charSequence.toString(), new MyCallback<BaseModel>() {
-                            @Override
-                            public void good(@NonNull BaseModel m, Response response) {
-                                try {
-                                    Singleton.toast(SignInActivity.this, m.getMessage());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                        BusProvider.post(new ApiFire.ForgetPassword(charSequence.toString()));
                     }
                 }).show();
                 break;

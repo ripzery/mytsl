@@ -14,15 +14,14 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
 import com.socket9.tsl.ModelEntities.NewsEventEntity;
-import com.socket9.tsl.Models.NewsEvent;
-import com.socket9.tsl.Utils.Singleton;
+import com.socket9.tsl.Utils.BusProvider;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 
 public class NewsEventActivity extends BaseActivity {
 
@@ -36,44 +35,63 @@ public class NewsEventActivity extends BaseActivity {
     LinearLayout layoutProgress;
     private ShareActionProvider mShareActionProvider;
     private Intent sendIntent;
+    private boolean isAlreadyGetNewsOrEvent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_event);
         ButterKnife.bind(this);
-        boolean isNews = getIntent().getBooleanExtra("isNews", true);
         initToolbar(myToolbar, "", true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isAlreadyGetNewsOrEvent)
+            return;
+        boolean isNews = getIntent().getBooleanExtra("isNews", true);
         int id = getIntent().getIntExtra("id", 0);
-        layoutProgress.setVisibility(View.VISIBLE);
         if (isNews)
             getNews(id);
         else
             getEvent(id);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     private void getNews(int id) {
-        ApiService.getTSLApi().getNew(Singleton.getInstance().getToken(), id, new MyCallback<NewsEvent>() {
-            @Override
-            public void good(@NonNull NewsEvent m, Response response) {
-                setInfo(m.getData());
-            }
-        });
+        BusProvider.post(new ApiFire.GetNew(id));
     }
 
     private void getEvent(int id) {
-        ApiService.getTSLApi().getEvent(Singleton.getInstance().getToken(), id, new MyCallback<NewsEvent>() {
-            @Override
-            public void good(@NonNull NewsEvent m, Response response) {
-                setInfo(m.getData());
-            }
+        BusProvider.post(new ApiFire.GetEvent(id));
+    }
 
-        });
+    @Subscribe
+    public void onReceiveNews(ApiReceive.New m) {
+        setInfo(m.getNewsEvent().getData());
+        isAlreadyGetNewsOrEvent = true;
+    }
+
+    @Subscribe
+    public void onReceiveEvent(ApiReceive.Event event) {
+        setInfo(event.getNewsEvent().getData());
+        isAlreadyGetNewsOrEvent = true;
     }
 
     private void setInfo(@NonNull final NewsEventEntity entity) {
 //        boolean isBlue = entity.getType().equalsIgnoreCase("service");
         webView.loadUrl(entity.getContentEn());
+        layoutProgress.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {

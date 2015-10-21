@@ -16,14 +16,17 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.socket9.tsl.Events.BadEvent;
-import com.socket9.tsl.Events.GoodEvent;
+import com.socket9.tsl.API.FireApiService;
+import com.socket9.tsl.Events.Bus.BadEvent;
+import com.socket9.tsl.Events.Bus.EndApiEvent;
+import com.socket9.tsl.Events.Bus.StartApiEvent;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import java.util.Locale;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -34,11 +37,43 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
     @Bind(R.id.layoutProgress)
     LinearLayout layoutProgress;
+    private Object startEndApiEvent;
+    private FireApiService fireApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        startEndApiEvent = new Object() {
+            @Subscribe
+            public void onStartApiEvent(StartApiEvent event){
+                setProgressVisible(true);
+            }
+
+            @Subscribe
+            public void onEndApiEvent(EndApiEvent event){
+                setProgressVisible(false);
+            }
+
+            @Subscribe
+            public void onBadEvent(BadEvent event){
+                setProgressVisible(false);
+                Timber.i(event.message);
+                if (!event.message.contains("is already used")) {
+                    Singleton.toast(getApplicationContext(), event.message);
+                }
+                if (event.isTokenExpired) {
+                    Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    startActivity(new Intent(BaseActivity.this, SignInActivity.class));
+                }
+                Timber.i("BadEvent : " + event.message);
+            }
+        };
+
+
     }
+
+
 
     @Override
     public void setContentView(int layoutResID) {
@@ -58,51 +93,27 @@ public class BaseActivity extends AppCompatActivity {
         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_LANG, lang);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
+        BusProvider.getInstance().register(this);
+        BusProvider.getInstance().register(startEndApiEvent);
     }
 
     @Override
     protected void onPause() {
-        EventBus.getDefault().unregister(this);
+        BusProvider.getInstance().unregister(this);
+        BusProvider.getInstance().unregister(startEndApiEvent);
         super.onPause();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     void setProgressVisible(boolean isVisible) {
         layoutProgress.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-    }
-
-    // Compiler didn't detect that this is use by Eventbus
-    public void onEvent(@NonNull BadEvent event) {
-        setProgressVisible(false);
-        if (!event.message.contains("is already used")) {
-            Singleton.toast(getApplicationContext(), event.message);
-        }
-        Timber.i(event.message);
-        if (event.isTokenExpired) {
-            Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-            startActivity(new Intent(this, SignInActivity.class));
-        }
-        Timber.i("BadEvent : " + event.message);
-    }
-
-    public void onEvent(GoodEvent event) {
-        setProgressVisible(false);
     }
 
     @Override

@@ -12,8 +12,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivUser"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:src="@drawable/default_photo"

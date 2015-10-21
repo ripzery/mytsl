@@ -52,6 +52,18 @@ public class ApiService {
         void forgetPassword(@Field("email") String email, MyCallback<BaseModel> cb);
 
         @FormUrlEncoded
+        @POST("/registerUser")
+        void registerUser(@Field("username") String username,
+                          @Field("password") String password,
+                          @Field("nameEn") String nameEn,
+                          @Field("nameTh") String nameTh,
+                          @Field("email") String email,
+                          @Field("address") String address,
+                          @Field("phone") String phone,
+                          @Field("facebookid") String facebookId,
+                          @Field("facebookpic") String facebookPic, MyCallback<User> cb);
+
+        @FormUrlEncoded
         @POST("/getProfile")
         void getProfile(@Field("token") String token, MyCallback<Profile> cb);
 
@@ -78,18 +90,6 @@ public class ApiService {
         @FormUrlEncoded
         @POST("/getContact")
         void getContact(@Field("token") String token, @Field("contactid") int contactId, MyCallback<Contact> cb);
-
-        @FormUrlEncoded
-        @POST("/registerUser")
-        void registerUser(@Field("username") String username,
-                          @Field("password") String password,
-                          @Field("nameEn") String nameEn,
-                          @Field("nameTh") String nameTh,
-                          @Field("email") String email,
-                          @Field("address") String address,
-                          @Field("phone") String phone,
-                          @Field("facebookid") String facebookId,
-                          @Field("facebookpic") String facebookPic, MyCallback<User> cb);
 
         @FormUrlEncoded
         @POST("/emergencyCall")

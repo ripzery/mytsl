@@ -2,6 +2,7 @@ package com.socket9.tsl.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,18 +16,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
 import com.socket9.tsl.MainActivity;
-import com.socket9.tsl.Models.Profile;
+import com.socket9.tsl.MyProfileActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
-import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit.client.Response;
 
 
 /**
@@ -56,7 +57,8 @@ public class HomeFragment extends Fragment {
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onImageClick();
+                startActivity(new Intent(getContext(), MyProfileActivity.class));
+
             }
         });
         return rootView;
@@ -69,40 +71,36 @@ public class HomeFragment extends Fragment {
     }
 
     private void getProfile() {
-        mListener.onProgressStart();
-        ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
-            @Override
-            public void good(@NonNull Profile m, Response response) {
-                try {
-                    if (m.getData().getPic() != null)
-                        Glide.with(getActivity()).load(m.getData().getPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser) {
-                            @Override
-                            public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                                ivUser.setVisibility(View.VISIBLE);
-                                super.onResourceReady(resource, animation);
-                            }
-                        });
-                    else if (m.getData().getFacebookPic() != null)
-                        Glide.with(getActivity()).load(m.getData().getFacebookPic()).centerCrop().into(new GlideDrawableImageViewTarget(ivUser) {
-                            @Override
-                            public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                                ivUser.setVisibility(View.VISIBLE);
-                                super.onResourceReady(resource, animation);
-                            }
-                        });
-                    else {
-                        ivUser.setVisibility(View.VISIBLE);
-                    }
-                    tvName.setText(m.getData().getNameEn());
-                    tvName.setVisibility(View.VISIBLE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                mListener.onProgressComplete();
-            }
-        });
+        BusProvider.post(new ApiFire.GetProfile());
     }
 
+
+    @Subscribe
+    public void onReceiveProfile(ApiReceive.Profile profile) {
+        try {
+            GlideDrawableImageViewTarget glideImageViewTarget = new GlideDrawableImageViewTarget(ivUser) {
+                @Override
+                public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                    ivUser.setVisibility(View.VISIBLE);
+                    super.onResourceReady(resource, animation);
+                }
+            };
+
+            if (profile.getProfile().getData().getPic() != null) {
+                Glide.with(getActivity()).load(profile.getProfile().getData().getPic()).centerCrop().into(glideImageViewTarget);
+                ivUser.setVisibility(View.VISIBLE);
+            }
+            else if (profile.getProfile().getData().getFacebookPic() != null)
+                Glide.with(getActivity()).load(profile.getProfile().getData().getFacebookPic()).centerCrop().into(glideImageViewTarget);
+            else {
+                ivUser.setVisibility(View.VISIBLE);
+            }
+            tvName.setText(profile.getProfile().getData().getNameEn());
+            tvName.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -113,18 +111,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        BusProvider.getInstance().register(this);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_HOME);
-        try {
-            mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHomeListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        BusProvider.getInstance().unregister(this);
     }
 }

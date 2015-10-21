@@ -1,26 +1,24 @@
 package com.socket9.tsl;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.Menu;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
-import com.socket9.tsl.Models.Contact;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.MapHelper;
 import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 
 public class BranchDetailActivity extends BaseActivity {
 
@@ -34,14 +32,13 @@ public class BranchDetailActivity extends BaseActivity {
     TextView tvAddress;
     @Bind(R.id.tvPhone)
     TextView tvPhone;
-    @Bind(R.id.layoutProgress)
-    LinearLayout layoutProgress;
     @Bind(R.id.tvHours)
     TextView tvHours;
     @Bind(R.id.tvEmail)
     TextView tvEmail;
     private MapHelper mapHelper;
     private MapHelper.MapListener mapListener;
+    private boolean isAlreadyGetContact = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +47,6 @@ public class BranchDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         initToolbar(myToolbar, getString(R.string.toolbar_branch_detail), true);
         initMap(savedInstanceState);
-        int contactId = getIntent().getIntExtra("contactId", 0);
-        String contactName = getIntent().getStringExtra("contactName");
-        getContact(contactId, contactName);
-
     }
 
     private void initMap(Bundle savedInstanceState) {
@@ -68,36 +61,35 @@ public class BranchDetailActivity extends BaseActivity {
         }
     }
 
-    private void getContact(int id, final String contactName) {
-        layoutProgress.setVisibility(View.VISIBLE);
-        ApiService.getTSLApi().getContact(Singleton.getInstance().getToken(), id, new MyCallback<Contact>() {
+    private void getContact(int id) {
+        if(isAlreadyGetContact) return;
+        isAlreadyGetContact = true;
+        BusProvider.post(new ApiFire.GetContact(id));
+    }
 
-            @Override
-            public void good(@NonNull Contact m, Response response) {
-                layoutProgress.setVisibility(View.GONE);
-                toolbarTitle.setText(contactName);
-                toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                LatLng contactLatLng = new LatLng(m.getData().getLat(), m.getData().getLng());
-                mapHelper.addMarkerThenZoom(contactLatLng);
+    @Subscribe
+    public void onReceiveContact(ApiReceive.Contact contact) {
+        toolbarTitle.setText(getIntent().getStringExtra("contactName"));
+        toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        LatLng contactLatLng = new LatLng(contact.getContact().getData().getLat(), contact.getContact().getData().getLng());
+        mapHelper.addMarkerThenZoom(contactLatLng);
 
-                try {
-                    tvPhone.setText(Singleton.getPlainText(m.getData().getPhone()));
-                    tvEmail.setText(Singleton.getPlainText(m.getData().getEmail()));
-                    tvHours.setText(Html.fromHtml(m.getData().getBusinessHours()));
-                    tvAddress.setText(Singleton.getPlainText(m.getData().getAddress()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
+        try {
+            tvPhone.setText(Singleton.getPlainText(contact.getContact().getData().getPhone()));
+            tvEmail.setText(Singleton.getPlainText(contact.getContact().getData().getEmail()));
+            tvHours.setText(Html.fromHtml(contact.getContact().getData().getBusinessHours()));
+            tvAddress.setText(Singleton.getPlainText(contact.getContact().getData().getAddress()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mapHelper.getmMapView().onResume();
-
+        int contactId = getIntent().getIntExtra("contactId", 0);
+        getContact(contactId);
     }
 
     @Override

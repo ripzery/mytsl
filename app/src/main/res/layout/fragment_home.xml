@@ -9,8 +9,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivUser"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:src="@drawable/default_photo"
         android:visibility="invisible"
         app:civ_border_color="@color/colorTextPrimary"

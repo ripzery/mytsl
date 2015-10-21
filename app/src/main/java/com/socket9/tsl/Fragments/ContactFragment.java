@@ -13,22 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Adapters.ContactAdapter;
 import com.socket9.tsl.BranchDetailActivity;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.ContactEntity;
-import com.socket9.tsl.Models.ListContacts;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
-import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 import timber.log.Timber;
 
 /**
@@ -82,17 +81,14 @@ public class ContactFragment extends Fragment {
     }
 
     private void getContacts() {
-        mListener.onProgressStart();
-        ApiService.getTSLApi().getListContacts(Singleton.getInstance().getToken(), new MyCallback<ListContacts>() {
-            @Override
-            public void good(@NonNull ListContacts m, Response response) {
-                // Add more contact
-                ContactAdapter contactAdapter = new ContactAdapter(addContact(m.getData()));
-                contactAdapter.setContactListener(listener);
-                recyclerView.setAdapter(contactAdapter);
-                mListener.onProgressComplete();
-            }
-        });
+        BusProvider.post(new ApiFire.GetListContacts());
+    }
+
+    @Subscribe
+    public void onReceiveContacts(ApiReceive.ListContacts listContacts){
+        ContactAdapter contactAdapter = new ContactAdapter(addContact(listContacts.getListContacts().getData()));
+        contactAdapter.setContactListener(listener);
+        recyclerView.setAdapter(contactAdapter);
     }
 
     @NonNull
@@ -108,19 +104,15 @@ public class ContactFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        BusProvider.getInstance().register(this);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_CONTACT);
-        try {
-            mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHomeListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override

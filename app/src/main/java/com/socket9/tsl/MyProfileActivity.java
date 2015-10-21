@@ -1,49 +1,55 @@
 package com.socket9.tsl;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.socket9.tsl.API.ApiService;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.signature.MediaStoreSignature;
 import com.socket9.tsl.API.MyCallback;
-import com.socket9.tsl.Models.BaseModel;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
 import com.socket9.tsl.Models.Photo;
 import com.socket9.tsl.Models.Profile;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.DialogHelper;
+import com.socket9.tsl.Utils.PhotoHelper;
+import com.socket9.tsl.Utils.PickImageChooser;
 import com.socket9.tsl.Utils.Singleton;
+import com.soundcloud.android.crop.Crop;
+import com.squareup.otto.Subscribe;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 import timber.log.Timber;
 
+/**
+ * Created by visit on 10/8/15 AD.
+ */
 public class MyProfileActivity extends BaseActivity implements View.OnClickListener {
-
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private final ArrayList<EditText> editTextArrayList = new ArrayList<>();
-    private final ArrayList<TextView> textViewArrayList = new ArrayList<>();
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     @Bind(R.id.toolbarTitle)
     TextView toolbarTitle;
     @Bind(R.id.my_toolbar)
@@ -70,11 +76,16 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     TextView tvPassword;
     @Bind(R.id.tvAddress)
     TextView tvAddress;
-    @Bind(R.id.layoutProgress)
-    LinearLayout layoutProgress;
     private Photo photo;
     private Profile profile;
+    private ArrayList<EditText> editTextArrayList = new ArrayList<>();
+    private ArrayList<TextView> textViewArrayList = new ArrayList<>();
+    private TextWatcher textWatcher;
+    private Menu profileMenu;
     private MenuItem save;
+    private MyCallback<Photo> uploadCallback;
+    private boolean isAlreadyGetProfile = false;
+    private File cacheCropImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +93,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_my_profile);
         ButterKnife.bind(this);
         setListener();
-        getProfile();
-        initToolbar(myToolbar, getString(R.string.toolbar_my_profile), true);
+        initToolbar(myToolbar, "My Profile", true);
 
         editTextArrayList.add(etName);
         editTextArrayList.add(etAddress);
@@ -98,25 +108,34 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         textViewArrayList.add(tvPassword);
     }
 
-    private void setListener() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isAlreadyGetProfile) return;
+        getProfile();
+    }
+
+    public void setListener() {
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
+//                dispatchTakePictureIntent();
+                startActivityForResult(PickImageChooser.getPickImageChooserIntent(MyProfileActivity.this), 200);
             }
         });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        profileMenu = menu;
         getMenuInflater().inflate(R.menu.menu_my_profile, menu);
         save = menu.findItem(R.id.action_save);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
                 updateProfile();
@@ -125,7 +144,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 if (save.isVisible()) {
                     DialogHelper.getUpdateProfileDialog(this, new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                             finish();
                         }
                     }).show();
@@ -140,31 +159,43 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         if (photo != null)
             picture = photo.getData().getPathSave();
 
-        ApiService.getTSLApi().updateProfile(Singleton.getInstance().getToken(),
+        BusProvider.post(new ApiFire.UpdateProfile(
                 etName.getText().toString(),
                 etName.getText().toString(),
                 etPhone.getText().toString(),
                 etAddress.getText().toString(),
-                picture, new MyCallback<BaseModel>() {
-                    @Override
-                    public void good(@NonNull BaseModel m, Response response) {
-                        Timber.i(m.getMessage());
-//                        Toast.makeText(MyProfileActivity.this, m.getMessage(), Toast.LENGTH_SHORT).show();
-                        Singleton.toast(MyProfileActivity.this, m.getMessage());
-                        finish();
-                    }
+                picture));
+    }
 
-                    @Override
-                    public void bad(String error, boolean isTokenExpired) {
-                        Timber.d(error);
-                        if (isTokenExpired) {
-                            Singleton.toast(MyProfileActivity.this, getString(R.string.toast_token_invalid));
-                            Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-                            startActivity(new Intent(MyProfileActivity.this, SignInActivity.class));
-                            finish();
-                        }
-                    }
-                });
+    @Subscribe
+    public void onReceiveUpdateProfile(ApiReceive.UpdateProfile updateProfile) {
+        Singleton.toast(MyProfileActivity.this, updateProfile.getModel().getMessage());
+        finish();
+    }
+
+    @Subscribe
+    public void onReceiveProfile(ApiReceive.Profile profile) {
+        try {
+            isAlreadyGetProfile = true;
+            tvName.setText(profile.getProfile().getData().getNameEn());
+            tvAddress.setText(profile.getProfile().getData().getAddress() == null || profile.getProfile().getData().getAddress().equals("") ? "Blank" : profile.getProfile().getData().getAddress());
+            tvEmail.setText(profile.getProfile().getData().getEmail() == null || profile.getProfile().getData().getEmail().equals("") ? "Blank" : profile.getProfile().getData().getEmail());
+            tvPhone.setText(profile.getProfile().getData().getPhone() == null || profile.getProfile().getData().getPhone().equals("") ? "Blank" : profile.getProfile().getData().getPhone());
+
+            etName.setText(profile.getProfile().getData().getNameEn());
+            etAddress.setText(profile.getProfile().getData().getAddress() == null || profile.getProfile().getData().getAddress().equals("") ? "Blank" : profile.getProfile().getData().getAddress());
+            etEmail.setText(profile.getProfile().getData().getEmail() == null || profile.getProfile().getData().getEmail().equals("") ? "Blank" : profile.getProfile().getData().getEmail());
+            etPhone.setText(profile.getProfile().getData().getPhone() == null || profile.getProfile().getData().getPhone().equals("") ? "" : profile.getProfile().getData().getPhone());
+
+            if (profile.getProfile().getData().getPic() != null)
+                Glide.with(MyProfileActivity.this).load(profile.getProfile().getData().getPic()).into(ivUser);
+            ivUser.setVisibility(View.VISIBLE);
+
+            Timber.i(profile.getProfile().getMessage());
+            setViewListener();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void hideEditText(EditText et) {
@@ -175,51 +206,17 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getProfile() {
-        layoutProgress.setVisibility(View.VISIBLE);
-        ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
-            @Override
-            public void good(@NonNull Profile m, Response response) {
-                try {
-                    tvName.setText(m.getData().getNameEn());
-                    tvAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "-" : m.getData().getAddress());
-                    tvEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "-" : m.getData().getEmail());
-                    tvPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "-" : m.getData().getPhone());
-
-                    etName.setText(m.getData().getNameEn());
-                    etAddress.setText(m.getData().getAddress() == null || m.getData().getAddress().equals("") ? "-" : m.getData().getAddress());
-                    etEmail.setText(m.getData().getEmail() == null || m.getData().getEmail().equals("") ? "-" : m.getData().getEmail());
-                    etPhone.setText(m.getData().getPhone() == null || m.getData().getPhone().equals("") ? "" : m.getData().getPhone());
-
-                    if (m.getData().getPic() != null)
-                        Glide.with(MyProfileActivity.this).load(m.getData().getPic()).into(new GlideDrawableImageViewTarget(ivUser) {
-                            @Override
-                            public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                                ivUser.setVisibility(View.VISIBLE);
-                                super.onResourceReady(resource, animation);
-                            }
-                        });
-                    else
-                        ivUser.setVisibility(View.VISIBLE);
-
-                    Timber.i(m.getMessage());
-                    layoutProgress.setVisibility(View.GONE);
-                    setViewListener();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        BusProvider.post(new ApiFire.GetProfile());
     }
 
     private void setViewListener() {
-
         tvName.setOnClickListener(this);
         tvPhone.setOnClickListener(this);
         tvAddress.setOnClickListener(this);
         tvEmail.setOnClickListener(this);
         tvPassword.setOnClickListener(this);
 
-        TextWatcher textWatcher = new TextWatcher() {
+        textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -251,7 +248,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         if (save.isVisible()) {
             DialogHelper.getUpdateProfileDialog(this, new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                     MyProfileActivity.super.onBackPressed();
                 }
             }).show();
@@ -267,43 +264,52 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            ivUser.setImageBitmap(imageBitmap);
-            String encodedBitmap = "data:image/png;base64," + encode(compress(imageBitmap));
-            uploadPhoto(encodedBitmap);
-            save.setVisible(true);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode != Crop.REQUEST_CROP) {
+            cacheCropImg = new File(getCacheDir(), "cropped");
+            Uri destination = Uri.fromFile(cacheCropImg);
+            ivUser.setImageDrawable(null); // clear image before start crop activity
+            int px = PhotoHelper.convertDpToPx(this, 128);
+            Crop.of(PickImageChooser.getPickImageResultUri(data, this), destination).withMaxSize(px, px).asSquare().start(this);
+        } else {
+            handleCrop(resultCode, data);
         }
     }
 
-    private void uploadPhoto(String encodedBitmap) {
-        layoutProgress.setVisibility(View.VISIBLE);
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            save.setVisible(true);
+            int px = PhotoHelper.convertDpToPx(this, 128);
 
-        ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), encodedBitmap, new MyCallback<Photo>() {
-            @Override
-            public void good(@NonNull Photo m, Response response) {
-                Timber.i(m.getData().getPathUse());
-                photo = m;
-                layoutProgress.setVisibility(View.GONE);
-                Glide.with(MyProfileActivity.this).load(m.getData().getPathUse()).into(ivUser);
-            }
-        });
+            Glide.with(this)
+                .load(Crop.getOutput(result))
+                    .asBitmap()
+                    .signature(new MediaStoreSignature("image/jpeg", cacheCropImg.lastModified(), 0))
+                    .into(new SimpleTarget<Bitmap>(px, px) {
+                        @Override
+                        public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                            // Do something with bitmap here.
+                            uploadPhoto(PhotoHelper.compressThenEncoded(bitmap, 100));
+                        }
+                    });
+
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private byte[] compress(@NonNull Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 70, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
+    public void uploadPhoto(String encodedBitmap) {
+        BusProvider.post(new ApiFire.UploadPhoto(encodedBitmap));
     }
 
-    private String encode(@NonNull byte[] byteArray) {
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    @Subscribe
+    public void onReceiveUploadPhoto(ApiReceive.UploadPhoto uploadPhoto) {
+        photo = uploadPhoto.getPhoto();
+        Glide.with(MyProfileActivity.this).load(uploadPhoto.getPhoto().getData().getPathUse()).into(ivUser);
     }
 
     @Override
-    public void onClick(@NonNull View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvName:
                 tvName.setVisibility(View.GONE);
@@ -327,28 +333,5 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                 break;
         }
     }
-//
-//    @Override
-//    public void onFocusChange(View view, boolean hasFocus) {
-//        if(!hasFocus) {
-//            switch (view.getId()) {
-//                case R.id.etName:
-//                    etName.setVisibility(View.GONE);
-//                    tvName.setVisibility(View.VISIBLE);
-//                    break;
-//                case R.id.etEmail:
-//                    etEmail.setVisibility(View.GONE);
-//                    tvEmail.setVisibility(View.VISIBLE);
-//                    break;
-//                case R.id.etAddress:
-//                    etAddress.setVisibility(View.GONE);
-//                    tvAddress.setVisibility(View.VISIBLE);
-//                    break;
-//                case R.id.etPhone:
-//                    etPhone.setVisibility(View.GONE);
-//                    tvPhone.setVisibility(View.VISIBLE);
-//                    break;
-//            }
-//        }
-//    }
+
 }

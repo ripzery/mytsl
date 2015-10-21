@@ -2,11 +2,10 @@ package com.socket9.tsl.API;
 
 import android.support.annotation.NonNull;
 
-import com.socket9.tsl.Events.BadEvent;
-import com.socket9.tsl.Events.GoodEvent;
+import com.socket9.tsl.Events.Bus.BadEvent;
+import com.socket9.tsl.Events.Bus.EndApiEvent;
 import com.socket9.tsl.Models.BaseModel;
-
-import de.greenrobot.event.EventBus;
+import com.socket9.tsl.Utils.BusProvider;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -17,24 +16,26 @@ import retrofit.client.Response;
 public abstract class MyCallback<T extends BaseModel> implements Callback<T> {
     @Override
     public void success(@NonNull T m, Response response) {
+        BusProvider.getInstance().post(new EndApiEvent());
+
         if (m.isResult()) {
             good(m, response);
-            EventBus.getDefault().post(new GoodEvent());
         } else {
-            bad(m.getMessage(), m.getMessage().contains("token") && m.getMessage().contains("invalid"));
-            EventBus.getDefault().post(new BadEvent(m.getMessage(), m.getMessage().contains("token") && m.getMessage().contains("invalid")));
+            bad(new BadEvent(m.getMessage(), false));
+            BusProvider.getInstance().post(new BadEvent(m.getMessage(), m.getMessage().contains("token") && m.getMessage().contains("invalid")));
         }
     }
 
     public abstract void good(T m, Response response);
 
-    public void bad(String error, boolean isTokenExpired) {
+    public void bad(BadEvent badEvent){
 
     }
 
     @Override
     public void failure(@NonNull RetrofitError error) {
-        bad(error.getLocalizedMessage(), false);
-        EventBus.getDefault().post(new BadEvent(error.getLocalizedMessage(), false));
+        BusProvider.getInstance().post(new EndApiEvent());
+        BusProvider.getInstance().post(new BadEvent(error.getLocalizedMessage(), false));
+        bad(new BadEvent(error.getLocalizedMessage(), false));
     }
 }

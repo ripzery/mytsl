@@ -13,20 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.socket9.tsl.API.ApiService;
-import com.socket9.tsl.API.MyCallback;
 import com.socket9.tsl.Adapters.NewsAdapter;
+import com.socket9.tsl.Events.Bus.ApiFire;
+import com.socket9.tsl.Events.Bus.ApiReceive;
 import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.NewsEventEntity;
-import com.socket9.tsl.Models.ListNewsEvent;
 import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
+import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.OnFragmentInteractionListener;
-import com.socket9.tsl.Utils.Singleton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,40 +72,32 @@ public class NewsFragment extends Fragment {
     }
 
     private void getNews() {
-        mListener.onProgressStart();
-        ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
-            @Override
-            public void good(@NonNull ListNewsEvent m, Response response) {
-                try {
-                    NewsAdapter newsAdapter = new NewsAdapter(m.getData());
-                    newsAdapter.setOnCardClickListener(listener);
-                    recyclerView.setAdapter(newsAdapter);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                mListener.onProgressComplete();
-            }
-        });
+        BusProvider.post(new ApiFire.GetListNews());
     }
 
+    @Subscribe
+    public void onReceiveListNews(ApiReceive.ListNews listNews) {
+        try {
+            NewsAdapter newsAdapter = new NewsAdapter(listNews.getListNewsEvent().getData());
+            newsAdapter.setOnCardClickListener(listener);
+            recyclerView.setAdapter(newsAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        BusProvider.getInstance().register(this);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_NEWS);
-        try {
-            mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHomeListener");
-        }
     }
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        BusProvider.getInstance().unregister(this);
     }
 
 
