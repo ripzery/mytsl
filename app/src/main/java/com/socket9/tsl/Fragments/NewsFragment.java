@@ -21,7 +21,6 @@ import com.socket9.tsl.ModelEntities.NewsEventEntity;
 import com.socket9.tsl.NewsEventActivity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.BusProvider;
-import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -36,8 +35,6 @@ public class NewsFragment extends Fragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     private NewsAdapter.OnCardClickListener listener;
-    @Nullable
-    private OnFragmentInteractionListener mListener;
 
     public NewsFragment() {
         // Required empty public constructor

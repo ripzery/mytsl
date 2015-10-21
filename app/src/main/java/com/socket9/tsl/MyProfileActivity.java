@@ -1,16 +1,13 @@
 package com.socket9.tsl;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,7 +117,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 //                dispatchTakePictureIntent();
-                startActivityForResult(PickImageChooser.getPickImageChooserIntent(MyProfileActivity.this), 200);
+                startActivityForResult(PickImageChooser.getPickCaptureChooserIntent(MyProfileActivity.this), 200);
             }
         });
     }

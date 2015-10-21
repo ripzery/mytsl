@@ -21,7 +21,6 @@ import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.ModelEntities.ContactEntity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.BusProvider;
-import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -40,9 +39,6 @@ public class ContactFragment extends Fragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     private ContactAdapter.OnContactClickListener listener;
-    @Nullable
-    private OnFragmentInteractionListener mListener;
-
     public ContactFragment() {
         // Required empty public constructor
     }

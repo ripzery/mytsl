@@ -23,7 +23,6 @@ import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.BusProvider;
 import com.socket9.tsl.Utils.MapHelper;
-import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 import com.squareup.otto.Subscribe;
 
@@ -52,8 +51,6 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
     private boolean isZoom = false;
     private Marker myLocationMarker;
     private boolean isMechanic = true;
-    @Nullable
-    private OnFragmentInteractionListener mListener;
     @NonNull
     private String requestEmergency = "MECHANIC";
 
@@ -184,7 +181,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 if (isMechanic) {
                     ivTowCar.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.towcar_active_en));
                     ivMechanic.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mechanic_en));
-                    requestEmergency = "TOWCAR";
+                    requestEmergency = TOWCAR;
                     isMechanic = false;
                 }
                 break;
@@ -192,7 +189,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 if (!isMechanic) {
                     ivMechanic.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mechanic_active_en));
                     ivTowCar.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.towcar_en));
-                    requestEmergency = "MECHANIC";
+                    requestEmergency = MECHANIC;
                     isMechanic = true;
                 }
                 break;

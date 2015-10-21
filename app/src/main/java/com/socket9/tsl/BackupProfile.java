@@ -107,7 +107,7 @@
 //            @Override
 //            public void onClick(View view) {
 ////                dispatchTakePictureIntent();
-//                startActivityForResult(PickImageChooser.getPickImageChooserIntent(MyProfileActivity.this), 200);
+//                startActivityForResult(PickImageChooser.getPickCaptureChooserIntent(MyProfileActivity.this), 200);
 //            }
 //        });
 //

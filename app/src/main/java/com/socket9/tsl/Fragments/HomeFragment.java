@@ -22,7 +22,6 @@ import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.MyProfileActivity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.BusProvider;
-import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -40,8 +39,6 @@ public class HomeFragment extends Fragment {
     CircleImageView ivUser;
     @Bind(R.id.tvName)
     TextView tvName;
-    @Nullable
-    private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {
         // Required empty public constructor

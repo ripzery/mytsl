@@ -30,7 +30,6 @@ import com.socket9.tsl.Fragments.EventFragment;
 import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.NewsFragment;
 import com.socket9.tsl.Utils.DialogHelper;
-import com.socket9.tsl.Utils.OnFragmentInteractionListener;
 import com.socket9.tsl.Utils.Singleton;
 
 import butterknife.Bind;

@@ -19,9 +19,8 @@ import java.util.List;
  * Created by Euro on 10/7/15 AD.
  */
 public class PickImageChooser {
-
     @NonNull
-    public static Intent getPickImageChooserIntent(@NonNull Context context) {
+    public static Intent getPickCaptureChooserIntent(@NonNull Context context) {
         // Determine Uri of camera image to save.
         Uri outputFileUri = getCaptureImageOutputUri(context);
 
