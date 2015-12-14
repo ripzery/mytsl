@@ -21,6 +21,7 @@ import retrofit.http.POST;
  */
 public class ApiService {
 
+//    private static final String BASE_URL = "http://uat.tsl.co.th/api";
     private static final String BASE_URL = "http://tsl.socket9.com/api";
     private static TSLApi service;
     private static Context context;

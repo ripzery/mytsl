@@ -54,7 +54,7 @@ public class DialogHelper {
         return new MaterialDialog.Builder(context)
                 .title(getString(context, R.string.dialog_change_lang_title))
                 .items(R.array.change_language)
-                .itemsCallbackSingleChoice(Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, "").equals("en") ? 1 : 0, callback)
+                .itemsCallbackSingleChoice(Singleton.getInstance().getSharedPref(context).getString(Singleton.SHARE_PREF_LANG, "").equals("en") ? 1 : 0, callback)
                 .negativeText(getString(context, R.string.dialog_change_lang_cancel))
                 .positiveText(getString(context, R.string.dialog_change_lang_choose))
                 .build();

@@ -1,32 +1,40 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingTop="16dp"
-    tools:context="com.socket9.tsl.Fragments.HomeFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ivUser"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:src="@drawable/default_photo"
-        android:visibility="invisible"
-        app:civ_border_color="@color/colorTextPrimary"
-        app:civ_border_width="2dp" />
+    <data>
+        <variable
+            name="profile"
+            type="com.socket9.tsl.Models.Profile.DataEntity" />
 
+    </data>
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Annop Vor"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        android:visibility="invisible" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        tools:context="com.socket9.tsl.Fragments.HomeFragment">
 
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ivUser"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/default_photo"
+            android:visibility="invisible"
+            app:civ_border_color="@color/colorTextPrimary"
+            app:civ_border_width="2dp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Annop Vor"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+</layout>
 

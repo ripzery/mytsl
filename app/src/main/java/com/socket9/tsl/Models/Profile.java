@@ -1,5 +1,10 @@
 package com.socket9.tsl.Models;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.socket9.tsl.BR;
+
 /**
  * Created by Euro on 10/4/15 AD.
  */
@@ -19,7 +24,7 @@ public class Profile extends BaseModel {
         this.data = data;
     }
 
-    public static class DataEntity {
+    public static class DataEntity extends BaseObservable{
         /**
          * phone : phone
          * nameTh : name
@@ -67,12 +72,14 @@ public class Profile extends BaseModel {
             this.nameEn = nameEn;
         }
 
+        @Bindable
         public String getPic() {
             return pic;
         }
 
         public void setPic(String pic) {
             this.pic = pic;
+            notifyPropertyChanged(BR.pic);
         }
 
         public String getEmail() {
@@ -83,12 +90,14 @@ public class Profile extends BaseModel {
             this.email = email;
         }
 
+        @Bindable
         public String getFacebookPic() {
             return facebookPic;
         }
 
         public void setFacebookPic(String facebookPic) {
             this.facebookPic = facebookPic;
+            notifyPropertyChanged(BR.facebookPic);
         }
     }
 }

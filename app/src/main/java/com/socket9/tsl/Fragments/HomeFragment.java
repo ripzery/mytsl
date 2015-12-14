@@ -1,17 +1,17 @@
 package com.socket9.tsl.Fragments;
 
-
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -22,47 +22,36 @@ import com.socket9.tsl.MainActivity;
 import com.socket9.tsl.MyProfileActivity;
 import com.socket9.tsl.R;
 import com.socket9.tsl.Utils.BusProvider;
+import com.socket9.tsl.databinding.FragmentHomeBinding;
 import com.squareup.otto.Subscribe;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
 
-
-    @Bind(R.id.ivUser)
-    CircleImageView ivUser;
-    @Bind(R.id.tvName)
-    TextView tvName;
+    @Bind(R.id.ivUser) CircleImageView ivUser;
+    @Bind(R.id.tvName) TextView tvName;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    @Override public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        //FragmentHomeBinding fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, true);
         ButterKnife.bind(this, rootView);
         ivUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            @Override public void onClick(View view) {
                 startActivity(new Intent(getContext(), MyProfileActivity.class));
-
             }
         });
         return rootView;
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         getProfile();
     }
@@ -71,49 +60,44 @@ public class HomeFragment extends Fragment {
         BusProvider.post(new ApiFire.GetProfile());
     }
 
-
-    @Subscribe
-    public void onReceiveProfile(ApiReceive.Profile profile) {
+    @Subscribe public void onReceiveProfile(ApiReceive.Profile profile) {
         try {
             GlideDrawableImageViewTarget glideImageViewTarget = new GlideDrawableImageViewTarget(ivUser) {
-                @Override
-                public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                @Override public void onResourceReady(@NonNull GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
                     ivUser.setVisibility(View.VISIBLE);
                     super.onResourceReady(resource, animation);
                 }
             };
 
             if (profile.getProfile().getData().getPic() != null) {
-                Glide.with(getActivity()).load(profile.getProfile().getData().getPic()).centerCrop().into(glideImageViewTarget);
+                Glide.with(this).load(profile.getProfile().getData().getPic()).centerCrop().into(glideImageViewTarget);
                 ivUser.setVisibility(View.VISIBLE);
-            }
-            else if (profile.getProfile().getData().getFacebookPic() != null)
+            } else if (profile.getProfile().getData().getFacebookPic() != null) {
                 Glide.with(getActivity()).load(profile.getProfile().getData().getFacebookPic()).centerCrop().into(glideImageViewTarget);
-            else {
+            } else {
                 ivUser.setVisibility(View.VISIBLE);
             }
+
             tvName.setText(profile.getProfile().getData().getNameEn());
             tvName.setVisibility(View.VISIBLE);
         } catch (Exception e) {
+            ivUser.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void onDestroyView() {
+    @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
+    @Override public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         BusProvider.getInstance().register(this);
         ((MainActivity) getActivity()).onFragmentAttached(MainActivity.FRAGMENT_DISPLAY_HOME);
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         BusProvider.getInstance().unregister(this);
     }

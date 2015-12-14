@@ -24,7 +24,7 @@ import timber.log.Timber;
 public class FireApiService {
     public static FireApiService fireApiService = new FireApiService();
 
-    public static FireApiService getInstance(){
+    public static FireApiService getInstance() {
         return fireApiService;
     }
 
@@ -53,7 +53,9 @@ public class FireApiService {
                 new MyCallback<User>() {
                     @Override
                     public void good(User m, Response response) {
-                        ApiService.getTSLApi().loginWithFb(loginWithFb.getFacebookId(), loginWithFb.getFacebookPic(), new MyCallback<User>() {
+                        ApiService.getTSLApi().loginWithFb(loginWithFb.getFacebookId(),
+                                loginWithFb.getFacebookPic(),
+                                new MyCallback<User>() {
                             @Override
                             public void good(User m, Response response) {
                                 Timber.d(m.getData().getToken());
@@ -66,7 +68,9 @@ public class FireApiService {
                     @Override
                     public void bad(BadEvent badEvent) {
                         super.bad(badEvent);
-                        ApiService.getTSLApi().loginWithFb(loginWithFb.getFacebookId(), loginWithFb.getFacebookPic(), new MyCallback<User>() {
+                        ApiService.getTSLApi().loginWithFb(loginWithFb.getFacebookId(),
+                                loginWithFb.getFacebookPic(),
+                                new MyCallback<User>() {
                             @Override
                             public void good(User m, Response response) {
                                 Timber.d(m.getData().getToken());
@@ -80,7 +84,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireForgotPassword(ApiFire.ForgetPassword forgetPassword) {
-        ApiService.getTSLApi().forgetPassword(forgetPassword.getEmail(), new MyCallback<BaseModel>() {
+        ApiService.getTSLApi().forgetPassword(forgetPassword.getEmail(),
+                new MyCallback<BaseModel>() {
             @Override
             public void good(BaseModel m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.ForgetPassword(m));
@@ -90,7 +95,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireGetProfile(ApiFire.GetProfile profile) {
-        ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken(), new MyCallback<Profile>() {
+        ApiService.getTSLApi().getProfile(Singleton.getInstance().getToken()
+                , new MyCallback<Profile>() {
             @Override
             public void good(Profile m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.Profile(m));
@@ -100,7 +106,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireGetListNews(ApiFire.GetListNews getListNews) {
-        ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken(), new MyCallback<ListNewsEvent>() {
+        ApiService.getTSLApi().getListNews(Singleton.getInstance().getToken()
+                , new MyCallback<ListNewsEvent>() {
             @Override
             public void good(ListNewsEvent m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.ListNews(m));
@@ -110,7 +117,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireGetNew(ApiFire.GetNew getNew) {
-        ApiService.getTSLApi().getNew(Singleton.getInstance().getToken(), getNew.getNewId(), new MyCallback<NewsEvent>() {
+        ApiService.getTSLApi().getNew(Singleton.getInstance().getToken()
+                , getNew.getNewId(), new MyCallback<NewsEvent>() {
             @Override
             public void good(NewsEvent m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.New(m));
@@ -130,7 +138,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireGetEvent(ApiFire.GetEvent getEvent) {
-        ApiService.getTSLApi().getEvent(Singleton.getInstance().getToken(), getEvent.getEventId(), new MyCallback<NewsEvent>() {
+        ApiService.getTSLApi().getEvent(Singleton.getInstance().getToken()
+                , getEvent.getEventId(), new MyCallback<NewsEvent>() {
             @Override
             public void good(NewsEvent m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.Event(m));
@@ -140,7 +149,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireGetListContacts(ApiFire.GetListContacts getListContacts) {
-        ApiService.getTSLApi().getListContacts(Singleton.getInstance().getToken(), new MyCallback<ListContacts>() {
+        ApiService.getTSLApi().getListContacts(Singleton.getInstance().getToken()
+                , new MyCallback<ListContacts>() {
             @Override
             public void good(ListContacts m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.ListContacts(m));
@@ -150,7 +160,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireGetContact(ApiFire.GetContact getContact) {
-        ApiService.getTSLApi().getContact(Singleton.getInstance().getToken(), getContact.getContactId(), new MyCallback<Contact>() {
+        ApiService.getTSLApi().getContact(Singleton.getInstance().getToken()
+                , getContact.getContactId(), new MyCallback<Contact>() {
             @Override
             public void good(Contact m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.Contact(m));
@@ -179,7 +190,11 @@ public class FireApiService {
 
     @Subscribe
     public void onFireEmergencyCall(ApiFire.EmergencyCall emergencyCall) {
-        ApiService.getTSLApi().emergencyCall(Singleton.getInstance().getToken(), emergencyCall.getLat(), emergencyCall.getLng(), emergencyCall.getType(), new MyCallback<BaseModel>() {
+        ApiService.getTSLApi().emergencyCall(Singleton.getInstance().getToken(),
+                emergencyCall.getLat(),
+                emergencyCall.getLng(),
+                emergencyCall.getType(),
+                new MyCallback<BaseModel>() {
             @Override
             public void good(BaseModel m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.EmergencyCall(m));
@@ -199,7 +214,8 @@ public class FireApiService {
 
     @Subscribe
     public void onFireUpdateProfile(ApiFire.UpdateProfile updateProfile) {
-        ApiService.getTSLApi().updateProfile(Singleton.getInstance().getToken(), updateProfile.getNameEn(),
+        ApiService.getTSLApi().updateProfile(Singleton.getInstance().getToken(),
+                updateProfile.getNameEn(),
                 updateProfile.getNameTh(),
                 updateProfile.getPhone(),
                 updateProfile.getAddress(),
@@ -214,7 +230,9 @@ public class FireApiService {
 
     @Subscribe
     public void onFireUploadPhoto(ApiFire.UploadPhoto uploadPhoto) {
-        ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(), uploadPhoto.getPath(), new MyCallback<Photo>() {
+        ApiService.getTSLApi().uploadPhoto(Singleton.getInstance().getToken(),
+                uploadPhoto.getPath(),
+                new MyCallback<Photo>() {
             @Override
             public void good(Photo m, Response response) {
                 BusProvider.getInstance().post(new ApiReceive.UploadPhoto(m));

@@ -53,7 +53,10 @@ public class Singleton {
         sharedPreferences.edit().putInt(key, value).apply();
     }
 
-    public SharedPreferences getSharedPref() {
+    public SharedPreferences getSharedPref(Context context) {
+        if(sharedPreferences == null){
+            initSharePref(context);
+        }
         return sharedPreferences;
     }
 

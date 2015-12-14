@@ -32,7 +32,7 @@ public class BaseApplication extends Application implements Application.Activity
                         .build()
         );
 
-        String language = Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, "");
+        String language = Singleton.getInstance().getSharedPref(this).getString(Singleton.SHARE_PREF_LANG, "");
         if (language.equals("")) {
             Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_LANG, "en");
         }

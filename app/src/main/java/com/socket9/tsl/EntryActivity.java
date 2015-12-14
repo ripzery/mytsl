@@ -15,9 +15,9 @@ public class EntryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean isHasToken = !Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_KEY_TOKEN, "").equals("");
-        setLocale(Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, ""));
-        Timber.i(Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_KEY_TOKEN, ""));
+        boolean isHasToken = !Singleton.getInstance().getSharedPref(this).getString(Singleton.SHARE_PREF_KEY_TOKEN, "").equals("");
+        setLocale(Singleton.getInstance().getSharedPref(this).getString(Singleton.SHARE_PREF_LANG, ""));
+        Timber.i(Singleton.getInstance().getSharedPref(this).getString(Singleton.SHARE_PREF_KEY_TOKEN, ""));
         startActivity(new Intent(this, isHasToken ? MainActivity.class : SignInActivity.class));
         finish();
     }

@@ -19,7 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.FacebookSdk;
@@ -31,9 +32,6 @@ import com.socket9.tsl.Fragments.HomeFragment;
 import com.socket9.tsl.Fragments.NewsFragment;
 import com.socket9.tsl.Utils.DialogHelper;
 import com.socket9.tsl.Utils.Singleton;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -44,30 +42,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public static final int FRAGMENT_DISPLAY_EMERGENCY = 4;
     public static final int FRAGMENT_DISPLAY_PROFILE = 5;
     private static final int FRAGMENT_DISPLAY_EVENT = 6;
-    @Bind(R.id.fragment_container)
-    FrameLayout fragmentContainer;
-    @Bind(R.id.parent_layout)
-    RelativeLayout parentLayout;
-    @Bind(R.id.my_toolbar)
-    Toolbar myToolbar;
-    @Bind(R.id.navView)
-    NavigationView navView;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-    @Bind(R.id.toolbarTitle)
-    TextView toolbarTitle;
-    @Bind(R.id.layoutNewsEvent)
-    LinearLayout layoutNewsEvent;
-    @Bind(R.id.btnLeft)
-    Button btnLeft;
-    @Bind(R.id.btnRight)
-    Button btnRight;
-    @Bind(R.id.btnChangeLanguage)
-    Button btnChangeLanguage;
-    @Bind(R.id.btnSignOut)
-    Button btnSignOut;
-    @Bind(R.id.ivLogo)
-    ImageView ivLogo;
+    @Bind(R.id.fragment_container) FrameLayout fragmentContainer;
+    @Bind(R.id.parent_layout) RelativeLayout parentLayout;
+    @Bind(R.id.my_toolbar) Toolbar myToolbar;
+    @Bind(R.id.navView) NavigationView navView;
+    @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @Bind(R.id.toolbarTitle) TextView toolbarTitle;
+    @Bind(R.id.layoutNewsEvent) LinearLayout layoutNewsEvent;
+    @Bind(R.id.btnLeft) Button btnLeft;
+    @Bind(R.id.btnRight) Button btnRight;
+    @Bind(R.id.btnChangeLanguage) Button btnChangeLanguage;
+    @Bind(R.id.btnSignOut) Button btnSignOut;
+    @Bind(R.id.ivLogo) ImageView ivLogo;
     private Fragment homeFragment;
     private Fragment newsFragment;
     private Fragment contactFragment;
@@ -75,17 +61,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Fragment profileFragment;
     private Fragment eventFragment;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         checkIfEnterFromUrl();
-//        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, );
+        //        Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, );
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        boolean isEnglish = Singleton.getInstance().getSharedPref().getString(Singleton.SHARE_PREF_LANG, "").equals("en");
+        boolean isEnglish = Singleton.getInstance().getSharedPref(this).getString(Singleton.SHARE_PREF_LANG, "").equals("en");
         btnChangeLanguage.setText(getString(isEnglish ? R.string.dialog_change_lang_english : R.string.dialog_change_lang_thai));
 
         initToolbar(myToolbar, getString(R.string.toolbar_main), false);
@@ -123,8 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         emergencyFragment = new EmergencyFragment();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -132,8 +116,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setupDrawerContent() {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            @Override public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
                         replaceFragment(FRAGMENT_DISPLAY_HOME);
@@ -151,20 +134,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         replaceFragment(FRAGMENT_DISPLAY_EMERGENCY);
                         menuItem.setChecked(true);
                         break;
-//                    case R.id.nav_sign_out:
-//                        // Show dialog
-//                        DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
-//                            @Override
-//                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-//                                LoginManager.getInstance().logOut();
-//                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
-//                                startActivity(new Intent(MainActivity.this, SignInActivity.class));
-//                                finish();
-//                            }
-//
-//                        }).show();
-//                        menuItem.setChecked(false);
-//                        break;
+                    //                    case R.id.nav_sign_out:
+                    //                        // Show dialog
+                    //                        DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
+                    //                            @Override
+                    //                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    //                                LoginManager.getInstance().logOut();
+                    //                                Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
+                    //                                startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                    //                                finish();
+                    //                            }
+                    //
+                    //                        }).show();
+                    //                        menuItem.setChecked(false);
+                    //                        break;
                 }
                 drawerLayout.closeDrawers();
                 return true;
@@ -215,8 +198,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         toolbarTitle.setText(mTitle);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    @Override public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -225,8 +207,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(@NonNull View view) {
+    @Override public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.btnLeft:
                 if (!newsFragment.isVisible()) {
@@ -250,8 +231,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btnChangeLanguage:
                 DialogHelper.getChangeLangDialog(this, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                    @Override public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
                         if (i == 0) {
                             setLocale("th");
                         } else {
@@ -266,14 +246,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.btnSignOut:
                 // Show dialog
                 DialogHelper.getSignOutDialog(MainActivity.this, new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    @Override public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         LoginManager.getInstance().logOut();
                         Singleton.getInstance().setSharedPrefString(Singleton.SHARE_PREF_KEY_TOKEN, "");
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finish();
                     }
-
                 }).show();
                 break;
         }
